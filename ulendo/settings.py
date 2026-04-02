@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+import dj_database_url
 
 # -------------------
 # BASE DIR
@@ -9,11 +11,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------
 # SECURITY
 # -------------------
-SECRET_KEY = 'django-insecure-change-this-in-production'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this')
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # -------------------
@@ -28,7 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    # ✅ IMPORTANT (for signals)
+    # Your app
     'website.apps.YourAppConfig',
 ]
 
@@ -38,6 +44,8 @@ INSTALLED_APPS = [
 # -------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ required for Render
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,10 +67,7 @@ ROOT_URLCONF = 'ulendo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-
-        # ✅ Correct template path
         'DIRS': [BASE_DIR / "website/templates"],
-
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,13 +87,12 @@ WSGI_APPLICATION = 'ulendo.wsgi.application'
 
 
 # -------------------
-# DATABASE
+# DATABASE (Render-ready)
 # -------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3'
+    )
 }
 
 
@@ -107,9 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # INTERNATIONALIZATION
 # -------------------
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
 USE_TZ = True
 
@@ -123,6 +125,11 @@ STATICFILES_DIRS = [
     BASE_DIR / "website/static",
 ]
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# WhiteNoise static optimization
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # -------------------
 # DEFAULT AUTO FIELD
@@ -130,13 +137,16 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# -------------------
+# EMAIL CONFIG (SECURE)
+# -------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'chiumiavijay75@gmail.com'
-EMAIL_HOST_PASSWORD = 'fyxuwqugjngnwsib'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

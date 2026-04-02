@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="px-4 py-6">
+
+    <div class="max-w-md mx-auto bg-white p-5 rounded-xl shadow">
+
+        <!-- TITLE -->
+        <h1 class="text-lg md:text-xl font-bold text-center mb-3 text-gray-800">
+            Book Your Trip
+        </h1>
+
+        <!-- BUS INFO -->
+        <div class="bg-gray-50 p-2.5 rounded-md text-center mb-4 text-xs border">
+            <p><strong>Bus:</strong> {{ bus.departure }} → {{ bus.destination }}</p>
+            <p><strong>Date:</strong> {{ bus.departure_date }}</p>
+            <p><strong>Time:</strong> {{ bus.departure_time }}</p>
+        </div>
+
+        <!-- FORM -->
+        <form method="POST" class="space-y-3" id="bookingForm">
+            {% csrf_token %}
+
+            <!-- SERVICE TYPE -->
+            <div>
+                <label class="block text-xs font-semibold mb-1">Select Service</label>
+                <select id="service_type" name="service_type"
+                        class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
+                        required>
+                    <option value="">-- Select --</option>
+                    <option value="passenger">Passenger</option>
+                    <option value="parcel">Parcel</option>
+                </select>
+            </div>
+
+            <!-- EMAIL -->
+            <div id="email-field" class="hidden">
+                <input type="email" name="email"
+                       class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                       placeholder="Email" required>
+            </div>
+
+            <!-- PASSENGER FIELDS -->
+            <div id="passenger-fields" class="hidden space-y-2">
+
+                <input type="text" name="name"
+                       class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                       placeholder="Full Name">
+
+                <input type="text" name="phone_number"
+                       class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                       placeholder="Phone Number">
+
+                <input type="number" name="passengers" min="1"
+                       class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                       placeholder="Passengers" required>
+
+            </div>
+
+            <!-- PARCEL FIELDS -->
+            <div id="parcel-fields" class="hidden space-y-2">
+
+                <input type="text" name="sender_name"
+                       class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                       placeholder="Sender Name" required>
+
+                <input type="text" name="receiver_name"
+                       class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                       placeholder="Receiver Name" required>
+
+                <input type="text" name="pickup_location"
+                       class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                       placeholder="Pickup Location" required>
+
+                <input type="text" name="destination"
+                       class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                       placeholder="Destination" required>
+
+                <textarea name="description"
+                          class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                          placeholder="Description"></textarea>
+
+                <input type="text" name="phone"
+                       class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                       placeholder="Phone Number" required>
+
+            </div>
+
+            <!-- ERRORS -->
+            {% if form.errors %}
+                <div class="text-red-600 text-xs">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+
+<!-- BUTTON -->
+<button type="submit" id="submitBtn"
+    class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#0a2540] to-[#062033] hover:from-[#062033] hover:to-[#041a2a] text-white py-2 rounded-md text-sm font-semibold transition">
+
+    <span id="btnText">Confirm Booking</span>
+
+    <!-- SPINNER -->
+    <svg id="spinner" class="hidden animate-spin h-4 w-4 text-white"
+         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10"
+                stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"></path>
+    </svg>
+
+</button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script>
+// ===============================
+// SERVICE SWITCHING LOGIC
+// ===============================
+const serviceSelect = document.getElementById('service_type');
+const passenger = document.getElementById('passenger-fields');
+const parcel = document.getElementById('parcel-fields');
+const email = document.getElementById('email-field');
+
+const passengerInputs = passenger.querySelectorAll('input, textarea');
+const parcelInputs = parcel.querySelectorAll('input, textarea');
+
+serviceSelect.addEventListener('change', function () {
+
+    let type = this.value;
+
+    if (type === 'passenger') {
+        passenger.classList.remove('hidden');
+        parcel.classList.add('hidden');
+        email.classList.remove('hidden');
+
+        // Enable passenger fields
+        passengerInputs.forEach(i => {
+            i.disabled = false;
+            i.required = true;
+        });
+
+        // Disable parcel fields
+        parcelInputs.forEach(i => {
+            i.disabled = true;
+            i.required = false;
+        });
+
+    } else if (type === 'parcel') {
+        passenger.classList.add('hidden');
+        parcel.classList.remove('hidden');
+        email.classList.remove('hidden');
+
+        // Disable passenger fields
+        passengerInputs.forEach(i => {
+            i.disabled = true;
+            i.required = false;
+        });
+
+        // Enable parcel fields
+        parcelInputs.forEach(i => {
+            i.disabled = false;
+            i.required = true;
+        });
+
+    } else {
+        passenger.classList.add('hidden');
+        parcel.classList.add('hidden');
+        email.classList.add('hidden');
+
+        // Disable everything
+        passengerInputs.forEach(i => {
+            i.disabled = true;
+            i.required = false;
+        });
+
+        parcelInputs.forEach(i => {
+            i.disabled = true;
+            i.required = false;
+        });
+    }
+});
+
+
+// ===============================
+// SPINNER + SUBMIT CONTROL
+// ===============================
+const form = document.getElementById("bookingForm");
+const btn = document.getElementById("submitBtn");
+const spinner = document.getElementById("spinner");
+const text = document.getElementById("btnText");
+
+form.addEventListener("submit", function () {
+
+    // If form is invalid, stop here
+    if (!form.checkValidity()) {
+        return;
+    }
+
+    // Show spinner
+    spinner.classList.remove("hidden");
+
+    // Hide text
+    text.classList.add("hidden");
+
+    // Disable button
+    btn.disabled = true;
+});
+</script>
+{% endblock %}

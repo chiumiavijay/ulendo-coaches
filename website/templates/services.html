@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Services{% endblock %}
+
+{% block content %}
+
+<section class="px-4 py-12">
+    <div class="max-w-6xl mx-auto text-center">
+
+        <!-- TITLE -->
+        <h1 class="text-xl md:text-3xl font-bold mb-10 animate-fadeIn">
+            Our Services
+        </h1>
+
+        <!-- CARDS -->
+        <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+
+            <!-- CARD 1 -->
+            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition hover:-translate-y-1">
+                <h3 class="font-semibold text-lg mb-3">
+                    Passenger Transport
+                </h3>
+                <p class="text-sm mb-5">
+                    Travel comfortably between Malawi and South Africa with our reliable and safe transport services.
+                </p>
+
+                <a href="{% url 'available_buses' %}" 
+                   class="service-btn bg-[#0a2540] text-white px-5 py-2 rounded hover:opacity-90 transition flex items-center justify-center gap-2">
+
+                    <span class="btn-text">Book Now</span>
+
+                    <svg class="spinner hidden animate-spin h-4 w-4 text-white"
+                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                              d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"></path>
+                    </svg>
+
+                </a>
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition hover:-translate-y-1">
+                <h3 class="font-semibold text-lg mb-3">
+                    Parcel & Valuables Delivery
+                </h3>
+                <p class="text-sm mb-5">
+                    Send parcels and valuables securely at affordable rates across borders.
+                </p>
+
+                <a href="{% url 'available_buses' %}" 
+                   class="service-btn bg-[#0a2540] text-white px-5 py-2 rounded hover:opacity-90 transition flex items-center justify-center gap-2">
+
+                    <span class="btn-text">Send Parcel</span>
+
+                    <svg class="spinner hidden animate-spin h-4 w-4 text-white"
+                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                              d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"></path>
+                    </svg>
+
+                </a>
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition hover:-translate-y-1">
+                <h3 class="font-semibold text-lg mb-3">
+                    Logistics Services
+                </h3>
+                <p class="text-sm mb-5">
+                    We provide efficient logistics solutions for transporting goods between Malawi and South Africa.
+                </p>
+
+                <a href="{% url 'contact' %}" 
+                   class="service-btn bg-[#0a2540] text-white px-5 py-2 rounded hover:opacity-90 transition flex items-center justify-center gap-2">
+
+                    <span class="btn-text">Learn More</span>
+
+                    <svg class="spinner hidden animate-spin h-4 w-4 text-white"
+                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                              d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"></path>
+                    </svg>
+
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- SCRIPT -->
+<script>
+document.querySelectorAll('.service-btn').forEach(button => {
+    button.addEventListener('click', function (e) {
+        e.preventDefault(); // stop instant navigation
+
+        const link = this.getAttribute('href');
+        const text = this.querySelector('.btn-text');
+        const spinner = this.querySelector('.spinner');
+
+        text.textContent = "Loading...";
+        spinner.classList.remove('hidden');
+
+        // small delay so spinner is visible
+        setTimeout(() => {
+            window.location.href = link;
+        }, 400);
+    });
+});
+</script>
+
+{% endblock %}

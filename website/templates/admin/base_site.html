@@ -1,0 +1,176 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ title }} | Ulendo Admin
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+
+<!-- ✅ FAVICON -->
+<link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- CUSTOM ADMIN STYLES -->
+<style>
+
+    /* SKYBLUE BACKGROUND */
+    body {
+        background: #87CEEB !important;
+    }
+
+    /* CONTENT AREA */
+    #content {
+        background: transparent !important;
+    }
+
+    /* BLACK NAVBAR */
+    #header {
+        background: #000000 !important;
+        border-bottom: 1px solid #111 !important;
+        box-shadow: none !important;
+    }
+
+    /* ALL HEADER TEXT WHITE */
+    #header,
+    #header * {
+        color: #ffffff !important;
+        font-weight: 400 !important;
+    }
+
+    /* BRANDING */
+    #branding h1 a {
+        color: #ffffff !important;
+        font-weight: 400 !important;
+        text-decoration: none !important;
+    }
+
+    /* LINKS */
+    #header a {
+        text-decoration: none !important;
+        color: #ffffff !important;
+        transition: 0.2s ease;
+    }
+
+    #header a:hover {
+        color: #87CEEB !important;
+        text-decoration: none !important;
+    }
+
+    /* SIDEBAR TEXT */
+    #nav-sidebar,
+    #nav-sidebar * {
+        text-transform: capitalize !important;
+    }
+
+    /* CONTENT TEXT */
+    #content,
+    #content * {
+        text-transform: capitalize !important;
+    }
+
+    /* MODULE CARDS */
+    .module {
+        background: #ffffff !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+        padding: 16px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* TABLE HEADER */
+    thead th {
+        background: #0a2540 !important;
+        color: #ffffff !important;
+        font-weight: 400 !important;
+    }
+
+    thead th a {
+        color: #ffffff !important;
+    }
+
+    /* BUTTONS */
+    .button,
+    input[type="submit"] {
+        background: #0a2540 !important;
+        color: #ffffff !important;
+        padding: 8px 14px !important;
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+    }
+
+    /* LINKS */
+    a {
+        color: #0a2540 !important;
+        font-weight: 500 !important;
+    }
+
+    a:hover {
+        color: red !important;
+    }
+
+    /* FOOTER */
+    #footer {
+        background: transparent !important;
+        color: #333 !important;
+        text-align: center;
+        padding: 12px;
+        font-size: 0.85rem;
+        border-top: 1px solid #e5e7eb;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block branding %}
+<div class="flex items-center px-4 py-2 space-x-3">
+
+    <!-- LOGO -->
+    <img src="{% static 'images/logo.png' %}" 
+         alt="Logo" 
+         class="h-8 w-auto">
+
+    <!-- TITLE -->
+    <h1 class="text-sm tracking-wide">
+        <a href="{% url 'admin:index' %}">
+            Ulendo Coaches & Logistics
+        </a>
+    </h1>
+
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<!-- Removed -->
+{% endblock %}
+
+{% block usertools %}
+<div class="flex items-center space-x-5 text-sm px-4">
+
+    <span>
+        Welcome, {{ user.username }}
+    </span>
+
+    <a href="{% url 'home' %}">View site</a>
+
+    <a href="{% url 'admin:password_change' %}">Change password</a>
+
+    <form action="{% url 'admin:logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background:none;border:none;color:#ffffff;cursor:pointer;">
+            Log out
+        </button>
+    </form>
+
+</div>
+{% endblock %}
+
+{% block footer %}
+<div id="footer">
+    &copy; 2026 Ulendo Coaches & Logistic Services. All rights reserved.
+</div>
+{% endblock %}

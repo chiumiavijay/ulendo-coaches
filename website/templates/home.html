@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="flex items-center justify-center text-center min-h-[90vh] px-4">
+    <div class="max-w-2xl animate-fadeIn">
+
+        <h1 class="font-bold text-lg sm:text-xl md:text-4xl mb-4 whitespace-nowrap">
+            Ulendo Coaches & Logistic Services
+        </h1>
+
+        <p class="text-sm md:text-lg mb-4 opacity-90">
+            Connecting Malawi to South Africa
+        </p>
+
+        <p class="text-xs md:text-base mb-8 opacity-80">
+            Safe passenger transport and reliable parcel delivery services
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-3">
+
+            <!-- BOOK NOW BUTTON -->
+            <a href="{% url 'available_buses' %}" 
+               id="bookBtn"
+               class="bg-[#0a2540] text-white px-6 py-2 rounded shadow hover:bg-[#062033] hover:scale-105 transition flex items-center gap-2"
+
+                <span id="bookText">Book Now</span>
+
+                <!-- SPINNER -->
+                <svg id="bookSpinner" class="hidden animate-spin h-4 w-4 text-white"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"></path>
+                </svg>
+
+            </a>
+
+            <!-- VIEW SERVICES BUTTON -->
+            <a href="{% url 'services' %}" 
+               id="serviceBtn"
+               class="border border-dark px-6 py-2 rounded hover:bg-dark hover:text-white transition flex items-center gap-2">
+
+                <span id="serviceText">View Services</span>
+
+                <!-- SPINNER -->
+                <svg id="serviceSpinner" class="hidden animate-spin h-4 w-4 text-black"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"></path>
+                </svg>
+
+            </a>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="px-4 py-12">
+    <div class="max-w-6xl mx-auto text-center">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-8">
+            Why Choose Us?
+        </h2>
+
+        <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+
+            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition hover:-translate-y-1">
+                <h3 class="font-semibold mb-2">Reliable Transport</h3>
+                <p class="text-sm">
+                    Comfortable and safe journeys between Malawi and South Africa.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition hover:-translate-y-1">
+                <h3 class="font-semibold mb-2">Professional Service</h3>
+                <p class="text-sm">
+                    Customer satisfaction guaranteed with professional handling.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition hover:-translate-y-1">
+                <h3 class="font-semibold mb-2">Snacks & Refreshments</h3>
+                <p class="text-sm">
+                    We provide snacks and refreshments on board.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- SCRIPT -->
+<script>
+function addSpinner(buttonId, textId, spinnerId) {
+    const btn = document.getElementById(buttonId);
+    btn.addEventListener('click', function () {
+        document.getElementById(textId).textContent = "Loading...";
+        document.getElementById(spinnerId).classList.remove('hidden');
+    });
+}
+
+addSpinner('bookBtn', 'bookText', 'bookSpinner');
+addSpinner('serviceBtn', 'serviceText', 'serviceSpinner');
+</script>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.sender_name }}
+    {{ form.receiver_name }}
+    {{ form.pickup_location }}
+    {{ form.destination }}
+    {{ form.description }}
+    {{ form.email }}
+    {{ form.phone }}
+
+    <button type="submit">Send Parcel</button>
+</form>

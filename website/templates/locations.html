@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Locations{% endblock %}
+
+{% block content %}
+
+<section class="px-4 py-12">
+    <div class="max-w-5xl mx-auto text-center">
+
+        <!-- TITLE -->
+        <h1 class="text-xl md:text-3xl font-bold mb-10 text-[#0a2540]">
+            Our Locations
+        </h1>
+
+        <div class="grid gap-8 md:grid-cols-2">
+
+            <!-- MALAWI -->
+            <div class="bg-white p-6 rounded-xl shadow border-t-4 border-[#0a2540] text-left">
+                <h2 class="text-lg font-semibold mb-4 text-[#0a2540]">
+                    Malawi
+                </h2>
+
+                <ul class="space-y-3 text-sm text-gray-700">
+                    <li>
+                        <strong>Blantyre:</strong> MCP House Opp, Petroda Filling Station (Clock Tower).
+                    </li>
+                    <li>
+                        <strong>Lilongwe:</strong> Grand Business Park, 3rd Street, Unit C1-103, next to 3 Star Bus, Area 46.
+                    </li>
+                    <li>
+                        <strong>Mzuzu:</strong> Talifa Market near Intercape Office.
+                    </li>
+                    <li>
+                        <strong>Dedza:</strong> Haven House Lodge Before MRA Offices, Dedza Border Post.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SOUTH AFRICA -->
+            <div class="bg-white p-6 rounded-xl shadow border-t-4 border-[#0a2540] text-left">
+                <h2 class="text-lg font-semibold mb-4 text-[#0a2540]">
+                    South Africa
+                </h2>
+
+                <ul class="space-y-3 text-sm text-gray-700">
+                    <li>
+                        <strong>Johannesburg:</strong> CNR Prichard & Nugget
+                    </li>
+                    <li>
+                        <strong>Brits:</strong>
+                    </li>
+                    <li>
+                        <strong>Mooi Nooi / Majakaneng / Damdoryn:</strong>
+                    </li>
+                    <li>
+                        <strong>Tornado / Bapong / Modderspruit:</strong>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

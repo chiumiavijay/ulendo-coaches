@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="px-4 py-6">
+
+    <div class="max-w-4xl mx-auto">
+
+        <!-- TITLE -->
+        <h1 class="text-xl md:text-2xl font-bold mb-5 text-gray-800">
+            Available Buses
+        </h1>
+
+        {% if buses %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            {% for bus in buses %}
+            <div class="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition">
+
+                <h3 class="text-base font-semibold text-gray-800 mb-2">
+                    {{ bus.departure }} → {{ bus.destination }}
+                </h3>
+
+                <p class="text-xs text-gray-600">📅 {{ bus.departure_date }}</p>
+                <p class="text-xs text-gray-600 mb-3">⏰ {{ bus.departure_time }}</p>
+
+                <!-- BUTTON -->
+<a href="{% url 'book_bus' bus.id %}"
+   class="book-btn flex items-center justify-center gap-2 w-full bg-[#0a2540] text-white py-1.5 rounded-md text-sm font-medium hover:bg-[#062033] transition">
+
+    <span class="btn-text">Book Now</span>
+
+    <!-- SPINNER -->
+    <svg class="spinner hidden animate-spin h-4 w-4 text-white"
+         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10"
+                stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"></path>
+    </svg>
+
+</a>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+            <p class="text-sm text-gray-500">No buses available</p>
+        {% endif %}
+
+    </div>
+
+</section>
+
+<!-- SCRIPT -->
+<script>
+document.querySelectorAll('.book-btn').forEach(button => {
+    button.addEventListener('click', function () {
+
+        let text = this.querySelector('.btn-text');
+        let spinner = this.querySelector('.spinner');
+
+        text.textContent = "Loading...";
+        spinner.classList.remove('hidden');
+
+    });
+});
+</script>
+
+{% endblock %}

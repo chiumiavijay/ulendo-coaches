@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+
+<section class="px-4 py-6">
+    <div class="max-w-4xl mx-auto">
+
+        <!-- TITLE -->
+        <h1 class="text-lg md:text-2xl font-bold text-center mb-6 text-[#0a2540]">
+            Contact Us
+        </h1>
+
+        <div class="grid gap-6 md:grid-cols-2">
+
+            <!-- CONTACT INFO -->
+            <div class="bg-white p-5 rounded-lg shadow-sm space-y-3 text-sm">
+
+                <div>
+                    <p class="font-semibold text-xs text-gray-700">Email</p>
+                    <p class="text-gray-600">info@ulendocoaches.com</p>
+                </div>
+
+                <div>
+                    <p class="font-semibold text-xs text-gray-700">Call Centre</p>
+                    <p class="text-gray-600 leading-snug">
+                        +265 (0) 99 303 1516 (Malawi)<br>
+                        +265 (0) 98 156 7374 (Malawi)<br>
+                        +27 78 091 1260 (South Africa)
+                    </p>
+                </div>
+
+                <p class="text-xs text-gray-500">
+                    For inquiries, feel free to contact us anytime.
+                </p>
+
+            </div>
+
+            <!-- CONTACT FORM -->
+            <div class="bg-white p-5 rounded-lg shadow-sm">
+
+                <h2 class="text-base font-semibold mb-3 text-[#0a2540]">
+                    Send Message
+                </h2>
+
+                <!-- SUCCESS MESSAGES -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="bg-green-100 text-green-700 px-3 py-2 rounded mb-3 text-xs">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" class="space-y-3">
+                    {% csrf_token %}
+
+                    <input type="text" name="name" required
+                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-[#0a2540]"
+                        placeholder="Your Name">
+
+                    <input type="email" name="email" required
+                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-[#0a2540]"
+                        placeholder="Your Email">
+
+                    <textarea name="message" required
+                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm h-24 focus:ring-1 focus:ring-[#0a2540]"
+                        placeholder="Your Message"></textarea>
+
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-[#0a2540] to-[#062033] text-white py-2 rounded-md text-sm font-semibold hover:from-[#062033] hover:to-[#041a2a] transition">
+                        Send Message
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

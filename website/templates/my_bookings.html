@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+
+<h1>My Bookings</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Bus</th>
+            <th>Passengers</th>
+            <th>Service Type</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for booking in bookings %}
+        <tr>
+            <td>{{ booking.name }}</td>
+            <td>{{ booking.bus }}</td>
+            <td>{{ booking.passengers }}</td>
+            <td>{{ booking.service_type }}</td>
+            <td>
+                {% if booking.status == 'pending' %}
+                    <span style="color: orange; font-weight: bold;">Pending</span>
+
+                {% elif booking.status == 'confirmed' %}
+                    <span style="color: green; font-weight: bold;">Confirmed</span>
+
+                {% elif booking.status == 'completed' %}
+                    <span style="color: blue; font-weight: bold;">Completed</span>
+
+                {% elif booking.status == 'cancelled' %}
+                    <span style="color: red; font-weight: bold;">Cancelled</span>
+
+                {% else %}
+                    {{ booking.status }}
+                {% endif %}
+            </td>
+            <td>{{ booking.created_at }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No bookings found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

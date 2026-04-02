@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<section class="px-3 py-8">
+
+    <div class="max-w-2xl mx-auto bg-white p-5 rounded-lg shadow">
+
+        <!-- SUCCESS HEADER -->
+        <div class="text-center mb-4">
+            <h1 class="flex items-center justify-center gap-2 text-[#0a2540] font-semibold text-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="green" stroke-width="2">
+                    <path d="M20 6L9 17l-5-5"></path>
+                </svg>
+                Booking Confirmed
+            </h1>
+
+            <p class="text-gray-600 text-sm mt-1">
+                Your booking has been received.
+            </p>
+
+            <p class="text-sm mt-1">
+                Status: <span class="text-[#0a2540] font-semibold">{{ booking.status }}</span>
+            </p>
+        </div>
+
+        <p class="text-center text-gray-700 text-sm mb-4">
+            Thank you for booking with Ulendo Coaches.
+        </p>
+
+        <!-- BOOKING DETAILS -->
+        <div class="bg-gray-50 p-3 rounded border mb-4 text-sm space-y-1">
+            <h2 class="font-semibold text-base mb-1 text-[#0a2540]">📄 Booking Details</h2>
+
+            <p><strong>Name:</strong> {{ booking.name }}</p>
+            <p><strong>Email:</strong> {{ booking.email }}</p>
+            <p><strong>Phone:</strong> {{ booking.phone_number }}</p>
+            <p><strong>Route:</strong> {{ booking.bus.departure }} → {{ booking.bus.destination }}</p>
+            <p><strong>Passengers:</strong> {{ booking.passengers }}</p>
+
+            <p class="font-bold mt-2">
+                Total Price: {{ currency }} {{ total_price|intcomma }}
+            </p>
+        </div>
+
+        <!-- PAYMENT METHODS -->
+        <h2 class="text-lg font-semibold mb-3 text-[#0a2540]">💳 Payment Methods</h2>
+
+        <!-- FNB -->
+        <div class="flex items-center gap-3 mb-3 bg-gray-50 p-3 rounded border text-xs">
+            <img src="{% static 'images/fnb.png' %}" class="w-12 h-12 object-contain">
+            <div>
+                <p class="font-semibold">FNB (South Africa)</p>
+                <p>Account: 63067780932</p>
+                <p>Ulendo Coaches</p>
+                <p>Branch: Randburg Square</p>
+            </div>
+        </div>
+
+        <!-- NBM -->
+        <div class="flex items-center gap-4 mb-3 bg-gray-50 p-3 rounded border text-xs">
+            <img src="{% static 'images/nbm.png' %}" class="w-16 h-16 object-contain">
+            <div>
+                <p class="font-semibold">National Bank of Malawi</p>
+                <p>Account: 1007632564</p>
+                <p>Ulendo Coaches</p>
+                <p>Branch: Victoria Avenue</p>
+            </div>
+        </div>
+
+        <!-- FDH -->
+        <div class="flex items-center gap-3 mb-3 bg-gray-50 p-3 rounded border text-xs">
+            <img src="{% static 'images/fdh.png' %}" class="w-12 h-12 object-contain">
+            <div>
+                <p class="font-semibold">FDH Bank</p>
+                <p>Account: 1970100026476</p>
+                <p>City Centre</p>
+            </div>
+        </div>
+
+        <!-- MOBILE MONEY -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 text-xs">
+
+            <div class="flex items-center gap-3 bg-gray-50 p-3 rounded border">
+                <img src="{% static 'images/airtel.png' %}" class="w-12 h-12 object-contain">
+                <div>
+                    <p class="font-semibold">📱 Airtel Money</p>
+                    <p>Agent Code: 863581</p>
+                    <p>Ulendo Coaches</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 bg-gray-50 p-3 rounded border">
+                <img src="{% static 'images/tnm.png' %}" class="w-12 h-12 object-contain">
+                <div>
+                    <p class="font-semibold">📱 TNM Mpamba</p>
+                    <p>Merchant Code: 602916</p>
+                    <p>Ulendo Coaches</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- INSTRUCTIONS -->
+        <div class="bg-yellow-50 border border-yellow-200 p-3 rounded mb-4 text-xs">
+            <p class="font-semibold mb-1 text-[#0a2540]">📌 Payment Instructions</p>
+            <p>1. Choose a payment method</p>
+            <p>2. Make payment</p>
+            <p>3. Send proof of payment</p>
+
+            <p class="text-[#0a2540] font-semibold mt-2">
+                Booking will be confirmed after payment verification.
+            </p>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="text-center text-xs mb-4">
+            <p class="font-semibold mb-1">📲 Send Payment Proof</p>
+
+            <p>WhatsApp:</p>
+            <p>+265 993 031 516</p>
+            <p>+265 981 567 374</p>
+            <p>+27 780 911260</p>
+
+            <p class="mt-2">
+                <strong>Email:</strong> info@ulendocoaches.com
+            </p>
+        </div>
+
+        <!-- HOME BUTTON -->
+        <div class="text-center">
+            <a href="{% url 'home' %}"
+               class="bg-[#0a2540] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-[#062033] transition">
+                Go Home
+            </a>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

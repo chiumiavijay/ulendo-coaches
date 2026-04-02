@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="px-4 py-6">
+    <div class="max-w-2xl mx-auto bg-white p-5 md:p-6 rounded-lg shadow-sm">
+
+        <!-- TITLE -->
+        <div class="text-center mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 fill="none" stroke="#0a2540" stroke-width="2"
+                 style="vertical-align: middle;">
+                <path d="M20 6L9 17l-5-5"></path>
+            </svg>
+
+            <h1 class="text-lg font-bold text-[#0a2540]">
+                Booking Confirmed
+            </h1>
+        </div>
+
+        <p class="text-center text-gray-600 text-sm mb-4">
+            Your parcel booking has been received successfully.
+        </p>
+
+        <!-- STATUS -->
+        <p class="text-sm mb-3">
+            <strong>Status:</strong>
+            <span class="text-green-600 font-semibold">{{ parcel.status }}</span>
+        </p>
+
+        <hr class="my-3">
+
+        <!-- NOTICE -->
+        <h2 class="text-base font-semibold mb-2 text-[#0a2540]">⚠️ Important Notice</h2>
+
+        <p class="text-xs text-gray-700 mb-2">
+            💰 Pricing is determined at the office after weighing.
+        </p>
+
+        <p class="text-xs text-gray-700 mb-3">
+            📌 Keep your tracking number safe.
+        </p>
+
+        <hr class="my-3">
+
+        <!-- DETAILS -->
+        <h2 class="text-base font-semibold mb-2 text-[#0a2540]">📄 Parcel Details</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-gray-700">
+
+            <p><strong>Tracking:</strong> {{ parcel.tracking_number }}</p>
+            <p><strong>Sender:</strong> {{ parcel.sender_name }}</p>
+            <p><strong>Receiver:</strong> {{ parcel.receiver_name }}</p>
+            <p><strong>Pickup:</strong> {{ parcel.pickup_location }}</p>
+            <p><strong>Destination:</strong> {{ parcel.destination }}</p>
+            <p><strong>Email:</strong> {{ parcel.email }}</p>
+            <p><strong>Phone:</strong> {{ parcel.phone }}</p>
+
+        </div>
+
+        <p class="mt-3 text-xs text-gray-700">
+            <strong>Description:</strong> {{ parcel.description }}
+        </p>
+
+        <hr class="my-3">
+
+        <!-- CONTACT -->
+        <h2 class="text-base font-semibold mb-3 text-[#0a2540]">📲 Contact Us</h2>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+
+            <!-- WHATSAPP -->
+            <a href="https://wa.me/265993031516?text=Hello%20I%20have%20made%20a%20parcel%20booking.%0AName:%20{{ parcel.sender_name }}%0ATracking:%20{{ parcel.tracking_number }}"
+               target="_blank"
+               class="action-btn flex items-center justify-center gap-2 bg-green-500 text-white text-sm px-4 py-2 rounded-md hover:bg-green-600 transition w-full sm:w-auto">
+
+                <span class="btn-text">WhatsApp</span>
+
+                <svg class="spinner hidden animate-spin h-4 w-4 text-white"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"></path>
+                </svg>
+
+            </a>
+
+            <!-- HOME (FIXED COLOR) -->
+            <a href="{% url 'home' %}"
+               class="action-btn flex items-center justify-center gap-2 bg-[#0a2540] text-white text-sm px-4 py-2 rounded-md hover:bg-[#062033] transition w-full sm:w-auto">
+
+                <span class="btn-text">Home</span>
+
+                <svg class="spinner hidden animate-spin h-4 w-4 text-white"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"></path>
+                </svg>
+
+            </a>
+
+        </div>
+
+        <p class="text-center mt-4 text-xs text-gray-500">
+            Email: info@ulendocoaches.com
+        </p>
+
+    </div>
+</section>
+
+<!-- SCRIPT -->
+<script>
+document.querySelectorAll('.action-btn').forEach(btn => {
+    btn.addEventListener('click', function (e) {
+
+        const link = this.getAttribute('href');
+
+        if (link && link !== "#") {
+            e.preventDefault();
+
+            const text = this.querySelector('.btn-text');
+            const spinner = this.querySelector('.spinner');
+
+            text.textContent = "Loading...";
+            spinner.classList.remove('hidden');
+
+            setTimeout(() => {
+                window.location.href = link;
+            }, 400);
+        }
+    });
+});
+</script>
+
+{% endblock %}

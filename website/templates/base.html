@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Ulendo Coaches and Logistic Services - {% block title %}{% endblock %}
+    </title>
+
+    <!-- Favicon (logo in browser tab) -->
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        skyblue: '#87CEEB',
+                        dark: '#0a2540',
+                        accent: '#ed1c24',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="bg-skyblue text-dark">
+
+<div class="flex flex-col min-h-screen">
+
+    <!-- ✅ NAVBAR ONLY (LOGO HERE) -->
+    <header>
+        <nav class="bg-black text-white py-3">
+            <div class="max-w-6xl mx-auto flex items-center px-4">
+
+                <!-- LEFT: LOGO + NAME -->
+                <a href="/" class="flex items-center space-x-2">
+                    <img src="{% static 'images/logo.png' %}" 
+                         alt="Logo" 
+                         class="h-8 md:h-10">
+
+                    <span class="font-semibold text-white">
+                        Ulendo Coaches
+                    </span>
+                </a>
+
+                <!-- RIGHT: LINKS -->
+                <ul class="flex gap-4 text-sm ml-auto">
+                    <li><a href="{% url 'home' %}" class="hover:text-skyblue">Home</a></li>
+                    <li><a href="{% url 'services' %}" class="hover:text-skyblue">Services</a></li>
+                    <li><a href="{% url 'available_buses' %}" class="hover:text-skyblue">Book</a></li>
+                    <li><a href="{% url 'contact' %}" class="hover:text-skyblue">Contact</a></li>
+                    <li><a href="{% url 'about' %}" class="hover:text-skyblue">About</a></li>
+                    <li><a href="{% url 'locations' %}" class="hover:text-skyblue">Locations</a></li>
+                </ul>
+
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center py-5 text-dark">
+        <p>
+            &copy; 2026 Ulendo Coaches & Logistic Services. All rights reserved.
+        </p>
+    </footer>
+
+</div>
+
+</body>
+</html>

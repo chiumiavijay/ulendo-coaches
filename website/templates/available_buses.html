@@ -1,0 +1,15 @@
+<h2>Available Buses</h2>
+
+{% for bus in buses %}
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+        <p><strong>{{ bus.departure }} → {{ bus.destination }}</strong></p>
+        <p>Date: {{ bus.departure_date }}</p>
+        <p>Time: {{ bus.departure_time }}</p>
+
+        <p>Seats Available: {{ bus.capacity|add:"-" }}{{ bus.bookings.count }}</p>
+
+        <a href="{% url 'book_bus' bus.id %}">Book Now</a>
+    </div>
+{% empty %}
+    <p>No buses available.</p>
+{% endfor %}

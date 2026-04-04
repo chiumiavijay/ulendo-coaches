@@ -9,7 +9,7 @@
         Ulendo Coaches and Logistic Services - {% block title %}{% endblock %}
     </title>
 
-    <!-- Favicon (logo in browser tab) -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 
     <!-- Tailwind CSS -->
@@ -38,30 +38,24 @@
 
 <div class="flex flex-col min-h-screen">
 
-    <!-- ✅ NAVBAR ONLY (LOGO HERE) -->
+    <!-- ✅ NAVBAR -->
     <header>
         <nav class="bg-black text-white py-3">
             <div class="max-w-6xl mx-auto flex items-center px-4">
 
-                <!-- LEFT: LOGO + NAME -->
+                <!-- LOGO -->
                 <a href="/" class="flex items-center space-x-2">
                     <img src="{% static 'images/logo.png' %}" 
                          alt="Logo" 
                          class="h-8 md:h-10">
-
-                    <span class="font-semibold text-white">
-                        Ulendo Coaches
-                    </span>
                 </a>
 
-                <!-- RIGHT: LINKS -->
-                <ul class="flex gap-4 text-sm ml-auto">
+                <!-- LINKS -->
+                <ul class="flex gap-4 text-sm ml-auto flex-wrap">
                     <li><a href="{% url 'home' %}" class="hover:text-skyblue">Home</a></li>
-                    <li><a href="{% url 'services' %}" class="hover:text-skyblue">Services</a></li>
                     <li><a href="{% url 'available_buses' %}" class="hover:text-skyblue">Book</a></li>
-                    <li><a href="{% url 'contact' %}" class="hover:text-skyblue">Contact</a></li>
-                    <li><a href="{% url 'about' %}" class="hover:text-skyblue">About</a></li>
                     <li><a href="{% url 'locations' %}" class="hover:text-skyblue">Locations</a></li>
+                    <li><a href="{% url 'contact' %}" class="hover:text-skyblue">Contact</a></li>
                 </ul>
 
             </div>
@@ -74,11 +68,18 @@
         {% endblock %}
     </main>
 
-    <!-- FOOTER -->
-    <footer class="text-center py-5 text-dark">
-        <p>
-            &copy; 2026 Ulendo Coaches & Logistic Services. All rights reserved.
+    <!-- ✅ FOOTER -->
+    <footer class="text-center py-4 text-sm text-dark px-4">
+        <p class="leading-snug break-words">
+            &copy; 2026 Ulendo Coaches. All rights reserved.
         </p>
+
+        <!-- OPTIONAL: About moved here -->
+        <div class="mt-2">
+            <a href="{% url 'about' %}" class="hover:underline text-xs">
+                About Us
+            </a>
+        </div>
     </footer>
 
 </div>

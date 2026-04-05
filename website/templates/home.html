@@ -3,11 +3,24 @@
 
 {% block content %}
 
-<!-- HERO -->
-<section class="flex items-center justify-center text-center min-h-[90vh] px-4">
-    <div class="max-w-2xl animate-fadeIn">
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
 
-        <h1 class="font-bold text-lg sm:text-xl md:text-4xl mb-4 whitespace-nowrap">
+{% block content %}
+
+<!-- HERO -->
+
+<section 
+    class="relative flex items-center justify-center text-center min-h-[90vh] px-4 bg-cover bg-center bg-no-repeat"
+    style="background-image: url('/static/images/hero.png');">
+    <!-- DARK OVERLAY -->
+    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+
+    <!-- CONTENT -->
+    <div class="relative max-w-2xl animate-fadeIn text-white">
+
+        <h1 class="font-bold text-lg sm:text-xl md:text-4xl mb-4">
             Ulendo Coaches & Logistic Services
         </h1>
 
@@ -24,7 +37,7 @@
             <!-- BOOK NOW BUTTON -->
             <a href="{% url 'available_buses' %}" 
                id="bookBtn"
-               class="bg-[#0a2540] text-white px-6 py-2 rounded shadow hover:bg-[#062033] hover:scale-105 transition flex items-center gap-2"
+               class="bg-[#0a2540] text-white px-6 py-2 rounded shadow hover:bg-[#062033] hover:scale-105 transition flex items-center gap-2">
 
                 <span id="bookText">Book Now</span>
 
@@ -42,12 +55,12 @@
             <!-- VIEW SERVICES BUTTON -->
             <a href="{% url 'services' %}" 
                id="serviceBtn"
-               class="border border-dark px-6 py-2 rounded hover:bg-dark hover:text-white transition flex items-center gap-2">
+               class="border border-white px-6 py-2 rounded hover:bg-white hover:text-black transition flex items-center gap-2">
 
                 <span id="serviceText">View Services</span>
 
                 <!-- SPINNER -->
-                <svg id="serviceSpinner" class="hidden animate-spin h-4 w-4 text-black"
+                <svg id="serviceSpinner" class="hidden animate-spin h-4 w-4 text-white"
                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10"
                             stroke="currentColor" stroke-width="4"></circle>

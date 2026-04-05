@@ -9,23 +9,19 @@
 {{ block.super }}
 
 <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
-
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-    /* --- Fix Tailwind Conflict with Django Admin Sidebar --- */
-    
-    /* Ensure the sidebar is always visible on desktop */
+    /* --- Sidebar Fixes --- */
     #nav-sidebar {
         display: block !important;
         visibility: visible !important;
         transition: transform 0.3s ease-in-out;
-        z-index: 1000;
+        z-index: 1001;
         background: #ffffff !important;
-        border-right: 1px solid #ddd !important;
     }
 
-    /* Desktop Layout: Ensure sidebar and content sit side-by-side */
+    /* Desktop View */
     @media (min-width: 769px) {
         .main > .content {
             display: flex !important;
@@ -35,10 +31,12 @@
             position: relative !important;
             transform: translateX(0) !important;
             min-width: 260px !important;
+            border-right: 1px solid #ddd !important;
         }
+        #sidebar-overlay { display: none !important; }
     }
 
-    /* Mobile Layout: Overlay Sidebar */
+    /* Mobile View */
     @media (max-width: 768px) {
         #nav-sidebar {
             position: fixed !important;
@@ -46,80 +44,52 @@
             left: 0;
             height: 100vh;
             width: 280px;
-            transform: translateX(-100%); /* Hidden by default */
-            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            transform: translateX(-100%);
+            box-shadow: 5px 0 15px rgba(0,0,0,0.2);
         }
 
         #nav-sidebar.open {
             transform: translateX(0) !important;
         }
-        
-        /* Optional: Hide the default Django 'toggle' arrow since we are using a custom ☰ button */
-        .nav-sidebar-toggler {
-            display: none !important;
+
+        /* Overlay to click-to-close */
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
         }
+        #sidebar-overlay.active { display: block; }
+        
+        .nav-sidebar-toggler { display: none !important; }
     }
 
-    /* --- Brand Styling --- */
-    body {
-        background: #87CEEB !important; /* Sky Blue background as requested */
-    }
-
-    #content {
-        background: transparent !important;
-    }
-
+    /* --- UI Styling --- */
+    body { background: #87CEEB !important; }
+    #content { background: transparent !important; }
     #header {
         background: #000000 !important;
         border-bottom: 1px solid #111 !important;
-        padding: 10px 0;
+        padding: 8px 0;
     }
-
-    #header, #header * {
-        color: #ffffff !important;
-    }
-
-    #branding h1 a {
-        color: #ffffff !important;
-        text-decoration: none !important;
-    }
-
-    /* Modules and Tables */
+    #header * { color: #ffffff !important; }
+    
     .module {
         background: #ffffff !important;
         border-radius: 12px !important;
         box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
-        padding: 16px !important;
-        margin-bottom: 20px !important;
         border: none !important;
     }
 
-    thead th {
-        background: #0a2540 !important;
-        color: #ffffff !important;
-    }
-
-    .button, input[type="submit"] {
+    thead th { background: #0a2540 !important; color: #ffffff !important; }
+    input[type="submit"], .button {
         background: #0a2540 !important;
         color: #ffffff !important;
         border-radius: 6px !important;
-        padding: 8px 15px !important;
-        border: none !important;
-    }
-
-    a {
-        color: #0a2540 !important;
-    }
-
-    a:hover {
-        color: #ff0000 !important;
-    }
-
-    #footer {
-        text-align: center;
-        padding: 20px;
-        font-size: 0.85rem;
-        color: #333;
     }
 </style>
 {% endblock %}
@@ -127,47 +97,49 @@
 {% block extrahead %}
 {{ block.super }}
 <script>
-    // Robust toggle function for the sidebar
     document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.getElementById("nav-sidebar");
+        const overlay = document.createElement("div");
+        overlay.id = "sidebar-overlay";
+        document.body.appendChild(overlay);
+
         window.toggleSidebar = function () {
-            const sidebar = document.getElementById("nav-sidebar");
-            if (sidebar) {
-                sidebar.classList.toggle("open");
-            } else {
-                console.error("Sidebar element #nav-sidebar not found in DOM.");
-            }
+            sidebar.classList.toggle("open");
+            overlay.classList.toggle("active");
         };
+
+        // Close when clicking overlay
+        overlay.addEventListener("click", toggleSidebar);
     });
 </script>
 {% endblock %}
 
 {% block branding %}
 <div class="flex items-center px-4 space-x-3">
-    <button type="button" onclick="toggleSidebar()" class="md:hidden text-white text-2xl focus:outline-none mr-2">
+    <button type="button" onclick="toggleSidebar()" class="md:hidden text-white text-2xl focus:outline-none">
         ☰
     </button>
 
-    {% if 'logo.png' %}
-        <img src="{% static 'images/logo.png' %}" class="h-10 w-auto" alt="Ulendo Logo">
-    {% endif %}
+    <img src="{% static 'images/logo.png' %}" class="h-10 w-auto" alt="Logo">
 
-    <h1 class="text-lg font-bold tracking-tight">
-        <a href="{% url 'admin:index' %}">
-            Ulendo Coaches & Logistics
-        </a>
+    <h1 class="text-md font-bold">
+        <a href="{% url 'admin:index' %}">Ulendo Coaches</a>
     </h1>
 </div>
 {% endblock %}
 
 {% block usertools %}
-<div class="flex items-center space-x-6 text-sm px-4">
-    <span class="hidden sm:inline">User: <strong>{{ user.username }}</strong></span>
+<div class="flex items-center space-x-4 text-sm px-4">
+    <span class="text-white">Welcome, <strong>{{ user.username }}</strong></span>
 
-    <a href="{% url 'home' %}" class="hover:underline">View Site</a>
-    
-    <form action="{% url 'admin:logout' %}" method="post" style="display:inline;">
+    <div class="hidden sm:flex space-x-4">
+        <a href="{% url 'home' %}" class="hover:underline">View Site</a>
+        <a href="{% url 'admin:password_change' %}" class="hover:underline">Password</a>
+    </div>
+
+    <form action="{% url 'admin:logout' %}" method="post" class="inline">
         {% csrf_token %}
-        <button type="submit" class="text-white hover:text-red-400 font-medium">
+        <button type="submit" class="bg-red-600 px-3 py-1 rounded text-white text-xs hover:bg-red-700">
             Log out
         </button>
     </form>
@@ -175,7 +147,7 @@
 {% endblock %}
 
 {% block footer %}
-<div id="footer">
-    &copy; 2026 <strong>Ulendo Coaches & Logistic Services</strong>. All rights reserved.
+<div class="text-center py-6 text-sm text-gray-700">
+    &copy; 2026 Ulendo Coaches & Logistic Services.
 </div>
 {% endblock %}

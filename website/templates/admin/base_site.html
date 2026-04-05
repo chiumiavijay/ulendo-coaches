@@ -8,10 +8,8 @@
 {% block extrastyle %}
 {{ block.super }}
 
-<!-- ✅ FAVICON -->
 <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 
-<!-- ✅ Tailwind CDN (kept) -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
@@ -46,12 +44,25 @@
         color: #87CEEB !important;
     }
 
-    /* ✅ FIX: SIDEBAR MOBILE BEHAVIOR */
+    /* SIDEBAR BASE */
     #nav-sidebar {
         transition: transform 0.3s ease;
-        z-index: 50;
+        z-index: 1000 !important;
     }
 
+    /* DESKTOP */
+    @media (min-width: 769px) {
+        #nav-sidebar {
+            transform: none !important;
+            position: relative !important;
+        }
+
+        #content {
+            margin-left: 250px !important;
+        }
+    }
+
+    /* MOBILE */
     @media (max-width: 768px) {
         #nav-sidebar {
             position: fixed !important;
@@ -64,11 +75,15 @@
         }
 
         #nav-sidebar.open {
-            transform: translateX(0);
+            transform: translateX(0) !important;
+        }
+
+        #content {
+            margin-left: 0 !important;
         }
     }
 
-    /* CONTENT TEXT */
+    /* CONTENT */
     #content,
     #content * {
         text-transform: capitalize !important;
@@ -163,10 +178,12 @@
 </div>
 {% endblock %}
 
-<!-- ✅ JS FOR SIDEBAR -->
+<!-- ✅ SIDEBAR JS -->
 <script>
 function toggleSidebar() {
     const sidebar = document.getElementById("nav-sidebar");
+    document.body.classList.toggle("sidebar-open");
+
     if (sidebar) {
         sidebar.classList.toggle("open");
     }

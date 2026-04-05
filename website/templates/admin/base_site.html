@@ -11,10 +11,9 @@
 <!-- ✅ FAVICON -->
 <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 
-<!-- Tailwind CDN -->
+<!-- ✅ Tailwind CDN (kept) -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- CUSTOM ADMIN STYLES -->
 <style>
 
     /* SKYBLUE BACKGROUND */
@@ -22,48 +21,51 @@
         background: #87CEEB !important;
     }
 
-    /* CONTENT AREA */
     #content {
         background: transparent !important;
     }
 
-    /* BLACK NAVBAR */
+    /* HEADER */
     #header {
         background: #000000 !important;
         border-bottom: 1px solid #111 !important;
-        box-shadow: none !important;
     }
 
-    /* ALL HEADER TEXT WHITE */
     #header,
     #header * {
         color: #ffffff !important;
         font-weight: 400 !important;
     }
 
-    /* BRANDING */
     #branding h1 a {
         color: #ffffff !important;
-        font-weight: 400 !important;
         text-decoration: none !important;
-    }
-
-    /* LINKS */
-    #header a {
-        text-decoration: none !important;
-        color: #ffffff !important;
-        transition: 0.2s ease;
     }
 
     #header a:hover {
         color: #87CEEB !important;
-        text-decoration: none !important;
     }
 
-    /* SIDEBAR TEXT */
-    #nav-sidebar,
-    #nav-sidebar * {
-        text-transform: capitalize !important;
+    /* ✅ FIX: SIDEBAR MOBILE BEHAVIOR */
+    #nav-sidebar {
+        transition: transform 0.3s ease;
+        z-index: 50;
+    }
+
+    @media (max-width: 768px) {
+        #nav-sidebar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 260px;
+            background: white;
+            transform: translateX(-100%);
+        }
+
+        #nav-sidebar.open {
+            transform: translateX(0);
+        }
     }
 
     /* CONTENT TEXT */
@@ -85,11 +87,6 @@
     thead th {
         background: #0a2540 !important;
         color: #ffffff !important;
-        font-weight: 400 !important;
-    }
-
-    thead th a {
-        color: #ffffff !important;
     }
 
     /* BUTTONS */
@@ -97,15 +94,11 @@
     input[type="submit"] {
         background: #0a2540 !important;
         color: #ffffff !important;
-        padding: 8px 14px !important;
         border-radius: 6px !important;
-        font-weight: 500 !important;
     }
 
-    /* LINKS */
     a {
         color: #0a2540 !important;
-        font-weight: 500 !important;
     }
 
     a:hover {
@@ -114,12 +107,9 @@
 
     /* FOOTER */
     #footer {
-        background: transparent !important;
-        color: #333 !important;
         text-align: center;
         padding: 12px;
         font-size: 0.85rem;
-        border-top: 1px solid #e5e7eb;
     }
 
 </style>
@@ -129,6 +119,11 @@
 {% block branding %}
 <div class="flex items-center px-4 py-2 space-x-3">
 
+    <!-- MOBILE MENU BUTTON -->
+    <button onclick="toggleSidebar()" class="md:hidden text-white text-xl">
+        ☰
+    </button>
+
     <!-- LOGO -->
     <img src="{% static 'images/logo.png' %}" 
          alt="Logo" 
@@ -137,26 +132,19 @@
     <!-- TITLE -->
     <h1 class="text-sm tracking-wide">
         <a href="{% url 'admin:index' %}">
-            Ulendo Coaches & Logistics
+            Ulendo Coaches & Logistic Services
         </a>
     </h1>
 
 </div>
 {% endblock %}
 
-{% block nav-global %}
-<!-- Removed -->
-{% endblock %}
-
 {% block usertools %}
 <div class="flex items-center space-x-5 text-sm px-4">
 
-    <span>
-        Welcome, {{ user.username }}
-    </span>
+    <span>Welcome, {{ user.username }}</span>
 
     <a href="{% url 'home' %}">View site</a>
-
     <a href="{% url 'admin:password_change' %}">Change password</a>
 
     <form action="{% url 'admin:logout' %}" method="post" style="display:inline;">
@@ -174,3 +162,13 @@
     &copy; 2026 Ulendo Coaches & Logistic Services. All rights reserved.
 </div>
 {% endblock %}
+
+<!-- ✅ JS FOR SIDEBAR -->
+<script>
+function toggleSidebar() {
+    const sidebar = document.getElementById("nav-sidebar");
+    if (sidebar) {
+        sidebar.classList.toggle("open");
+    }
+}
+</script>

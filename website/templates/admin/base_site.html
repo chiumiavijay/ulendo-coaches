@@ -12,7 +12,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-    /* --- Sidebar Fixes --- */
+    /* --- Sidebar & Layout Fixes --- */
     #nav-sidebar {
         display: block !important;
         visibility: visible !important;
@@ -21,7 +21,7 @@
         background: #ffffff !important;
     }
 
-    /* Desktop View */
+    /* Desktop View: Keep sidebar and content side-by-side */
     @media (min-width: 769px) {
         .main > .content {
             display: flex !important;
@@ -36,7 +36,7 @@
         #sidebar-overlay { display: none !important; }
     }
 
-    /* Mobile View */
+    /* Mobile View: Overlay Sidebar with Slide effect */
     @media (max-width: 768px) {
         #nav-sidebar {
             position: fixed !important;
@@ -52,7 +52,7 @@
             transform: translateX(0) !important;
         }
 
-        /* Overlay to click-to-close */
+        /* Dark overlay when sidebar is open */
         #sidebar-overlay {
             display: none;
             position: fixed;
@@ -65,14 +65,15 @@
         }
         #sidebar-overlay.active { display: block; }
         
+        /* Hide default Django small-screen toggler */
         .nav-sidebar-toggler { display: none !important; }
     }
 
-    /* --- UI Styling --- */
-    body { background: #87CEEB !important; }
+    /* --- Custom Branding Styles --- */
+    body { background: #87CEEB !important; } /* Sky Blue */
     #content { background: transparent !important; }
     #header {
-        background: #000000 !important;
+        background: #000000 !important; /* Black Header */
         border-bottom: 1px solid #111 !important;
         padding: 8px 0;
     }
@@ -99,16 +100,20 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const sidebar = document.getElementById("nav-sidebar");
+        
+        // Create the background overlay dynamically
         const overlay = document.createElement("div");
         overlay.id = "sidebar-overlay";
         document.body.appendChild(overlay);
 
         window.toggleSidebar = function () {
-            sidebar.classList.toggle("open");
-            overlay.classList.toggle("active");
+            if (sidebar) {
+                sidebar.classList.toggle("open");
+                overlay.classList.toggle("active");
+            }
         };
 
-        // Close when clicking overlay
+        // Close the sidebar if the user clicks the dark background
         overlay.addEventListener("click", toggleSidebar);
     });
 </script>
@@ -116,30 +121,29 @@
 
 {% block branding %}
 <div class="flex items-center px-4 space-x-3">
-    <button type="button" onclick="toggleSidebar()" class="md:hidden text-white text-2xl focus:outline-none">
+    <button type="button" onclick="toggleSidebar()" class="md:hidden text-white text-2xl focus:outline-none pr-2">
         ☰
     </button>
 
-    <img src="{% static 'images/logo.png' %}" class="h-10 w-auto" alt="Logo">
+    <img src="{% static 'images/logo.png' %}" class="h-10 w-auto" alt="Ulendo Logo">
 
-    <h1 class="text-md font-bold">
+    <h1 class="text-md font-bold tracking-wide">
         <a href="{% url 'admin:index' %}">Ulendo Coaches</a>
     </h1>
 </div>
 {% endblock %}
 
 {% block usertools %}
-<div class="flex items-center space-x-4 text-sm px-4">
-    <span class="text-white">Welcome, <strong>{{ user.username }}</strong></span>
+<div class="flex items-center space-x-4 text-xs md:text-sm px-4">
+    <span class="text-white whitespace-nowrap">Hi, <strong>{{ user.username }}</strong></span>
 
-    <div class="hidden sm:flex space-x-4">
-        <a href="{% url 'home' %}" class="hover:underline">View Site</a>
-        <a href="{% url 'admin:password_change' %}" class="hover:underline">Password</a>
-    </div>
+    <a href="{% url 'home' %}" class="bg-gray-700 px-2 py-1 rounded hover:bg-gray-600 transition">
+        View Site
+    </a>
 
     <form action="{% url 'admin:logout' %}" method="post" class="inline">
         {% csrf_token %}
-        <button type="submit" class="bg-red-600 px-3 py-1 rounded text-white text-xs hover:bg-red-700">
+        <button type="submit" class="bg-red-600 px-3 py-1 rounded text-white hover:bg-red-700 font-bold transition">
             Log out
         </button>
     </form>
@@ -147,7 +151,7 @@
 {% endblock %}
 
 {% block footer %}
-<div class="text-center py-6 text-sm text-gray-700">
-    &copy; 2026 Ulendo Coaches & Logistic Services.
+<div class="text-center py-6 text-sm text-gray-800">
+    &copy; 2026 <strong>Ulendo Coaches & Logistic Services</strong>.
 </div>
 {% endblock %}

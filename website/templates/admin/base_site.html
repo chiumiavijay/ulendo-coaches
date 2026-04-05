@@ -8,10 +8,8 @@
 {% block extrastyle %}
 {{ block.super }}
 
-<!-- FAVICON -->
 <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 
-<!-- Tailwind CDN (temporary) -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
@@ -24,7 +22,6 @@
         background: transparent !important;
     }
 
-    /* HEADER */
     #header {
         background: #000000 !important;
         border-bottom: 1px solid #111 !important;
@@ -44,7 +41,6 @@
         color: #87CEEB !important;
     }
 
-    /* SIDEBAR */
     #nav-sidebar {
         transition: transform 0.3s ease;
         z-index: 50;
@@ -66,7 +62,6 @@
         }
     }
 
-    /* MODULE */
     .module {
         background: #ffffff !important;
         border-radius: 12px !important;
@@ -75,13 +70,11 @@
         margin-bottom: 20px !important;
     }
 
-    /* TABLE HEADER */
     thead th {
         background: #0a2540 !important;
         color: #ffffff !important;
     }
 
-    /* BUTTONS */
     .button,
     input[type="submit"] {
         background: #0a2540 !important;
@@ -110,14 +103,16 @@
 {% block extrahead %}
 {{ block.super }}
 
-<!-- ✅ FIX: JS MUST BE HERE -->
+<!-- ✅ FIXED JS -->
 <script>
-function toggleSidebar() {
-    const sidebar = document.getElementById("nav-sidebar");
-    if (sidebar) {
-        sidebar.classList.toggle("open");
-    }
-}
+document.addEventListener("DOMContentLoaded", function () {
+    window.toggleSidebar = function () {
+        const sidebar = document.getElementById("nav-sidebar");
+        if (sidebar) {
+            sidebar.classList.toggle("open");
+        }
+    };
+});
 </script>
 
 {% endblock %}
@@ -125,17 +120,12 @@ function toggleSidebar() {
 {% block branding %}
 <div class="flex items-center px-4 py-2 space-x-3">
 
-    <!-- MOBILE MENU BUTTON -->
     <button onclick="toggleSidebar()" class="md:hidden text-white text-xl">
         ☰
     </button>
 
-    <!-- LOGO -->
-    <img src="{% static 'images/logo.png' %}" 
-         alt="Logo" 
-         class="h-8 w-auto">
+    <img src="{% static 'images/logo.png' %}" class="h-8 w-auto" alt="Logo">
 
-    <!-- TITLE -->
     <h1 class="text-sm tracking-wide">
         <a href="{% url 'admin:index' %}">
             Ulendo Coaches & Logistic Services

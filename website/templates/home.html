@@ -1,31 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %} 
-{% block content %}
-
-<<<<<<< HEAD
-{% extends "base.html" %}
 {% load static %}
+
 {% block title %}Home{% endblock %}
-=======
-
-
-<!-- HERO WITH BACKGROUND -->
-<section class="relative flex items-center justify-center text-center min-h-[85vh] px-4 bg-cover bg-center bg-no-repeat"
-    style="background-image: url('/static/images/hero.png');">
-    <!-- DARK OVERLAY -->
-    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-
-    <!-- CONTENT -->
-    <div class="relative max-w-2xl animate-fadeIn text-white">
-
 
 {% block content %}
 
 <!-- HERO -->
-
-<section 
-    class="relative flex items-center justify-center text-center min-h-[90vh] px-4 bg-cover bg-center bg-no-repeat"
+<section class="relative flex items-center justify-center text-center min-h-[90vh] px-4 bg-cover bg-center bg-no-repeat"
     style="background-image: url('/static/images/hero.png');">
+
     <!-- DARK OVERLAY -->
     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
 
@@ -46,10 +29,8 @@
 
         <div class="flex flex-wrap justify-center gap-3">
 
-            <!-- BOOK NOW -->
-            <a href="{% url 'available_buses' %}" 
-               id="bookBtn"
-               class="bg-[#0a2540] text-white px-6 py-2 rounded shadow hover:bg-[#062033] hover:scale-105 transition flex items-center gap-2">
+            <a href="{% url 'available_buses' %}" id="bookBtn"
+               class="bg-[#0a2540] text-white px-6 py-2 rounded shadow hover:bg-[#062033] transition flex items-center gap-2">
 
                 <span id="bookText">Book Now</span>
 
@@ -63,17 +44,11 @@
 
             </a>
 
-            <!-- SERVICES -->
-            <a href="{% url 'services' %}" 
-               id="serviceBtn"
+            <a href="{% url 'services' %}" id="serviceBtn"
                class="border border-white px-6 py-2 rounded hover:bg-white hover:text-black transition flex items-center gap-2">
 
                 <span id="serviceText">View Services</span>
 
-<<<<<<< HEAD
-                <!-- SPINNER -->
-=======
->>>>>>> 1164abf185513f90ee85c9c76394a414a33308d2
                 <svg id="serviceSpinner" class="hidden animate-spin h-4 w-4 text-white"
                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -99,21 +74,21 @@
 
         <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
 
-            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition hover:-translate-y-1">
+            <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="font-semibold mb-2">Reliable Transport</h3>
                 <p class="text-sm">
                     Comfortable and safe journeys between Malawi and South Africa.
                 </p>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition hover:-translate-y-1">
+            <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="font-semibold mb-2">Professional Service</h3>
                 <p class="text-sm">
                     Customer satisfaction guaranteed with professional handling.
                 </p>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition hover:-translate-y-1">
+            <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="font-semibold mb-2">Snacks & Refreshments</h3>
                 <p class="text-sm">
                     We provide snacks and refreshments on board.
@@ -125,7 +100,6 @@
     </div>
 </section>
 
-<!-- SCRIPT -->
 <script>
 function addSpinner(buttonId, textId, spinnerId) {
     const btn = document.getElementById(buttonId);

@@ -8,15 +8,14 @@
 {% block extrastyle %}
 {{ block.super }}
 
-<!-- ✅ FAVICON -->
+<!-- FAVICON -->
 <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 
-<!-- ✅ Tailwind CDN (kept) -->
+<!-- Tailwind CDN (temporary) -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
 
-    /* SKYBLUE BACKGROUND */
     body {
         background: #87CEEB !important;
     }
@@ -34,7 +33,6 @@
     #header,
     #header * {
         color: #ffffff !important;
-        font-weight: 400 !important;
     }
 
     #branding h1 a {
@@ -46,7 +44,7 @@
         color: #87CEEB !important;
     }
 
-    /* ✅ FIX: SIDEBAR MOBILE BEHAVIOR */
+    /* SIDEBAR */
     #nav-sidebar {
         transition: transform 0.3s ease;
         z-index: 50;
@@ -68,13 +66,7 @@
         }
     }
 
-    /* CONTENT TEXT */
-    #content,
-    #content * {
-        text-transform: capitalize !important;
-    }
-
-    /* MODULE CARDS */
+    /* MODULE */
     .module {
         background: #ffffff !important;
         border-radius: 12px !important;
@@ -105,7 +97,6 @@
         color: red !important;
     }
 
-    /* FOOTER */
     #footer {
         text-align: center;
         padding: 12px;
@@ -113,6 +104,21 @@
     }
 
 </style>
+
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+
+<!-- ✅ FIX: JS MUST BE HERE -->
+<script>
+function toggleSidebar() {
+    const sidebar = document.getElementById("nav-sidebar");
+    if (sidebar) {
+        sidebar.classList.toggle("open");
+    }
+}
+</script>
 
 {% endblock %}
 
@@ -162,13 +168,3 @@
     &copy; 2026 Ulendo Coaches & Logistic Services. All rights reserved.
 </div>
 {% endblock %}
-
-<!-- ✅ JS FOR SIDEBAR -->
-<script>
-function toggleSidebar() {
-    const sidebar = document.getElementById("nav-sidebar");
-    if (sidebar) {
-        sidebar.classList.toggle("open");
-    }
-}
-</script>

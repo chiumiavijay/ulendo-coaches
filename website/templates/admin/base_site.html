@@ -178,26 +178,14 @@
 </div>
 {% endblock %}
 
-{% block extrahead %}
-{{ block.super }}
-
+<!-- ✅ SIDEBAR JS -->
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const button = document.querySelector("button[onclick='toggleSidebar()']");
+function toggleSidebar() {
+    const sidebar = document.getElementById("nav-sidebar");
+    document.body.classList.toggle("sidebar-open");
 
-    if (button) {
-        button.addEventListener("click", function (e) {
-            e.preventDefault();
-
-            document.body.classList.toggle("sidebar-open");
-
-            const sidebar = document.getElementById("nav-sidebar");
-            if (sidebar) {
-                sidebar.classList.toggle("open");
-            }
-        });
+    if (sidebar) {
+        sidebar.classList.toggle("open");
     }
-});
+}
 </script>
-
-{% endblock %}

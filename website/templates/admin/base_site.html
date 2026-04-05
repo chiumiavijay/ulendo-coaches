@@ -10,23 +10,142 @@
 
 <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+
+    /* SKYBLUE BACKGROUND */
+    body {
+        background: #87CEEB !important;
+    }
+
+    #content {
+        background: transparent !important;
+    }
+
+    /* HEADER */
+    #header {
+        background: #000000 !important;
+        border-bottom: 1px solid #111 !important;
+    }
+
+    #header,
+    #header * {
+        color: #ffffff !important;
+        font-weight: 400 !important;
+    }
+
+    #branding h1 a {
+        color: #ffffff !important;
+        text-decoration: none !important;
+    }
+
+    #header a:hover {
+        color: #87CEEB !important;
+    }
+
+    /* SIDEBAR BASE */
+    #nav-sidebar {
+        transition: transform 0.3s ease;
+        z-index: 1000 !important;
+    }
+
+    /* DESKTOP */
+    @media (min-width: 769px) {
+        #nav-sidebar {
+            transform: none !important;
+            position: relative !important;
+        }
+
+        #content {
+            margin-left: 250px !important;
+        }
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+        #nav-sidebar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 260px;
+            background: white;
+            transform: translateX(-100%);
+        }
+
+        #nav-sidebar.open {
+            transform: translateX(0) !important;
+        }
+
+        #content {
+            margin-left: 0 !important;
+        }
+    }
+
+    /* CONTENT */
+    #content,
+    #content * {
+        text-transform: capitalize !important;
+    }
+
+    /* MODULE CARDS */
+    .module {
+        background: #ffffff !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+        padding: 16px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* TABLE HEADER */
+    thead th {
+        background: #0a2540 !important;
+        color: #ffffff !important;
+    }
+
+    /* BUTTONS */
+    .button,
+    input[type="submit"] {
+        background: #0a2540 !important;
+        color: #ffffff !important;
+        border-radius: 6px !important;
+    }
+
+    a {
+        color: #0a2540 !important;
+    }
+
+    a:hover {
+        color: red !important;
+    }
+
+    /* FOOTER */
+    #footer {
+        text-align: center;
+        padding: 12px;
+        font-size: 0.85rem;
+    }
+
+</style>
+
 {% endblock %}
 
 {% block branding %}
 <div class="flex items-center px-4 py-2 space-x-3">
 
-    <!-- MOBILE MENU BUTTON (kept, but not styled) -->
-    <button type="button" onclick="toggleSidebar()">
+    <!-- MOBILE MENU BUTTON -->
+    <button onclick="toggleSidebar()" class="md:hidden text-white text-xl">
         ☰
     </button>
 
     <!-- LOGO -->
     <img src="{% static 'images/logo.png' %}" 
          alt="Logo" 
-         style="height:32px;">
+         class="h-8 w-auto">
 
     <!-- TITLE -->
-    <h1>
+    <h1 class="text-sm tracking-wide">
         <a href="{% url 'admin:index' %}">
             Ulendo Coaches & Logistic Services
         </a>
@@ -36,16 +155,16 @@
 {% endblock %}
 
 {% block usertools %}
-<div class="px-4">
+<div class="flex items-center space-x-5 text-sm px-4">
 
     <span>Welcome, {{ user.username }}</span>
 
-    <a href="{% url 'home' %}">View site</a> |
-    <a href="{% url 'admin:password_change' %}">Change password</a> |
+    <a href="{% url 'home' %}">View site</a>
+    <a href="{% url 'admin:password_change' %}">Change password</a>
 
     <form action="{% url 'admin:logout' %}" method="post" style="display:inline;">
         {% csrf_token %}
-        <button type="submit">
+        <button type="submit" style="background:none;border:none;color:#ffffff;cursor:pointer;">
             Log out
         </button>
     </form>
@@ -54,7 +173,7 @@
 {% endblock %}
 
 {% block footer %}
-<div id="footer" style="text-align:center; padding:12px;">
+<div id="footer">
     &copy; 2026 Ulendo Coaches & Logistic Services. All rights reserved.
 </div>
 {% endblock %}
@@ -63,10 +182,10 @@
 <script>
 function toggleSidebar() {
     const sidebar = document.getElementById("nav-sidebar");
+    document.body.classList.toggle("sidebar-open");
 
     if (sidebar) {
-        sidebar.style.display = 
-            (sidebar.style.display === "block") ? "none" : "block";
+        sidebar.classList.toggle("open");
     }
 }
 </script>

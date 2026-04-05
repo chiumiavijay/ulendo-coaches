@@ -13,9 +13,56 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
+    /* --- Fix Tailwind Conflict with Django Admin Sidebar --- */
+    
+    /* Ensure the sidebar is always visible on desktop */
+    #nav-sidebar {
+        display: block !important;
+        visibility: visible !important;
+        transition: transform 0.3s ease-in-out;
+        z-index: 1000;
+        background: #ffffff !important;
+        border-right: 1px solid #ddd !important;
+    }
 
+    /* Desktop Layout: Ensure sidebar and content sit side-by-side */
+    @media (min-width: 769px) {
+        .main > .content {
+            display: flex !important;
+            flex-direction: row !important;
+        }
+        #nav-sidebar {
+            position: relative !important;
+            transform: translateX(0) !important;
+            min-width: 260px !important;
+        }
+    }
+
+    /* Mobile Layout: Overlay Sidebar */
+    @media (max-width: 768px) {
+        #nav-sidebar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            transform: translateX(-100%); /* Hidden by default */
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+        }
+
+        #nav-sidebar.open {
+            transform: translateX(0) !important;
+        }
+        
+        /* Optional: Hide the default Django 'toggle' arrow since we are using a custom ☰ button */
+        .nav-sidebar-toggler {
+            display: none !important;
+        }
+    }
+
+    /* --- Brand Styling --- */
     body {
-        background: #87CEEB !important;
+        background: #87CEEB !important; /* Sky Blue background as requested */
     }
 
     #content {
@@ -25,10 +72,10 @@
     #header {
         background: #000000 !important;
         border-bottom: 1px solid #111 !important;
+        padding: 10px 0;
     }
 
-    #header,
-    #header * {
+    #header, #header * {
         color: #ffffff !important;
     }
 
@@ -37,37 +84,14 @@
         text-decoration: none !important;
     }
 
-    #header a:hover {
-        color: #87CEEB !important;
-    }
-
-    #nav-sidebar {
-        transition: transform 0.3s ease;
-        z-index: 50;
-    }
-
-    @media (max-width: 768px) {
-        #nav-sidebar {
-            position: fixed !important;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 260px;
-            background: white;
-            transform: translateX(-100%);
-        }
-
-        #nav-sidebar.open {
-            transform: translateX(0);
-        }
-    }
-
+    /* Modules and Tables */
     .module {
         background: #ffffff !important;
         border-radius: 12px !important;
         box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
         padding: 16px !important;
         margin-bottom: 20px !important;
+        border: none !important;
     }
 
     thead th {
@@ -75,11 +99,12 @@
         color: #ffffff !important;
     }
 
-    .button,
-    input[type="submit"] {
+    .button, input[type="submit"] {
         background: #0a2540 !important;
         color: #ffffff !important;
         border-radius: 6px !important;
+        padding: 8px 15px !important;
+        border: none !important;
     }
 
     a {
@@ -87,74 +112,70 @@
     }
 
     a:hover {
-        color: red !important;
+        color: #ff0000 !important;
     }
 
     #footer {
         text-align: center;
-        padding: 12px;
+        padding: 20px;
         font-size: 0.85rem;
+        color: #333;
     }
-
 </style>
-
 {% endblock %}
 
 {% block extrahead %}
 {{ block.super }}
-
-<!-- ✅ FIXED JS -->
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    window.toggleSidebar = function () {
-        const sidebar = document.getElementById("nav-sidebar");
-        if (sidebar) {
-            sidebar.classList.toggle("open");
-        }
-    };
-});
+    // Robust toggle function for the sidebar
+    document.addEventListener("DOMContentLoaded", function () {
+        window.toggleSidebar = function () {
+            const sidebar = document.getElementById("nav-sidebar");
+            if (sidebar) {
+                sidebar.classList.toggle("open");
+            } else {
+                console.error("Sidebar element #nav-sidebar not found in DOM.");
+            }
+        };
+    });
 </script>
-
 {% endblock %}
 
 {% block branding %}
-<div class="flex items-center px-4 py-2 space-x-3">
-
-    <button onclick="toggleSidebar()" class="md:hidden text-white text-xl">
+<div class="flex items-center px-4 space-x-3">
+    <button type="button" onclick="toggleSidebar()" class="md:hidden text-white text-2xl focus:outline-none mr-2">
         ☰
     </button>
 
-    <img src="{% static 'images/logo.png' %}" class="h-8 w-auto" alt="Logo">
+    {% if 'logo.png' %}
+        <img src="{% static 'images/logo.png' %}" class="h-10 w-auto" alt="Ulendo Logo">
+    {% endif %}
 
-    <h1 class="text-sm tracking-wide">
+    <h1 class="text-lg font-bold tracking-tight">
         <a href="{% url 'admin:index' %}">
-            Ulendo Coaches & Logistic Services
+            Ulendo Coaches & Logistics
         </a>
     </h1>
-
 </div>
 {% endblock %}
 
 {% block usertools %}
-<div class="flex items-center space-x-5 text-sm px-4">
+<div class="flex items-center space-x-6 text-sm px-4">
+    <span class="hidden sm:inline">User: <strong>{{ user.username }}</strong></span>
 
-    <span>Welcome, {{ user.username }}</span>
-
-    <a href="{% url 'home' %}">View site</a>
-    <a href="{% url 'admin:password_change' %}">Change password</a>
-
+    <a href="{% url 'home' %}" class="hover:underline">View Site</a>
+    
     <form action="{% url 'admin:logout' %}" method="post" style="display:inline;">
         {% csrf_token %}
-        <button type="submit" style="background:none;border:none;color:#ffffff;cursor:pointer;">
+        <button type="submit" class="text-white hover:text-red-400 font-medium">
             Log out
         </button>
     </form>
-
 </div>
 {% endblock %}
 
 {% block footer %}
 <div id="footer">
-    &copy; 2026 Ulendo Coaches & Logistic Services. All rights reserved.
+    &copy; 2026 <strong>Ulendo Coaches & Logistic Services</strong>. All rights reserved.
 </div>
 {% endblock %}

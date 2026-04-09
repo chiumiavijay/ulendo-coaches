@@ -1,3 +1,4 @@
+
 {% extends "admin/base_site.html" %}
 {% load static %}
 
@@ -19,9 +20,10 @@
         transition: transform 0.3s ease-in-out;
         z-index: 1001;
         background: #ffffff !important;
+        text-transform: uppercase !important;
     }
 
-    /* Desktop View: Keep sidebar and content side-by-side */
+    /* Desktop View */
     @media (min-width: 769px) {
         .main > .content {
             display: flex !important;
@@ -36,7 +38,7 @@
         #sidebar-overlay { display: none !important; }
     }
 
-    /* Mobile View: Overlay Sidebar with Slide effect */
+    /* Mobile View */
     @media (max-width: 768px) {
         #nav-sidebar {
             position: fixed !important;
@@ -52,7 +54,6 @@
             transform: translateX(0) !important;
         }
 
-        /* Dark overlay when sidebar is open */
         #sidebar-overlay {
             display: none;
             position: fixed;
@@ -63,22 +64,25 @@
             background: rgba(0,0,0,0.5);
             z-index: 1000;
         }
+
         #sidebar-overlay.active { display: block; }
-        
-        /* Hide default Django small-screen toggler */
+
         .nav-sidebar-toggler { display: none !important; }
     }
 
-    /* --- Custom Branding Styles --- */
+    /* --- Branding Colors --- */
     body { background: #87CEEB !important; } /* Sky Blue */
+
     #content { background: transparent !important; }
+
     #header {
-        background: #000000 !important; /* Black Header */
-        border-bottom: 1px solid #111 !important;
+        background: #0a2540 !important; /* Dark Blue */
+        border-bottom: 1px solid #081c30 !important;
         padding: 8px 0;
     }
+
     #header * { color: #ffffff !important; }
-    
+
     .module {
         background: #ffffff !important;
         border-radius: 12px !important;
@@ -86,11 +90,29 @@
         border: none !important;
     }
 
-    thead th { background: #0a2540 !important; color: #ffffff !important; }
+    thead th {
+        background: #0a2540 !important;
+        color: #ffffff !important;
+    }
+
     input[type="submit"], .button {
         background: #0a2540 !important;
         color: #ffffff !important;
         border-radius: 6px !important;
+    }
+
+    input[type="submit"]:hover, .button:hover {
+        background: #081c30 !important;
+    }
+
+    /* Delete / Danger Buttons */
+    .deletelink, .button.delete {
+        background: #ed1c24 !important;
+        color: #ffffff !important;
+    }
+
+    .deletelink:hover, .button.delete:hover {
+        background: #c4161c !important;
     }
 </style>
 {% endblock %}
@@ -100,8 +122,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const sidebar = document.getElementById("nav-sidebar");
-        
-        // Create the background overlay dynamically
+
         const overlay = document.createElement("div");
         overlay.id = "sidebar-overlay";
         document.body.appendChild(overlay);
@@ -113,7 +134,164 @@
             }
         };
 
-        // Close the sidebar if the user clicks the dark background
+        overlay.addEventListener("click", toggleSidebar);
+    });
+</script>
+{% endblock %}
+
+{% block branding %}
+<div class="flex items-center px-4 space-x-3">
+    <button type="button" onclick="toggleSidebar()" class="md:hidden text-white text-2xl focus:outline-none pr-2">
+        ☰
+    </button>
+
+    <img src="{% static 'images/logo.png' %}" class="h-10 w-auto" alt="Ulendo Logo">
+
+    <h1 class="text-md font-bold tracking-wide">
+        <a href="{% url 'admin:index' %}">Ulendo Coaches</a>
+    </h1>
+</div>
+{% endblock %}
+
+{% block usertools %}
+<div class="flex items-center space-x-4 text-xs md:text-sm px-4">
+    <span class="text-white whitespace-nowrap">Hi, <strong>{{ user.username }}</strong></span>
+
+    <a href="{% url 'h{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}
+    {{ title }} | Ulendo Admin
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+
+<link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    /* --- Sidebar & Layout Fixes --- */
+    #nav-sidebar {
+        display: block !important;
+        visibility: visible !important;
+        transition: transform 0.3s ease-in-out;
+        z-index: 1001;
+        background: #ffffff !important;
+        text-transform: uppercase !important;
+    }
+
+    /* Desktop View */
+    @media (min-width: 769px) {
+        .main > .content {
+            display: flex !important;
+            flex-direction: row !important;
+        }
+        #nav-sidebar {
+            position: relative !important;
+            transform: translateX(0) !important;
+            min-width: 260px !important;
+            border-right: 1px solid #ddd !important;
+        }
+        #sidebar-overlay { display: none !important; }
+    }
+
+    /* Mobile View */
+    @media (max-width: 768px) {
+        #nav-sidebar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            transform: translateX(-100%);
+            box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+        }
+
+        #nav-sidebar.open {
+            transform: translateX(0) !important;
+        }
+
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        #sidebar-overlay.active { display: block; }
+
+        .nav-sidebar-toggler { display: none !important; }
+    }
+
+    /* --- Branding Colors --- */
+    body { background: #87CEEB !important; } /* Sky Blue */
+
+    #content { background: transparent !important; }
+
+    #header {
+        background: #0a2540 !important; /* Dark Blue */
+        border-bottom: 1px solid #081c30 !important;
+        padding: 8px 0;
+    }
+
+    #header * { color: #ffffff !important; }
+
+    .module {
+        background: #ffffff !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+        border: none !important;
+    }
+
+    thead th {
+        background: #0a2540 !important;
+        color: #ffffff !important;
+    }
+
+    input[type="submit"], .button {
+        background: #0a2540 !important;
+        color: #ffffff !important;
+        border-radius: 6px !important;
+    }
+
+    input[type="submit"]:hover, .button:hover {
+        background: #081c30 !important;
+    }
+
+    /* Delete / Danger Buttons */
+    .deletelink, .button.delete {
+        background: #ed1c24 !important;
+        color: #ffffff !important;
+    }
+
+    .deletelink:hover, .button.delete:hover {
+        background: #c4161c !important;
+    }
+</style>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.getElementById("nav-sidebar");
+
+        const overlay = document.createElement("div");
+        overlay.id = "sidebar-overlay";
+        document.body.appendChild(overlay);
+
+        window.toggleSidebar = function () {
+            if (sidebar) {
+                sidebar.classList.toggle("open");
+                overlay.classList.toggle("active");
+            }
+        };
+
         overlay.addEventListener("click", toggleSidebar);
     });
 </script>
@@ -143,7 +321,24 @@
 
     <form action="{% url 'admin:logout' %}" method="post" class="inline">
         {% csrf_token %}
-        <button type="submit" class="bg-red-600 px-3 py-1 rounded text-white hover:bg-red-700 font-bold transition">
+        <button type="submit" class="bg-[#ed1c24] px-3 py-1 rounded text-white hover:bg-red-700 font-bold transition">
+            Log out
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="text-center py-6 text-sm text-gray-800">
+    &copy; 2026 <strong>Ulendo Coaches & Logistic Services</strong>.
+</div>
+{% endblock %}ome' %}" class="bg-gray-700 px-2 py-1 rounded hover:bg-gray-600 transition">
+        View Site
+    </a>
+
+    <form action="{% url 'admin:logout' %}" method="post" class="inline">
+        {% csrf_token %}
+        <button type="submit" class="bg-[#ed1c24] px-3 py-1 rounded text-white hover:bg-red-700 font-bold transition">
             Log out
         </button>
     </form>

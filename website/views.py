@@ -13,6 +13,7 @@ from .forms import BookingForm
 from .pdf_utils import generate_ticket_pdf
 
 from notifications.utils import send_notifications
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 @staff_member_required

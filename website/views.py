@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.db.models import Sum
 from django.utils.crypto import get_random_string
+from notifications.whatsapp import
 
 import os
 
@@ -103,11 +104,9 @@ def available_buses(request):
 
 
 
-
 def booking(request, bus_id):
     bus = get_object_or_404(Bus, id=bus_id)
 
-    # Calculate available seats
     total_booked = Booking.objects.filter(bus=bus).aggregate(
         total=Sum('passengers')
     )['total'] or 0
@@ -120,46 +119,42 @@ def booking(request, bus_id):
 
         service_type = request.POST.get('service_type')
 
+        # ================= PASSENGER =================
+        if service_type == 'passenger':
 
+            form = BookingForm(request.POST)
 
-if service_type == 'passenger':
+            if form.is_valid():
+                booking = form.save(commit=False)
+                booking.bus = bus
 
-    form = BookingForm(request.POST)
+                booking.email = request.POST.get('email')
 
-    if form.is_valid():
-        booking = form.save(commit=False)
-        booking.bus = bus
+                if booking.passengers > available_seats:
+                    messages.error(
+                        request,
+                        f"Only {available_seats} seats available."
+                    )
+                    return render(request, 'booking.html', {
+                        'form': form,
+                        'bus': bus,
+                        'available_seats': available_seats
+                    })
 
-        # Save email correctly
-        booking.email = request.POST.get('email')
+                booking.save()
 
-        # Check seat availability
-        if booking.passengers > available_seats:
-            messages.error(
-                request,
-                f"Only {available_seats} seats available."
-            )
+                total_price = booking.passengers * bus.price_per_seat
+
+                # ✅ Notification engine
+                result = send_notifications(booking)
+
+                return redirect('success', booking_id=booking.id)
+
             return render(request, 'booking.html', {
                 'form': form,
                 'bus': bus,
                 'available_seats': available_seats
             })
-
-        # ✅ THIS triggers ticket number + QR (from model save)
-        booking.save()
-
-        total_price = booking.passengers * bus.price_per_seat
-
-        # ✅ FIXED (aligned properly)
-        result = send_notifications(booking)
-
-        return redirect('success', booking_id=booking.id)
-
-    return render(request, 'booking.html', {
-        'form': form,
-        'bus': bus,
-        'available_seats': available_seats
-    })
 
         # ================= PARCEL =================
         elif service_type == 'parcel':
@@ -213,9 +208,10 @@ Thank you.
         'bus': bus,
         'available_seats': available_seats
     })
+            
 
 # -------------------
-from notifications.whatsapp import generate_whatsapp_link
+ generate_whatsapp_link
 
 def success(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)

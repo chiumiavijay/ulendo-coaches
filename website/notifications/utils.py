@@ -6,7 +6,7 @@ def send_notifications(booking):
     send_booking_email(booking.email, booking)
 
     # WhatsApp link
-    whatsapp_link = generate_whatsapp_link("265XXXXXXXXX", booking)
+    whatsapp_link = generate_whatsapp_link("265999885586", booking)
 
     return {
         "whatsapp_link": whatsapp_link

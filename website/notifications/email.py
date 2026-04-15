@@ -9,7 +9,7 @@ Hello {booking.name},
 
 Your booking has been received successfully.
 
-route = booking.bus.route
+route: {booking.bus.route}
 Date: {booking.date}
 Seat: {booking.seat}
 

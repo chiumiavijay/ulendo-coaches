@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.db.models import Sum
 from django.utils.crypto import get_random_string
-from notifications.whatsapp import
+from notifications.whatsapp import generate_whatsapp_link
 
 import os
 
@@ -211,7 +211,6 @@ Thank you.
             
 
 # -------------------
- generate_whatsapp_link
 
 def success(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)

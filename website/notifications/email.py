@@ -9,9 +9,13 @@ Hello {booking.name},
 
 Your booking has been received successfully.
 
-Bus: {booking.bus.name}
-Date: {booking.date}
-Seat: {booking.seat}
+Route: {booking.bus.departure} → {booking.bus.destination}
+Departure Date: {booking.bus.departure_date}
+Departure Time: {booking.bus.departure_time}
+
+Passengers: {booking.passengers}
+Seat Number: {booking.seat_number}
+Ticket Number: {booking.ticket_number}
 
 Please send payment proof via WhatsApp.
 

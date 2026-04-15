@@ -22,9 +22,10 @@
     #content { 
         background: transparent !important; 
         padding: 20px !important;
+        box-sizing: border-box;
     }
 
-    /* --- 2. Black Header Styling --- */
+    /* --- 2. Black Header --- */
     #header {
         background: #000000 !important;
         padding: 10px 0;
@@ -36,86 +37,93 @@
         text-transform: capitalize !important; 
     }
 
-    /* --- 3. White Cards & Black Card Headers --- */
-    .module {
+    /* --- 3. Square Cards Fix --- */
+    .module, #content-main, .aligned {
         background: #ffffff !important;
         border-radius: 0px !important;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
         border: none !important;
         margin-bottom: 25px !important;
-        overflow: hidden;
+        width: 100% !important; /* Forces cards to take full available space */
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
-    /* Updated internal headers to Black */
-    .module caption, .module h2, thead th, .module h3 {
+    /* Black Headers inside forms/cards */
+    .module caption, .module h2, thead th, .module h3, .inline-group h2 {
         background: #000000 !important; 
         color: #ffffff !important;
         text-transform: capitalize !important; 
         padding: 12px !important;
-        border: none !important;
+        border-radius: 0px !important;
     }
 
-    /* Ensure table links inside black headers are white */
-    thead th a { color: #ffffff !important; }
-
-    /* --- 4. Sidebar & Toggle Fixes --- */
-    #nav-sidebar {
-        background: #ffffff !important;
-        transition: transform 0.3s ease-in-out !important;
-    }
-
-    #nav-sidebar .section h2 {
-        background: #000000 !important; /* Sidebar headers also black */
-        color: white !important;
+    /* --- 4. THE FIX: Input & Form Scaling --- */
+    /* This prevents the inputs from being "too big" for the mobile screen */
+    .aligned label {
+        width: 100% !important;
+        float: none !important;
+        padding: 5px 0 !important;
+        display: block;
         text-transform: capitalize !important;
     }
 
-    @media (max-width: 1024px) {
-        #nav-sidebar {
-            position: fixed !important;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 280px;
-            z-index: 1200 !important;
-            transform: translateX(-100%);
-            display: block !important;
-            visibility: visible !important;
-        }
-
-        #nav-sidebar.open { transform: translateX(0) !important; }
-
-        #sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1150;
-        }
-
-        #sidebar-overlay.active { display: block; }
+    .aligned .form-row {
+        padding: 15px !important;
+        border-bottom: 1px solid #eee !important;
     }
 
-    /* Desktop Side-by-Side */
+    input[type="text"], input[type="password"], input[type="number"], 
+    input[type="email"], select, textarea, .vTextField {
+        width: 100% !important; /* Makes input fill the card width */
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        border: 1px solid #ccc !important;
+        padding: 8px !important;
+        border-radius: 0px !important;
+        background: #fff !important;
+        color: #333 !important;
+    }
+
+    /* Fix for the Date/Time icon alignment */
+    .datetimeshortcuts {
+        display: block;
+        margin-top: 5px;
+    }
+
+    /* --- 5. Desktop Layout --- */
     @media (min-width: 1025px) {
         #content-main { float: left; width: 68% !important; }
         #content-related { 
             float: right; 
             width: 28% !important; 
             background: #ffffff !important; 
-            border-radius: 15px !important; 
+            border-radius: 0px !important;
             padding: 20px !important; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
         }
-        #content::after { content: ""; display: table; clear: both; }
+        .aligned label {
+            width: 160px !important; /* Return to standard side-label on desktop */
+            float: left !important;
+        }
     }
 
-    /* --- 5. Buttons --- */
-    input[type="submit"], .button, .default {
-        background: #000000 !important;
-        border: none !important;
-        border-radius: 6px !important;
-        text-transform: capitalize !important;
+    /* Mobile Sidebar Sidebar Overrides */
+    @media (max-width: 1024px) {
+        #nav-sidebar {
+            position: fixed !important;
+            top: 0; left: 0; height: 100vh; width: 280px;
+            z-index: 1200 !important;
+            transform: translateX(-100%);
+            display: block !important;
+            visibility: visible !important;
+            background: #fff !important;
+        }
+        #nav-sidebar.open { transform: translateX(0) !important; }
+        #sidebar-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1150;
+        }
+        #sidebar-overlay.active { display: block; }
     }
 </style>
 {% endblock %}
@@ -126,19 +134,16 @@
     document.addEventListener("DOMContentLoaded", function () {
         const sidebar = document.getElementById("nav-sidebar");
         let overlay = document.getElementById("sidebar-overlay");
-        
         if (!overlay) {
             overlay = document.createElement("div");
             overlay.id = "sidebar-overlay";
             document.body.appendChild(overlay);
         }
-
         window.toggleSidebar = function (e) {
             if (e) e.preventDefault();
             sidebar.classList.toggle("open");
             overlay.classList.toggle("active");
         };
-
         overlay.addEventListener("click", toggleSidebar);
     });
 </script>
@@ -146,7 +151,7 @@
 
 {% block branding %}
 <div class="flex items-center px-4 space-x-3">
-    <button type="button" onmousedown="toggleSidebar(event)" class="lg:hidden text-white text-3xl focus:outline-none cursor-pointer pr-2" style="background:none; border:none;">
+    <button type="button" onmousedown="toggleSidebar(event)" class="lg:hidden text-white text-3xl focus:outline-none cursor-pointer pr-2">
         ☰
     </button>
     <img src="{% static 'images/logo.png' %}" class="h-10 w-auto" alt="Ulendo Logo">
@@ -159,20 +164,14 @@
 {% block usertools %}
 <div class="flex items-center space-x-4 text-xs md:text-sm px-4">
     <span class="text-white whitespace-nowrap">Hi, <strong>{{ user.username }}</strong></span>
-    <a href="{% url 'home' %}" class="bg-gray-800 px-2 py-1 rounded hover:bg-gray-700 transition" style="text-transform: capitalize !important;">
+    <a href="{% url 'home' %}" class="bg-gray-800 px-2 py-1 text-white hover:bg-gray-700 transition" style="text-transform: capitalize !important; border-radius: 0px !important;">
         View Site
     </a>
     <form action="{% url 'admin:logout' %}" method="post" class="inline">
         {% csrf_token %}
-        <button type="submit" class="bg-[#ed1c24] px-3 py-1 rounded text-white hover:bg-red-700 font-bold transition" style="text-transform: capitalize !important;">
+        <button type="submit" class="bg-[#ed1c24] px-3 py-1 text-white hover:bg-red-700 font-bold transition" style="text-transform: capitalize !important; border-radius: 0px !important;">
             Log out
         </button>
     </form>
-</div>
-{% endblock %}
-
-{% block footer %}
-<div class="text-center py-6 text-sm text-gray-800" style="clear: both;">
-    &copy; 2026 <strong>Ulendo Coaches & Logistic Services</strong>.
 </div>
 {% endblock %}

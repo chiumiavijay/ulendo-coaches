@@ -148,33 +148,8 @@ def booking(request, bus_id):
 
                 total_price = booking.passengers * bus.price_per_seat
 
-                # Send confirmation email
-                send_mail(
-                    subject='Ulendo Coaches - Booking Received',
-                    message=f"""
-Hello {booking.name},
-
-Your booking has been received successfully.
-
-🚌 Route: {bus.departure} → {bus.destination}
-📅 Date: {bus.departure_date}
-⏰ Time: {bus.departure_time}
-
-👥 Passengers: {booking.passengers}
-💰 Total Price: {total_price}
-
-📌 Status: Waiting for payment verification
-
-⚠️ IMPORTANT:
-- Your ticket number will be generated after payment verification.
-- Please upload payment proof.
-
-Thank you.
-                    """,
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[booking.email],
-                    fail_silently=False,
-                )
+                # Send notifications (email + WhatsApp)
+result = send_notifications(booking)
 
                 return redirect('success', booking_id=booking.id)
 

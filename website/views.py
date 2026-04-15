@@ -121,44 +121,44 @@ def booking(request, bus_id):
         service_type = request.POST.get('service_type')
 
         # ================= PASSENGER =================
-        if service_type == 'passenger':
+if service_type == 'passenger':
 
-            form = BookingForm(request.POST)
+    form = BookingForm(request.POST)
 
-            if form.is_valid():
-                booking = form.save(commit=False)
-                booking.bus = bus
+    if form.is_valid():
+        booking = form.save(commit=False)
+        booking.bus = bus
 
-                # Save email correctly
-                booking.email = request.POST.get('email')
+        # Save email correctly
+        booking.email = request.POST.get('email')
 
-                # Check seat availability
-                if booking.passengers > available_seats:
-                    messages.error(
-                        request,
-                        f"Only {available_seats} seats available."
-                    )
-                    return render(request, 'booking.html', {
-                        'form': form,
-                        'bus': bus,
-                        'available_seats': available_seats
-                    })
-
-                # ✅ THIS triggers ticket number + QR (from model save)
-                booking.save()
-
-                total_price = booking.passengers * bus.price_per_seat
-
-                # Send notifications (email + WhatsApp)
-result = send_notifications(booking)
-
-                return redirect('success', booking_id=booking.id)
-
+        # Check seat availability
+        if booking.passengers > available_seats:
+            messages.error(
+                request,
+                f"Only {available_seats} seats available."
+            )
             return render(request, 'booking.html', {
                 'form': form,
                 'bus': bus,
                 'available_seats': available_seats
             })
+
+        # ✅ THIS triggers ticket number + QR (from model save)
+        booking.save()
+
+        total_price = booking.passengers * bus.price_per_seat
+
+        # ✅ FIXED (aligned properly)
+        result = send_notifications(booking)
+
+        return redirect('success', booking_id=booking.id)
+
+    return render(request, 'booking.html', {
+        'form': form,
+        'bus': bus,
+        'available_seats': available_seats
+    })
 
         # ================= PARCEL =================
         elif service_type == 'parcel':

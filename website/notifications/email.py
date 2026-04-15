@@ -3,13 +3,13 @@ from django.conf import settings
 
 def send_booking_email(user_email, booking):
     subject = "Booking Confirmation - Ulendo Coaches"
-    
+
     message = f"""
 Hello {booking.name},
 
 Your booking has been received successfully.
 
-route: {booking.bus.route}
+Bus: {booking.bus.name}
 Date: {booking.date}
 Seat: {booking.seat}
 

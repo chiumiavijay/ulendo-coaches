@@ -120,7 +120,8 @@ def booking(request, bus_id):
 
         service_type = request.POST.get('service_type')
 
-        # ================= PASSENGER =================
+
+
 if service_type == 'passenger':
 
     form = BookingForm(request.POST)

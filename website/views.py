@@ -1,92 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Bus, Booking, Parcel
-from .forms import BookingForm
-from django.core.mail import send_mail
+from django.http import FileResponse, HttpResponse
 from django.conf import settings
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.db.models import Sum
+from django.utils.crypto import get_random_string
 
 import os
-from django.http import FileResponse
+
+from .models import Bus, Booking, Parcel
+from .forms import BookingForm
 from .pdf_utils import generate_ticket_pdf
-from django.utils.crypto import get_random_string
 
-from django.contrib import messages
-from django.db.models import Sum
-from django.http import HttpResponse
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Bus, Booking, Parcel
-from .forms import BookingForm
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib import messages
-from django.db.models import Sum
-from django.utils.crypto import get_random_string
-
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Bus, Booking, Parcel
-from .forms import BookingForm
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib import messages
-from django.db.models import Sum
-from django.utils.crypto import get_random_string
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import render
-from django.db.models import Sum
-
-from .models import Booking, Bus, Parcel
+from notifications.utils import send_notifications
 
 
 @staff_member_required

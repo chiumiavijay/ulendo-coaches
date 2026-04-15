@@ -5,15 +5,14 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.db.models import Sum
 from django.utils.crypto import get_random_string
-from notifications.whatsapp import generate_whatsapp_link
+from website.notifications.whatsapp import generate_whatsapp_link
 
 import os
 
 from .models import Bus, Booking, Parcel
 from .forms import BookingForm
 from .pdf_utils import generate_ticket_pdf
-
-from notifications.utils import send_notifications
+from website.notifications.utils import send_notifications
 from django.contrib.admin.views.decorators import staff_member_required
 
 

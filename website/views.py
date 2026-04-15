@@ -213,16 +213,21 @@ Thank you.
     })
 
 # -------------------
+from notifications.whatsapp import generate_whatsapp_link
+
 def success(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
 
     total_price = booking.passengers * booking.bus.price_per_seat
-    currency = booking.bus.currency  # ✅ get currency from bus
+    currency = booking.bus.currency
+
+    whatsapp_link = generate_whatsapp_link("265999885586", booking)
 
     return render(request, 'success.html', {
         'booking': booking,
         'total_price': total_price,
-        'currency': currency
+        'currency': currency,
+        'whatsapp_link': whatsapp_link
     })
 
 # -------------------

@@ -182,109 +182,137 @@ input[type="email"], select, textarea, .vTextField {
     margin-top: 2px !important;
     font-size: 10px !important;
     color: #666 !important;
-}
+/* --- FULL UPDATED LOGIN CSS --- */
 
-
-
-/* --- MODERN BLACK LOGIN (CLEAN + ROUNDED) --- */
-
-/* 1. Background */
+/* 1. Page Background (Sky Blue) & Perfect Centering */
 body.login {
-    background: #87CEEB; /* sky blue */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
+    background-color: #81C2E2 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    font-family: Arial, sans-serif;
 }
 
-/* 2. Login Card (Black + Rounded) */
+/* 2. The Login Card (Black & Rounded) */
 .login #container {
-    width: 360px;
-    background: #000000;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    width: 340px !important;
+    background: #000000 !important;
+    padding: 0 !important;
+    border-radius: 20px !important; /* Rounded Form */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+    border: none !important;
+    margin: auto !important; /* Helps with centering */
+    overflow: hidden; /* Ensures header follows rounded corners */
+    position: relative;
 }
 
-/* 3. Header */
+/* 3. Header Inside the Form */
 .login #header {
-    background: transparent;
+    background: #1a1a1a !important; /* Darker grey/black */
+    color: #ffffff !important;
+    padding: 22px !important;
     text-align: center;
-    margin-bottom: 20px;
-}
-
-.login #header h1 {
-    color: #ffffff;
-    font-size: 1.4rem;
+    border-bottom: 1px solid #333;
+    margin-bottom: 0 !important;
 }
 
 .login #header a {
-    color: #87CEEB;
+    color: #fff !important;
     font-weight: bold;
+    text-transform: capitalize !important;
+    text-decoration: none;
+    font-size: 1.2em;
 }
 
-/* 4. Labels */
+/* 4. Form Content & Inputs */
+.login #content-main {
+    padding: 25px 30px !important;
+    background: transparent !important;
+}
+
+.login .form-row {
+    margin-bottom: 15px !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
 .login label {
-    color: #cccccc;
-    font-size: 0.85rem;
-    margin-bottom: 6px;
-    display: block;
-}
-
-/* 5. Inputs (Rounded) */
-.login input[type="text"],
-.login input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 10px;
-    color: #ffffff;
-    margin-bottom: 15px;
-    transition: all 0.25s ease;
-}
-
-/* Focus effect */
-.login input:focus {
-    border-color: #00c853;
-    box-shadow: 0 0 6px rgba(0, 200, 83, 0.4);
-    outline: none;
-}
-
-/* 6. Submit Button (Green + Rounded) */
-.login .submit-row input {
-    width: 100%;
-    padding: 13px;
-    background: #00c853;
-    border: none;
-    border-radius: 12px;
-    color: #ffffff;
+    color: #81C2E2 !important; /* Blue labels on black background */
+    display: block !important;
+    margin-bottom: 8px !important;
+    font-size: 0.9em;
     font-weight: bold;
+    text-transform: capitalize !important;
+}
+
+.login input[type="text"], 
+.login input[type="password"] {
+    width: 100% !important;
+    padding: 12px !important;
+    background: #252525 !important; /* Dark inputs */
+    border: 1px solid #444 !important;
+    color: #ffffff !important;
+    border-radius: 8px !important; /* Slightly rounded inputs */
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.login input:focus {
+    border-color: #00c853 !important; /* Glows Green on focus */
+}
+
+/* 5. The Submit Button (Green & Pill-Shaped) */
+.login .submit-row {
+    padding: 10px 30px 30px 30px !important;
+    margin: 0 !important;
+    text-align: center;
+    background: transparent !important;
+    border: none !important;
+}
+
+.login .submit-row input {
+    background: #00c853 !important; /* Vivid Green */
+    color: #ffffff !important;
+    width: 100% !important;
+    padding: 12px !important;
+    border: none !important;
+    border-radius: 30px !important; /* Pill shape */
+    font-weight: bold;
+    font-size: 1.1em;
+    text-transform: capitalize !important;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease-in-out;
 }
 
-/* Hover */
+/* Button Animation */
 .login .submit-row input:hover {
-    background: #00e676;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 200, 83, 0.4);
+    background: #009624 !important; /* Darker Green */
+    transform: translateY(-3px); /* Lifts up */
+    box-shadow: 0 5px 15px rgba(0, 200, 83, 0.4);
 }
 
-/* Click */
 .login .submit-row input:active {
-    transform: scale(0.98);
+    transform: translateY(1px);
 }
 
-/* 7. Cleanup */
-.login .breadcrumbs,
-.login #footer {
-    display: none;
+/* 6. Clean up: Hide unnecessary elements */
+.login .breadcrumbs, 
+.login #footer, 
+.login .errornote,
+.login #user-tools {
+    display: none !important;
 }
 
-
+/* Fix for error messages if they appear */
+.login .errorlist li {
+    color: #ff5252 !important;
+    list-style: none;
+    font-size: 0.8em;
+    margin-bottom: 5px;
+}
 
 
 

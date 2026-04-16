@@ -316,6 +316,41 @@ body.login {
 }
 
 
+/* --- Login Page Cleanup: Remove Header & Toggle --- */
+
+/* 1. Hide the entire header bar and sidebar elements on the login page only */
+.login #header, 
+.login .nav-sidebar-toggler, 
+.login #nav-sidebar, 
+.login #sidebar-overlay,
+.login #branding button {
+    display: none !important;
+}
+
+/* 2. Style a simple, clean title inside the login box instead */
+.login #container::before {
+    content: "Ulendo Coaches Login";
+    display: block;
+    background: #1a1a1a;
+    color: white;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+    border-bottom: 1px solid #333;
+}
+
+/* 3. Ensure the login card sits perfectly in the center without top-bar interference */
+body.login {
+    padding-top: 0 !important;
+}
+
+.login #container {
+    margin: auto !important;
+    border-top: none !important;
+}
+
+
 
 
 

@@ -187,6 +187,130 @@ input[type="email"], select, textarea, .vTextField {
 
 
 
+
+
+
+/* --- Login Form Custom Style Integration --- */
+
+/* 1. Page Background remains Dark or Neutral */
+body.login {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #252525 !important; /* From your code */
+    font-family: Arial, sans-serif;
+}
+
+/* 2. The Login Box (Sky Blue & Square as requested) */
+.login #container {
+    width: 316px !important;
+    min-height: 420px;
+    position: relative;
+    background: #81C2E2 !important; /* Your Sky Blue */
+    padding: 0 !important;
+    overflow: hidden;
+    z-index: 5;
+    transition: 0.5s;
+    border-radius: 0px !important; /* Square as requested */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5) !important;
+    text-align: center;
+    margin: auto !important;
+    border: none !important;
+}
+
+/* 3. The Login Header (Black bar) */
+.login #header {
+    background: #000000 !important;
+    color: #ffffff !important;
+    padding: 20px !important;
+    text-transform: capitalize !important;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.login #header a {
+    color: #fff !important;
+    text-decoration: none;
+}
+
+/* 4. Form Layout Spacing */
+.login #content-main {
+    padding: 20px !important;
+    text-align: left;
+    background: transparent !important;
+}
+
+.login .form-row {
+    margin-bottom: 20px;
+    padding: 0 10px !important;
+    border: none !important;
+}
+
+.login label {
+    display: block !important;
+    margin-bottom: 8px !important;
+    font-weight: bold !important;
+    color: #000000 !important; /* Black text on blue */
+    text-transform: capitalize !important;
+}
+
+/* 5. Input Fields Styling */
+.login input[type="text"],
+.login input[type="password"] {
+    width: 100% !important;
+    padding: 10px !important;
+    border: 1px solid #000 !important;
+    border-radius: 0px !important; /* Square inputs */
+    background-color: #ffffff !important;
+    color: #333 !important;
+    font-size: 1em;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* 6. The Submit Button (Pure Black & Square) */
+.login .submit-row {
+    padding: 10px 20px !important;
+    background: transparent !important;
+    border: none !important;
+    margin: 0 !important;
+}
+
+.login .submit-row input {
+    background-color: #000000 !important; /* Black button */
+    color: white !important;
+    padding: 12px 25px !important;
+    border: none !important;
+    border-radius: 0px !important; /* Square button */
+    font-size: 1.1em;
+    cursor: pointer;
+    width: 100% !important;
+    transition: background-color 0.3s ease;
+    text-transform: capitalize !important;
+}
+
+.login .submit-row input:hover {
+    background-color: #333333 !important;
+}
+
+/* Hide breadcrumbs and footer on login page for clean look */
+.login .breadcrumbs, .login #footer {
+    display: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 </style>
 {% endblock %}
 

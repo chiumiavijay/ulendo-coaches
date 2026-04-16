@@ -187,119 +187,125 @@ input[type="email"], select, textarea, .vTextField {
 
 
 
-/* --- Ultra-Clean Black & Sky Blue Login Form --- */
+/* --- MODERN GLASSMORPHISM LOGIN UI --- */
 
-/* 1. Page Background (Sky Blue) & Centering */
+/* 1. Background */
 body.login {
-    background-color: #81C2E2 !important;
+    background: linear-gradient(135deg, #87CEEB, #5aaed6);
     display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    min-height: 100vh !important;
-    margin: 0 !important;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-/* 2. The Login Card (Pure Black) */
+/* 2. Glass Card */
 .login #container {
-    width: 340px !important;
-    background: #000000 !important;
-    padding: 0 !important;
-    border-radius: 20px !important; /* rounded theme */
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
-    border: none !important;
-    margin: 0 !important; /* Reset margin so flexbox centers it */
+    width: 360px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(15px);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* 3. Header inside the Black Card */
+/* 3. Header */
 .login #header {
-    background: #1a1a1a !important; /* Slightly lighter black for contrast */
-    color: #ffffff !important;
-    padding: 20px !important;
+    background: transparent;
     text-align: center;
-    border-bottom: 1px solid #333;
+    padding: 25px 20px;
+}
+
+.login #header h1 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
 }
 
 .login #header a {
-    color: #fff !important;
-    text-transform: capitalize !important;
-    font-weight: bold;
+    color: #87CEEB !important;
+    font-weight: 600;
 }
 
-/* 4. Input Fields (White text on dark inputs) */
+/* 4. Form Content */
 .login #content-main {
-    padding: 30px !important;
+    padding: 25px;
 }
 
-.login .form-row {
-    margin-bottom: 15px !important;
-    padding: 0 !important;
-    border: none !important;
-}
-
+/* Labels */
 .login label {
-    color: #81C2E2 !important; /* Labels match the sky blue page */
-    display: block !important;
-    margin-bottom: 8px !important;
-    font-size: 0.9em;
-    text-transform: capitalize !important;
+    color: #aaa;
+    font-size: 0.8rem;
+    margin-bottom: 6px;
 }
 
-.login input[type="text"], 
+/* Inputs */
+.login input[type="text"],
 .login input[type="password"] {
-    width: 100% !important;
-    padding: 12px !important;
-    background: #252525 !important;
-    border: 1px solid #444 !important;
-    color: #ffffff !important;
-    border-radius: 0px !important;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    width: 100%;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    color: #fff;
+    margin-bottom: 15px;
+    transition: all 0.25s ease;
 }
 
+/* Input Focus Glow */
 .login input:focus {
-    border-color: #81C2E2 !important; /* Glow blue on focus */
+    border: 1px solid #87CEEB;
+    box-shadow: 0 0 10px rgba(135, 206, 235, 0.5);
     outline: none;
 }
 
-/* 5. Animated Submit Button */
-.login .submit-row {
-    padding: 10px 0 !important;
-    margin: 0 !important;
-    text-align: center;
+/* Placeholder */
+.login input::placeholder {
+    color: #777;
 }
 
+/* 5. Button */
 .login .submit-row input {
-    background: #00c853!important; /*green button on black card */
-    color: #ffffff!important;
-    width: 100% !important;
-    padding: 12px !important;
-    border: 30px !important;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #00c853, #00e676);
+    color: #000;
     font-weight: bold;
-    text-transform: capitalize !important;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    position: relative;
-    top: 0;
+    transition: all 0.3s ease;
 }
 
-/* Hover Animation */
+/* Button Hover */
 .login .submit-row input:hover {
-    background: #ffffff !important;
-    transform: translateY(-3px); /* Subtle lift animation */
-    box-shadow: 0 5px 15px rgba(129, 194, 226, 0.4);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 200, 83, 0.4);
 }
 
+/* Button Click */
 .login .submit-row input:active {
-    transform: translateY(1px);
+    transform: scale(0.98);
 }
 
-/* Cleanup */
-.login .breadcrumbs, .login #footer, .login .errornote {
-    display: none !important;
+/* 6. Error Message */
+.login .errornote {
+    background: rgba(255, 0, 0, 0.1);
+    border-left: 4px solid red;
+    color: #ff6b6b;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
 }
 
-
+/* 7. Remove clutter */
+.login .breadcrumbs,
+.login #footer {
+    display: none;
+}
 
 
 

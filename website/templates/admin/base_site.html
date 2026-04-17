@@ -114,6 +114,48 @@
     .login #header, .login .breadcrumbs, .login #footer { display: none !important; }
 
 
+
+/* --- 7. Sidebar Toggle Logic --- */
+#nav-sidebar {
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+/* Hide sidebar off-screen on mobile by default */
+@media (max-width: 1024px) {
+    #nav-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 260px;
+        transform: translateX(-100%); /* Move off-screen */
+        background: #ffffff !important;
+        display: block !important; /* Ensure it's not 'display: none' */
+    }
+
+    /* When JS adds the .open class */
+    #nav-sidebar.open {
+        transform: translateX(0); /* Slide into view */
+    }
+}
+
+/* Overlay Background */
+#sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: none; /* Hidden by default */
+    z-index: 999;
+}
+
+#sidebar-overlay.active {
+    display: block; /* Show when sidebar is open */
+}
+
 </style>
 {% endblock %}
 

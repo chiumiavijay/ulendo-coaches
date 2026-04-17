@@ -12,7 +12,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-    /* --- 1. GLOBAL BACKGROUND (SKY BLUE EVERYWHERE) --- */
+    /* --- 1. GLOBAL BACKGROUND (SKY BLUE) --- */
     html, body, body.login { 
         background: #81C2E2 !important;
         margin: 0;
@@ -25,7 +25,7 @@
         padding: 25px !important;
     }
 
-    /* --- 2. NAVBAR / HEADER (KEEP BLACK) --- */
+    /* --- 2. BLACK NAVBAR ONLY --- */
     #header, .login #header {
         background: #000000 !important;
         color: #ffffff !important;
@@ -34,14 +34,27 @@
         letter-spacing: 0.5px;
     }
 
-    /* --- 3. OTHER HEADERS → NAVY BLUE --- */
+    /* --- 3. NAVY BLUE HEADERS & ACCENTS --- */
     .module caption, .module h2, thead th, .module h3 {
-        background: dark !important;
+        background: #000080 !important; /* Navy Blue */
         color: #ffffff !important;
         text-transform: capitalize !important;
     }
 
+    .aligned label, .breadcrumbs a, .deletelink {
+        color: #000080 !important; /* Navy Blue Text */
+        font-weight: 600;
+        text-transform: capitalize !important;
+    }
+
     thead th a { color: #ffffff !important; }
+
+    .breadcrumbs {
+        background: #f4f6f8 !important;
+        color: #000080 !important;
+        border-bottom: 1px solid #ddd;
+        padding: 10px 15px;
+    }
 
     /* --- 4. WHITE MODULES (CARDS) --- */
     .module, #content-main, .aligned, #content-related {
@@ -51,43 +64,28 @@
         border: none !important;
         margin-bottom: 25px !important;
         padding: 15px !important;
-        transition: all 0.2s ease-in-out;
     }
 
-    .module:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 22px rgba(0,0,0,0.12);
-    }
-
-    /* --- 5. NAVY ACCENTS --- */
-    .aligned label, .breadcrumbs a, .deletelink {
-        color: dark !important;
-        font-weight: 600;
-        text-transform: capitalize !important;
-    }
-
-    .breadcrumbs {
-        background: #f4f6f8 !important;
-        color: dark !important;
-        border-bottom: 1px solid #ddd;
-        padding: 10px 15px;
-    }
-
-    /* --- 6. INPUTS --- */
+    /* --- 5. INPUTS & BUTTONS --- */
     input[type="text"], input[type="password"], input[type="number"], 
     input[type="email"], select, textarea, .vTextField {
         border: 1px solid #ccc !important;
         padding: 10px !important;
-        transition: all 0.2s ease;
+        width: 100% !important;
+        box-sizing: border-box;
     }
 
-    input:focus, select:focus, textarea:focus {
-        border-color: dark !important;
-        outline: none !important;
-        box-shadow: 0 0 0 2px rgba(0,0,128,0.1);
+    input[type="submit"], .button, .default {
+        background: #000080 !important; /* Navy Blue */
+        color: white !important;
+        border: none !important;
+        padding: 9px 16px !important;
+        border-radius: 0px !important;
+        text-transform: capitalize !important;
+        cursor: pointer;
     }
 
-    /* --- 7. MOBILE FIXES --- */
+    /* --- 6. MOBILE FIXES --- */
     @media (max-width: 768px) {
         .aligned label {
             display: block !important;
@@ -95,209 +93,128 @@
             width: 100% !important;
             padding: 5px 0 !important;
         }
-        
-        input, select, textarea {
-            width: 100% !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
+
+        #header {
+            display: flex !important;
+            justify-content: space-between !important;
+            padding: 12px 18px !important;
         }
 
-        .form-row {
-            padding: 12px 15px !important;
-            border-bottom: 1px solid #eee !important;
+        #user-tools {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-end !important;
+            font-size: 0.7rem !important;
         }
     }
 
-    /* --- 8. HEADER LAYOUT --- */
-    #header {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 12px 18px !important;
+    /* --- 7. SIDEBAR TOGGLE LOGIC --- */
+    #nav-sidebar {
+        position: fixed !important;
+        top: 0;
+        left: -260px; /* hidden by default */
+        width: 260px;
+        height: 100%;
+        background: #ffffff;
+        z-index: 1500 !important;
+        transition: left 0.3s ease;
+        box-shadow: 4px 0 10px rgba(0,0,0,0.2);
     }
 
-    #branding {
-        display: flex !important;
-        align-items: center !important;
+    #nav-sidebar.open {
+        left: 0 !important;
     }
 
-    #branding img { height: 34px; }
-
-    #user-tools {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-end !important;
-        font-size: 0.75rem !important;
+    #sidebar-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5);
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1400;
+        transition: all 0.3s ease;
     }
 
-    /* --- 9. BUTTONS → NAVY --- */
-    input[type="submit"], .button, .default, #user-tools form button {
-        background: dark !important;
-        color: white !important;
-        border: none !important;
-        padding: 9px 16px !important;
-        border-radius: 0px !important;
-        text-transform: capitalize !important;
-        cursor: pointer;
-        transition: all 0.2s ease;
+    #sidebar-overlay.active {
+        visibility: visible;
+        opacity: 1;
     }
 
-    input[type="submit"]:hover, .button:hover, .default:hover {
-        background: #000066 !important;
-        transform: translateY(-1px);
-    }
-
-    /* --- 10. LOGOUT BUTTON (RED) --- */
-    .logout-button, #user-tools form button[type="submit"] {
-        background: #ed1c24 !important;
-    }
-
-    .logout-button:hover {
-        background: #c4161c !important;
-    }
-
-    /* --- 11. LOGIN PAGE (CENTERED WHITE CARD) --- */
+    /* --- 8. LOGIN PAGE SPECIFIC --- */
     body.login {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        min-height: 100vh;
     }
 
     body.login #container {
-        background: transparent !important;
-    }
-
-    body.login .module {
         background: #ffffff !important;
-        padding: 30px !important;
-        border-radius: 10px !important;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
-        width: 100%;
-        max-width: 350px;
+        padding: 0 !important;
+        border-radius: 15px !important;
+        overflow: hidden;
+        width: 300px !important;
     }
 
-    body.login .form-row {
-        margin-bottom: 15px;
+    body.login .submit-row input {
+        background: #00c853 !important; /* Green Login Button */
+        border-radius: 30px !important;
     }
-
-
-/* Ensure the toggle button is visible and tappable */
-.nav-sidebar-toggler {
-    display: block !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 10px !important;
-    cursor: pointer !important;
-    z-index: 1300 !important; /* Ensure it stays above the header */
-}
-
-/* Force the icon color to be visible on black background */
-.nav-sidebar-toggler .icon {
-    color: #ffffff !important;
-}
-
-
-
-
-/* --- SIDEBAR FIX --- */
-
-/* Default hidden state (mobile) */
-#nav-sidebar {
-    position: fixed !important;
-    top: 0;
-    left: -260px; /* hidden */
-    width: 260px;
-    height: 100%;
-    background: #ffffff;
-    z-index: 1200;
-    transition: left 0.3s ease;
-}
-
-/* When open */
-#nav-sidebar.open {
-    left: 0 !important;
-}
-
-/* Overlay background */
-#sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.4);
-    opacity: 0;
-    visibility: hidden;
-    z-index: 1100;
-    transition: all 0.3s ease;
-}
-
-#sidebar-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
 </style>
 {% endblock %}
 
 {% block extrahead %}
 {{ block.super }}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    // Global function to ensure button can trigger it immediately
+    window.toggleSidebar = function (e) {
+        if (e) e.preventDefault();
         const sidebar = document.getElementById("nav-sidebar");
-        let overlay = document.getElementById("sidebar-overlay");
+        const overlay = document.getElementById("sidebar-overlay");
         
+        if (sidebar) sidebar.classList.toggle("open");
+        if (overlay) overlay.classList.toggle("active");
+    };
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Create overlay if missing
+        let overlay = document.getElementById("sidebar-overlay");
         if (!overlay) {
             overlay = document.createElement("div");
             overlay.id = "sidebar-overlay";
             document.body.appendChild(overlay);
         }
-
-        window.toggleSidebar = function (e) {
-            if (e) e.preventDefault();
-            sidebar.classList.toggle("open");
-            overlay.classList.toggle("active");
-        };
-
         overlay.addEventListener("click", toggleSidebar);
     });
 </script>
 {% endblock %}
 
 {% block branding %}
-<div class="flex items-center px-4 space-x-3">
-    <button type="button" onmousedown="toggleSidebar(event)" class="lg:hidden text-white text-3xl focus:outline-none cursor-pointer pr-2" style="background:none; border:none;">
+<div class="flex items-center space-x-3">
+    <button type="button" onclick="toggleSidebar(event)" class="lg:hidden text-white text-3xl pr-2 focus:outline-none" style="background:none; border:none; cursor:pointer;">
         ☰
     </button>
-    <img src="{% static 'images/logo.png' %}" class="h-10 w-auto" alt="Ulendo Logo">
-    <h1 class="text-md font-bold tracking-wide">
-        <a href="{% url 'admin:index' %}" style="text-transform: capitalize !important;">Ulendo Coaches</a>
+    <img src="{% static 'images/logo.png' %}" class="h-10 w-auto" alt="Logo">
+    <h1 class="text-md font-bold text-white">
+        <a href="{% url 'admin:index' %}" style="color: white; text-decoration: none;">Ulendo Coaches</a>
     </h1>
 </div>
 {% endblock %}
-{% block usertools %}
-<div class="flex items-center space-x-4 text-xs md:text-sm px-4">
-    <span class="text-white whitespace-nowrap">Hi, <strong>{{ user.username }}</strong></span>
-    
-    <!-- FIXED: was bg-gray-800 -->
-    <a href="{% url 'home' %}" 
-       class="px-2 py-1 rounded transition text-white"
-       style="background:#000080; text-transform: capitalize !important;">
-        View Site
-    </a>
 
-    <form action="{% url 'admin:logout' %}" method="post" class="inline">
-        {% csrf_token %}
-        <button type="submit" 
-            class="px-3 py-1 rounded text-white font-bold transition"
-            style="background:#ed1c24; text-transform: capitalize !important;">
-            Log out
-        </button>
-    </form>
+{% block usertools %}
+<div id="user-tools">
+    <span class="text-white">Hi, <strong>{{ user.username }}</strong></span>
+    <div class="flex space-x-2 mt-1">
+        <a href="{% url 'home' %}" class="px-2 py-1 text-white text-xs" style="background:#000080; border-radius:4px;">View Site</a>
+        <form action="{% url 'admin:logout' %}" method="post" class="inline">
+            {% csrf_token %}
+            <button type="submit" class="px-2 py-1 text-white text-xs font-bold" style="background:#ed1c24; border-radius:4px;">Log Out</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
+
 {% block footer %}
-<div class="text-center py-6 text-sm text-gray-800" style="clear: both;">
+<div class="text-center py-6 text-sm text-gray-900">
     &copy; 2026 <strong>Ulendo Coaches & Logistic Services</strong>.
 </div>
 {% endblock %}

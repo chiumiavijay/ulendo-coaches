@@ -36,7 +36,7 @@
 
     /* --- 3. OTHER HEADERS → NAVY BLUE --- */
     .module caption, .module h2, thead th, .module h3 {
-        background: #000080 !important;
+        background: dark !important;
         color: #ffffff !important;
         text-transform: capitalize !important;
     }
@@ -61,14 +61,14 @@
 
     /* --- 5. NAVY ACCENTS --- */
     .aligned label, .breadcrumbs a, .deletelink {
-        color: #000080 !important;
+        color: dark !important;
         font-weight: 600;
         text-transform: capitalize !important;
     }
 
     .breadcrumbs {
         background: #f4f6f8 !important;
-        color: #000080 !important;
+        color: dark !important;
         border-bottom: 1px solid #ddd;
         padding: 10px 15px;
     }
@@ -82,7 +82,7 @@
     }
 
     input:focus, select:focus, textarea:focus {
-        border-color: #000080 !important;
+        border-color: dark !important;
         outline: none !important;
         box-shadow: 0 0 0 2px rgba(0,0,128,0.1);
     }
@@ -132,7 +132,7 @@
 
     /* --- 9. BUTTONS → NAVY --- */
     input[type="submit"], .button, .default, #user-tools form button {
-        background: navy blue !important;
+        background: dark !important;
         color: white !important;
         border: none !important;
         padding: 9px 16px !important;
@@ -195,6 +195,47 @@
 /* Force the icon color to be visible on black background */
 .nav-sidebar-toggler .icon {
     color: #ffffff !important;
+}
+
+
+
+
+/* --- SIDEBAR FIX --- */
+
+/* Default hidden state (mobile) */
+#nav-sidebar {
+    position: fixed !important;
+    top: 0;
+    left: -260px; /* hidden */
+    width: 260px;
+    height: 100%;
+    background: #ffffff;
+    z-index: 1200;
+    transition: left 0.3s ease;
+}
+
+/* When open */
+#nav-sidebar.open {
+    left: 0 !important;
+}
+
+/* Overlay background */
+#sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1100;
+    transition: all 0.3s ease;
+}
+
+#sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
 </style>
 {% endblock %}

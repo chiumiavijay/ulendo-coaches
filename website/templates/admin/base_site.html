@@ -183,11 +183,10 @@ input[type="email"], select, textarea, .vTextField {
     color: #666 !important;
 }
 /* ================================
-   ULENDO MODERN LOGIN CSS
-   SKY BLUE + DARK NAVY + GLASS FEEL
+   ULENDO CLEAN LOGIN UI
 ================================= */
 
-/* 1. PAGE BACKGROUND */
+/* 1. BACKGROUND */
 body.login {
     background: linear-gradient(135deg, #81C2E2, #5fb0f2) !important;
     display: flex !important;
@@ -196,46 +195,56 @@ body.login {
     min-height: 100vh !important;
     margin: 0 !important;
     font-family: Arial, sans-serif;
-    padding-top: 0 !important;
 }
 
-/* 2. LOGIN CONTAINER (CARD) */
+/* 2. REMOVE DJANGO HEADER + CLUTTER */
+.login #header,
+.login #user-tools,
+.login .breadcrumbs,
+.login #nav-sidebar,
+.login .nav-sidebar-toggler {
+    display: none !important;
+}
+
+/* 3. LOGIN CARD */
 .login #container {
-    width: 320px !important;
-    background: rgba(255, 255, 255, 0.25) !important;
+    width: 340px !important;
+
+    background: rgba(255, 255, 255, 0.28) !important;
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
 
     border-radius: 22px !important;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25) !important;
+
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
 
     overflow: hidden;
     margin: auto !important;
 }
 
-/* 3. CUSTOM HEADER TITLE (ULENDO LOGIN) */
+/* 4. CUSTOM TITLE ONLY (NO HEADER BAR) */
 .login #container::before {
-    content: "Ulendo Coaches Login";
+    content: "Ulendo Admin Login";
     display: block;
 
     background: #0a2540;
-    color: #ffffff;
+    color: white;
 
-    padding: 18px;
     text-align: center;
+    padding: 20px;
 
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: bold;
     letter-spacing: 0.5px;
 }
 
-/* 4. FORM AREA */
+/* 5. FORM AREA */
 .login #content-main {
-    padding: 25px 28px !important;
+    padding: 28px 30px !important;
 }
 
-/* 5. LABELS */
+/* 6. LABELS */
 .login label {
     display: block;
     margin-bottom: 6px;
@@ -243,19 +252,19 @@ body.login {
     color: #0a2540 !important;
     font-weight: 600;
     font-size: 0.85rem;
-    text-transform: capitalize;
 }
 
-/* 6. INPUT FIELDS */
+/* 7. INPUT FIELDS (WIDER + PLACEHOLDERS SUPPORT) */
 .login input[type="text"],
 .login input[type="password"] {
     width: 100% !important;
-    padding: 12px !important;
+    padding: 14px !important;   /* slightly bigger */
+    font-size: 14px;
 
-    border-radius: 10px !important;
+    border-radius: 12px !important;
     border: none !important;
 
-    background: rgba(255, 255, 255, 0.7) !important;
+    background: rgba(255, 255, 255, 0.75) !important;
     color: #0a2540;
 
     outline: none;
@@ -270,16 +279,15 @@ body.login {
     box-shadow: 0 0 0 2px rgba(10, 37, 64, 0.25);
 }
 
-/* 7. FORM ROWS */
+/* 8. FORM ROW SPACING */
 .login .form-row {
-    margin-bottom: 16px !important;
+    margin-bottom: 18px !important;
 }
 
-/* 8. BUTTON */
+/* 9. BUTTON */
 .login .submit-row {
     padding: 10px 0 25px 0 !important;
     text-align: center;
-    background: transparent !important;
 }
 
 .login .submit-row input {
@@ -288,32 +296,26 @@ body.login {
     background: linear-gradient(135deg, #0a2540, #123a63) !important;
     color: white !important;
 
-    padding: 12px !important;
+    padding: 13px !important;
     border: none !important;
 
     border-radius: 30px !important;
 
-    font-weight: bold;
     font-size: 1rem;
+    font-weight: bold;
 
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-/* hover animation */
 .login .submit-row input:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(10, 37, 64, 0.4);
 }
 
-/* active click */
-.login .submit-row input:active {
-    transform: translateY(1px);
-}
-
-/* 9. ERROR MESSAGE */
+/* 10. ERROR MESSAGE */
 .login .errornote {
-    background: rgba(255, 0, 0, 0.1);
+    background: rgba(255, 0, 0, 0.08);
     color: #c62828;
     padding: 10px;
     border-radius: 10px;
@@ -321,17 +323,10 @@ body.login {
     font-size: 0.85rem;
 }
 
-/* 10. HIDE UNNECESSARY ELEMENTS */
-.login #footer,
-.login #user-tools,
-.login .breadcrumbs {
-    display: none !important;
-}
-
-/* 11. MOBILE RESPONSIVE */
+/* 11. MOBILE */
 @media (max-width: 420px) {
     .login #container {
-        width: 90% !important;
+        width: 92% !important;
     }
 }
 

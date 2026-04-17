@@ -10,155 +10,355 @@
 
 <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 <script src="https://cdn.tailwindcss.com"></script>
-
 <style>
-    /* --- 1. GLOBAL BACKGROUND (SKY BLUE) --- */
-    html, body, body.login { 
-        background: #81C2E2 !important;
+    /* --- 1. Global Layout & Background --- */
+    body { 
+        background: #81C2E2 !important; 
         margin: 0;
         padding: 0;
-        font-family: "Segoe UI", Roboto, Arial, sans-serif;
     }
 
     #content { 
         background: transparent !important; 
-        padding: 25px !important;
+        padding: 20px !important;
     }
 
-    /* --- 2. BLACK NAVBAR ONLY --- */
-    #header, .login #header {
+    /* --- 2. Black Header Styling --- */
+    #header {
         background: #000000 !important;
-        color: #ffffff !important;
-        text-transform: capitalize !important;
-        border: none !important;
-        letter-spacing: 0.5px;
+        padding: 10px 0;
+        z-index: 1100;
     }
 
-    /* --- 3. NAVY BLUE HEADERS & ACCENTS --- */
-    .module caption, .module h2, thead th, .module h3 {
-        background: #000080 !important; /* Navy Blue */
-        color: #ffffff !important;
-        text-transform: capitalize !important;
+    #header * { 
+        color: #ffffff !important; 
+        text-transform: capitalize !important; 
     }
 
-    .aligned label, .breadcrumbs a, .deletelink {
-        color: #000080 !important; /* Navy Blue Text */
-        font-weight: 600;
-        text-transform: capitalize !important;
-    }
-
-    thead th a { color: #ffffff !important; }
-
-    .breadcrumbs {
-        background: #f4f6f8 !important;
-        color: #000080 !important;
-        border-bottom: 1px solid #ddd;
-        padding: 10px 15px;
-    }
-
-    /* --- 4. WHITE MODULES (CARDS) --- */
-    .module, #content-main, .aligned, #content-related {
+    /* --- 3. White Cards & Black Card Headers --- */
+    .module {
         background: #ffffff !important;
-        border-radius: 0px !important;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.08) !important;
+        border-radius: 15px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
         border: none !important;
         margin-bottom: 25px !important;
-        padding: 15px !important;
-    }
-
-    /* --- 5. INPUTS & BUTTONS --- */
-    input[type="text"], input[type="password"], input[type="number"], 
-    input[type="email"], select, textarea, .vTextField {
-        border: 1px solid #ccc !important;
-        padding: 10px !important;
-        width: 100% !important;
-        box-sizing: border-box;
-    }
-
-    input[type="submit"], .button, .default {
-        background: #000080 !important; /* Navy Blue */
-        color: white !important;
-        border: none !important;
-        padding: 9px 16px !important;
-        border-radius: 0px !important;
-        text-transform: capitalize !important;
-        cursor: pointer;
-    }
-
-    /* --- 6. MOBILE FIXES --- */
-    @media (max-width: 768px) {
-        .aligned label {
-            display: block !important;
-            float: none !important;
-            width: 100% !important;
-            padding: 5px 0 !important;
-        }
-
-        #header {
-            display: flex !important;
-            justify-content: space-between !important;
-            padding: 12px 18px !important;
-        }
-
-        #user-tools {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: flex-end !important;
-            font-size: 0.7rem !important;
-        }
-    }
-
-    /* --- 7. SIDEBAR TOGGLE LOGIC --- */
-    #nav-sidebar {
-        position: fixed !important;
-        top: 0;
-        left: -260px; /* hidden by default */
-        width: 260px;
-        height: 100%;
-        background: #ffffff;
-        z-index: 1500 !important;
-        transition: left 0.3s ease;
-        box-shadow: 4px 0 10px rgba(0,0,0,0.2);
-    }
-
-    #nav-sidebar.open {
-        left: 0 !important;
-    }
-
-    #sidebar-overlay {
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.5);
-        visibility: hidden;
-        opacity: 0;
-        z-index: 1400;
-        transition: all 0.3s ease;
-    }
-
-    #sidebar-overlay.active {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    /* --- 8. LOGIN PAGE SPECIFIC --- */
-    body.login {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-    }
-
-    body.login #container {
-        background: #ffffff !important;
-        padding: 0 !important;
-        border-radius: 15px !important;
         overflow: hidden;
-        width: 300px !important;
     }
 
-    body.login .submit-row input {
-        background: #00c853 !important; /* Green Login Button */
-        border-radius: 30px !important;
+    /* Updated internal headers to Black */
+    .module caption, .module h2, thead th, .module h3 {
+        background: #000000 !important; 
+        color: #ffffff !important;
+        text-transform: capitalize !important; 
+        padding: 12px !important;
+        border: none !important;
     }
+
+    /* Ensure table links inside black headers are white */
+    thead th a { color: #ffffff !important; }
+
+    /* --- 4. Sidebar & Toggle Fixes --- */
+    #nav-sidebar {
+        background: #ffffff !important;
+        transition: transform 0.3s ease-in-out !important;
+    }
+
+    #nav-sidebar .section h2 {
+        background: #000000 !important; /* Sidebar headers also black */
+        color: white !important;
+        text-transform: capitalize !important;
+    }
+
+    @media (max-width: 1024px) {
+        #nav-sidebar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            z-index: 1200 !important;
+            transform: translateX(-100%);
+            display: block !important;
+            visibility: visible !important;
+        }
+
+        #nav-sidebar.open { transform: translateX(0) !important; }
+
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1150;
+        }
+
+        #sidebar-overlay.active { display: block; }
+    }
+
+    /* Desktop Side-by-Side */
+    @media (min-width: 1025px) {
+        #content-main { float: left; width: 68% !important; }
+        #content-related { 
+            float: right; 
+            width: 28% !important; 
+            background: #ffffff !important; 
+            border-radius: 15px !important; 
+            padding: 20px !important; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+        }
+        #content::after { content: ""; display: table; clear: both; }
+    }
+
+    /* --- 5. Buttons --- */
+    input[type="submit"], .button, .default {
+        background: #000000 !important;
+        border: none !important;
+        border-radius: 6px !important;
+        text-transform: capitalize !important;
+    }
+
+
+/* --- Fix for Small Cards and Cramped Inputs --- */
+
+/* Force the white container to be full width on mobile */
+#content-main, .module, .aligned {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Make labels stack ABOVE inputs so they have more room */
+.aligned label {
+    display: block !important;
+    float: none !important;
+    width: 100% !important;
+    padding: 5px 0 !important;
+    text-align: left !important;
+}
+
+/* Force inputs, selects, and textareas to be full width */
+input[type="text"], input[type="password"], input[type="number"], 
+input[type="email"], select, textarea, .vTextField {
+    width: 80% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 2px !important;
+    height: auto !important;
+}
+
+/* Fix the spacing for Date/Time widgets */
+.form-row {
+    padding: 15px !important;
+    overflow: hidden;
+}
+
+.datetimeshortcuts {
+    display: block;
+    margin-top: 8px;
+}
+
+
+
+/* Reduce vertical space between input rows */
+.aligned .form-row {
+    padding: 8px 15px !important; /* Reduced from 15px/20px to 8px */
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+/* Remove extra margin from headers inside the cards */
+.module h2, .module caption {
+    margin-bottom: 0 !important;
+}
+
+/* Tighten the space between label and input */
+.aligned label {
+    padding-bottom: 2px !important;
+    margin-bottom: 0 !important;
+}
+
+/* Shrink the help text (Note: You are 2 hours ahead...) */
+.help, .help-inline {
+    margin-top: 2px !important;
+    font-size: 10px !important;
+    color: #666 !important;
+}
+/* --- FULL UPDATED LOGIN CSS --- */
+
+/* 1. Page Background (Sky Blue) & Perfect Centering */
+body.login {
+    background-color: #81C2E2 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    font-family: Arial, sans-serif;
+}
+
+/* 2. The Login Card (Black & Rounded) */
+.login #container {
+    width: 250px !important;
+    background: white !important;
+    padding: 0 !important;
+    border-radius: 20px !important; /* Rounded Form */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+    border: none !important;
+    margin: auto !important; /* Helps with centering */
+    overflow: hidden; /* Ensures header follows rounded corners */
+    position: relative;
+}
+
+/* 3. Header Inside the Form */
+.login #header {
+    background: #1a1a1a !important; /* Darker grey/black */
+    color: #ffffff !important;
+    padding: 22px !important;
+    text-align: center;
+    border-bottom: 1px solid #333;
+    margin-bottom: 0 !important;
+}
+
+.login #header a {
+    color: #fff !important;
+    font-weight: bold;
+    text-transform: capitalize !important;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+/* 4. Form Content & Inputs */
+.login #content-main {
+    padding: 25px 30px !important;
+    background: transparent !important;
+}
+
+.login .form-row {
+    margin-bottom: 15px !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+.login label {
+    color: #81C2E2 !important; /* Blue labels on black background */
+    display: block !important;
+    margin-bottom: 8px !important;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: capitalize !important;
+}
+
+.login input[type="text"], 
+.login input[type="password"] {
+    width: 100% !important;
+    padding: 12px !important;
+    background: #252525 !important; /* Dark inputs */
+    border: 1px solid #444 !important;
+    color: #ffffff !important;
+    border-radius: 8px !important; /* Slightly rounded inputs */
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.login input:focus {
+    border-color: #00c853 !important; /* Glows Green on focus */
+}
+
+/* 5. The Submit Button (Green & Pill-Shaped) */
+.login .submit-row {
+    padding: 10px 30px 30px 30px !important;
+    margin: 0 !important;
+    text-align: center;
+    background: transparent !important;
+    border: none !important;
+}
+
+.login .submit-row input {
+    background: #00c853 !important; /* Vivid Green */
+    color: #ffffff !important;
+    width: 100% !important;
+    padding: 12px !important;
+    border: none !important;
+    border-radius: 30px !important; /* Pill shape */
+    font-weight: bold;
+    font-size: 1.1em;
+    text-transform: capitalize !important;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Button Animation */
+.login .submit-row input:hover {
+    background: navy blue !important; /* Darker Green */
+    transform: translateY(-3px); /* Lifts up */
+    box-shadow: 0 5px 15px rgba(0, 200, 83, 0.4);
+}
+
+.login .submit-row input:active {
+    transform: translateY(1px);
+}
+
+/* 6. Clean up: Hide unnecessary elements */
+.login .breadcrumbs, 
+.login #footer, 
+.login .errornote,
+.login #user-tools {
+    display: none !important;
+}
+
+/* Fix for error messages if they appear */
+.login .errorlist li {
+    color: #ff5252 !important;
+    list-style: none;
+    font-size: 0.8em;
+    margin-bottom: 5px;
+}
+
+
+/* --- Login Page Cleanup: Remove Header & Toggle --- */
+
+/* 1. Hide the entire header bar and sidebar elements on the login page only */
+.login #header, 
+.login .nav-sidebar-toggler, 
+.login #nav-sidebar, 
+.login #sidebar-overlay,
+.login #branding button {
+    display: none !important;
+}
+
+/* 2. Style a simple, clean title inside the login box instead */
+.login #container::before {
+    content: "Ulendo Coaches Login";
+    display: block;
+    background: #1a1a1a;
+    color: white;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+    border-bottom: 1px solid #333;
+}
+
+/* 3. Ensure the login card sits perfectly in the center without top-bar interference */
+body.login {
+    padding-top: 0 !important;
+}
+
+.login #container {
+    margin: auto !important;
+    border-top: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
 </style>
 {% endblock %}
 

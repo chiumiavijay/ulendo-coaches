@@ -12,150 +12,174 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-
-    /* --- 1. Global Layout & Branding --- */
-    body { 
-        background: #81C2E2 !important; /* Sky Blue Background */
-        margin: 0; padding: 0;
-        font-family: Arial, sans-serif;
+    /* --- 1. GLOBAL BACKGROUND (SKY BLUE EVERYWHERE) --- */
+    html, body, body.login { 
+        background: #81C2E2 !important;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Roboto, Arial, sans-serif;
     }
 
     #content { 
         background: transparent !important; 
-        padding: 20px !important;
+        padding: 25px !important;
     }
 
-    /* --- 2. BLACK: Navbar Background ONLY --- */
-    #header {
-        background: #000000 !important; /* The ONLY black element */
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 10px 15px !important;
-        border: none !important;
-    }
-
-    #header * { color: #ffffff !important; }
-
-    /* --- 3. NAVY BLUE: Headers, Labels & Links --- */
-    /* Internal Card Headers changed from Black to Navy */
-    .module caption, .module h2, thead th, .module h3, .login #container::before {
-        background: navy blue !important; /* Navy Blue */
+    /* --- 2. NAVBAR / HEADER (KEEP BLACK) --- */
+    #header, .login #header {
+        background: #000000 !important;
         color: #ffffff !important;
         text-transform: capitalize !important;
-        padding: 12px !important;
         border: none !important;
+        letter-spacing: 0.5px;
     }
 
-    /* Text Labels and Breadcrumbs */
-    .aligned label, .breadcrumbs a, #user-tools span, .login label {
-        color: navy blue !important; /* Navy Blue */
-        font-weight: bold !important;
+    /* --- 3. OTHER HEADERS → NAVY BLUE --- */
+    .module caption, .module h2, thead th, .module h3 {
+        background: #000080 !important;
+        color: #ffffff !important;
+        text-transform: capitalize !important;
     }
 
     thead th a { color: #ffffff !important; }
 
-    /* --- 4. WHITE: Content Cards --- */
-    .module, #content-main, #content-related, .login #container {
-        background: #ffffff !important; /* White Cards */
-        border-radius: 15px !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-        overflow: hidden;
+    /* --- 4. WHITE MODULES (CARDS) --- */
+    .module, #content-main, .aligned, #content-related {
+        background: #ffffff !important;
+        border-radius: 0px !important;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08) !important;
         border: none !important;
+        margin-bottom: 25px !important;
+        padding: 15px !important;
+        transition: all 0.2s ease-in-out;
     }
 
-    /* --- 5. Inputs & Buttons --- */
+    .module:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+    }
+
+    /* --- 5. NAVY ACCENTS --- */
+    .aligned label, .breadcrumbs a, .deletelink {
+        color: #000080 !important;
+        font-weight: 600;
+        text-transform: capitalize !important;
+    }
+
+    .breadcrumbs {
+        background: #f4f6f8 !important;
+        color: #000080 !important;
+        border-bottom: 1px solid #ddd;
+        padding: 10px 15px;
+    }
+
+    /* --- 6. INPUTS --- */
     input[type="text"], input[type="password"], input[type="number"], 
     input[type="email"], select, textarea, .vTextField {
-        width: 100% !important;
-        padding: 10px !important;
         border: 1px solid #ccc !important;
-        background: #ffffff !important;
-        box-sizing: border-box !important;
+        padding: 10px !important;
+        transition: all 0.2s ease;
     }
 
-    /* Primary Action Buttons (Navy Blue to match brand) */
-    input[type="submit"], .button, .default {
-        background: navy blue !important; /* Navy Blue */
-        color: #ffffff !important;
-        border-radius: 6px !important;
-        padding: 10px 20px !important;
+    input:focus, select:focus, textarea:focus {
+        border-color: #000080 !important;
+        outline: none !important;
+        box-shadow: 0 0 0 2px rgba(0,0,128,0.1);
+    }
+
+    /* --- 7. MOBILE FIXES --- */
+    @media (max-width: 768px) {
+        .aligned label {
+            display: block !important;
+            float: none !important;
+            width: 100% !important;
+            padding: 5px 0 !important;
+        }
+        
+        input, select, textarea {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .form-row {
+            padding: 12px 15px !important;
+            border-bottom: 1px solid #eee !important;
+        }
+    }
+
+    /* --- 8. HEADER LAYOUT --- */
+    #header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 12px 18px !important;
+    }
+
+    #branding {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    #branding img { height: 34px; }
+
+    #user-tools {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* --- 9. BUTTONS → NAVY --- */
+    input[type="submit"], .button, .default, #user-tools form button {
+        background: #000080 !important;
+        color: white !important;
         border: none !important;
+        padding: 9px 16px !important;
+        border-radius: 0px !important;
+        text-transform: capitalize !important;
         cursor: pointer;
+        transition: all 0.2s ease;
     }
 
-    /* --- 6. Mobile Logic & Login --- */
+    input[type="submit"]:hover, .button:hover, .default:hover {
+        background: #000066 !important;
+        transform: translateY(-1px);
+    }
+
+    /* --- 10. LOGOUT BUTTON (RED) --- */
+    .logout-button, #user-tools form button[type="submit"] {
+        background: #ed1c24 !important;
+    }
+
+    .logout-button:hover {
+        background: #c4161c !important;
+    }
+
+    /* --- 11. LOGIN PAGE (CENTERED WHITE CARD) --- */
     body.login {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        min-height: 150vh !important;
+        min-height: 100vh;
     }
 
-    .login #container {
-        width: 300px !important;
-        background: #ffffff !important; /* White card for login */
+    body.login #container {
+        background: transparent !important;
     }
 
-    .login #container::before {
-        content: "Ulendo Coaches Login";
-        display: block;
-        text-align: center;
-    }
-
-    .login .submit-row input {
-        background: #00c853 !important; /* Green remain for "Go" action */
-        border-radius: 30px !important;
-        width: 100% !important;
-        color: white !important;
-    }
-
-    /* Cleanup */
-    .login #header, .login .breadcrumbs, .login #footer { display: none !important; }
-
-
-
-/* --- 7. Sidebar Toggle Logic --- */
-#nav-sidebar {
-    transition: transform 0.3s ease-in-out;
-    z-index: 1000;
-}
-
-/* Hide sidebar off-screen on mobile by default */
-@media (max-width: 1024px) {
-    #nav-sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 260px;
-        transform: translateX(-100%); /* Move off-screen */
+    body.login .module {
         background: #ffffff !important;
-        display: block !important; /* Ensure it's not 'display: none' */
+        padding: 30px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        width: 100%;
+        max-width: 350px;
     }
 
-    /* When JS adds the .open class */
-    #nav-sidebar.open {
-        transform: translateX(0); /* Slide into view */
+    body.login .form-row {
+        margin-bottom: 15px;
     }
-}
-
-/* Overlay Background */
-#sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    display: none; /* Hidden by default */
-    z-index: 999;
-}
-
-#sidebar-overlay.active {
-    display: block; /* Show when sidebar is open */
-}
-
 </style>
 {% endblock %}
 

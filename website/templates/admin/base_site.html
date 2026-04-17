@@ -132,7 +132,7 @@
 
     /* --- 9. BUTTONS → NAVY --- */
     input[type="submit"], .button, .default, #user-tools form button {
-        background: #000080 !important;
+        background: navy blue !important;
         color: white !important;
         border: none !important;
         padding: 9px 16px !important;
@@ -180,6 +180,22 @@
     body.login .form-row {
         margin-bottom: 15px;
     }
+
+
+/* Ensure the toggle button is visible and tappable */
+.nav-sidebar-toggler {
+    display: block !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 10px !important;
+    cursor: pointer !important;
+    z-index: 1300 !important; /* Ensure it stays above the header */
+}
+
+/* Force the icon color to be visible on black background */
+.nav-sidebar-toggler .icon {
+    color: #ffffff !important;
+}
 </style>
 {% endblock %}
 

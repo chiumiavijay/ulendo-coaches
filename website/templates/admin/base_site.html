@@ -182,182 +182,158 @@ input[type="email"], select, textarea, .vTextField {
     font-size: 10px !important;
     color: #666 !important;
 }
-/* --- FULL UPDATED LOGIN CSS --- */
+/* ================================
+   ULENDO MODERN LOGIN CSS
+   SKY BLUE + DARK NAVY + GLASS FEEL
+================================= */
 
-/* 1. Page Background (Sky Blue) & Perfect Centering */
+/* 1. PAGE BACKGROUND */
 body.login {
-    background-color: #81C2E2 !important;
+    background: linear-gradient(135deg, #81C2E2, #5fb0f2) !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     min-height: 100vh !important;
     margin: 0 !important;
     font-family: Arial, sans-serif;
+    padding-top: 0 !important;
 }
 
-/* 2. The Login Card (Black & Rounded) */
+/* 2. LOGIN CONTAINER (CARD) */
 .login #container {
-    width: 250px !important;
-    background: white !important;
-    padding: 0 !important;
-    border-radius: 20px !important; /* Rounded Form */
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
-    border: none !important;
-    margin: auto !important; /* Helps with centering */
-    overflow: hidden; /* Ensures header follows rounded corners */
-    position: relative;
+    width: 320px !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-radius: 22px !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+
+    overflow: hidden;
+    margin: auto !important;
 }
 
-/* 3. Header Inside the Form */
-.login #header {
-    background: #0a2540 !important; /* Darker grey/black */
-    color: #ffffff !important;
-    padding: 22px !important;
+/* 3. CUSTOM HEADER TITLE (ULENDO LOGIN) */
+.login #container::before {
+    content: "Ulendo Coaches Login";
+    display: block;
+
+    background: #0a2540;
+    color: #ffffff;
+
+    padding: 18px;
     text-align: center;
-    border-bottom: 1px solid #333;
-    margin-bottom: 0 !important;
-}
 
-.login #header a {
-    color: #fff !important;
+    font-size: 1.1rem;
     font-weight: bold;
-    text-transform: capitalize !important;
-    text-decoration: none;
-    font-size: 1.2em;
+    letter-spacing: 0.5px;
 }
 
-/* 4. Form Content & Inputs */
+/* 4. FORM AREA */
 .login #content-main {
-    padding: 25px 30px !important;
-    background: transparent !important;
+    padding: 25px 28px !important;
 }
 
-.login .form-row {
-    margin-bottom: 15px !important;
-    padding: 0 !important;
-    border: none !important;
-}
-
+/* 5. LABELS */
 .login label {
-    color: #81C2E2 !important; /* Blue labels on black background */
-    display: block !important;
-    margin-bottom: 8px !important;
-    font-size: 0.9em;
-    font-weight: bold;
-    text-transform: capitalize !important;
+    display: block;
+    margin-bottom: 6px;
+
+    color: #0a2540 !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: capitalize;
 }
 
-.login input[type="text"], 
+/* 6. INPUT FIELDS */
+.login input[type="text"],
 .login input[type="password"] {
     width: 100% !important;
     padding: 12px !important;
-    background: #252525 !important; /* Dark inputs */
-    border: 1px solid #444 !important;
-    color: #ffffff !important;
-    border-radius: 8px !important; /* Slightly rounded inputs */
-    box-sizing: border-box;
+
+    border-radius: 10px !important;
+    border: none !important;
+
+    background: rgba(255, 255, 255, 0.7) !important;
+    color: #0a2540;
+
     outline: none;
-    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+
+    transition: 0.3s ease;
 }
 
+/* focus effect */
 .login input:focus {
-    border-color: #00c853 !important; /* Glows Green on focus */
+    background: #ffffff !important;
+    box-shadow: 0 0 0 2px rgba(10, 37, 64, 0.25);
 }
 
-/* 5. The Submit Button (Green & Pill-Shaped) */
+/* 7. FORM ROWS */
+.login .form-row {
+    margin-bottom: 16px !important;
+}
+
+/* 8. BUTTON */
 .login .submit-row {
-    padding: 10px 30px 30px 30px !important;
-    margin: 0 !important;
+    padding: 10px 0 25px 0 !important;
     text-align: center;
     background: transparent !important;
-    border: none !important;
 }
 
 .login .submit-row input {
-    background: #0a2540 !important; /* Vivid Green */
-    color: #ffffff !important;
     width: 100% !important;
+
+    background: linear-gradient(135deg, #0a2540, #123a63) !important;
+    color: white !important;
+
     padding: 12px !important;
     border: none !important;
-    border-radius: 30px !important; /* Pill shape */
+
+    border-radius: 30px !important;
+
     font-weight: bold;
-    font-size: 1.1em;
-    text-transform: capitalize !important;
+    font-size: 1rem;
+
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease;
 }
 
-/* Button Animation */
+/* hover animation */
 .login .submit-row input:hover {
-    background: #0a2540 !important; /* Darker Green */
-    transform: translateY(-3px); /* Lifts up */
-    box-shadow: 0 5px 15px rgba(0, 200, 83, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(10, 37, 64, 0.4);
 }
 
+/* active click */
 .login .submit-row input:active {
     transform: translateY(1px);
 }
 
-/* 6. Clean up: Hide unnecessary elements */
-.login .breadcrumbs, 
-.login #footer, 
-.login .errornote,
-.login #user-tools {
+/* 9. ERROR MESSAGE */
+.login .errornote {
+    background: rgba(255, 0, 0, 0.1);
+    color: #c62828;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+}
+
+/* 10. HIDE UNNECESSARY ELEMENTS */
+.login #footer,
+.login #user-tools,
+.login .breadcrumbs {
     display: none !important;
 }
 
-/* Fix for error messages if they appear */
-.login .errorlist li {
-    color: #ff5252 !important;
-    list-style: none;
-    font-size: 0.8em;
-    margin-bottom: 5px;
+/* 11. MOBILE RESPONSIVE */
+@media (max-width: 420px) {
+    .login #container {
+        width: 90% !important;
+    }
 }
-
-
-/* --- Login Page Cleanup: Remove Header & Toggle --- */
-
-/* 1. Hide the entire header bar and sidebar elements on the login page only */
-.login #header, 
-.login .nav-sidebar-toggler, 
-.login #nav-sidebar, 
-.login #sidebar-overlay,
-.login #branding button {
-    display: none !important;
-}
-
-/* 2. Style a simple, clean title inside the login box instead */
-.login #container::before {
-    content: "Ulendo Coaches Login";
-    display: block;
-    background: #1a1a1a;
-    color: white;
-    padding: 20px;
-    font-weight: bold;
-    font-size: 1.2rem;
-    text-align: center;
-    border-bottom: 1px solid #333;
-}
-
-/* 3. Ensure the login card sits perfectly in the center without top-bar interference */
-body.login {
-    padding-top: 0 !important;
-}
-
-.login #container {
-    margin: auto !important;
-    border-top: none !important;
-}
-
-
-
-
-
-
-
-
-
-
 
 </style>
 {% endblock %}

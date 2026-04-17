@@ -1,16 +1,22 @@
-import urllib.parse
-
 def generate_whatsapp_link(phone, booking):
     message = f"""
-Hello, I have made a booking.
+*ULENDO COACHES BOOKING*
+
+Booking ID: {booking.id}
 
 Name: {booking.name}
-Route: {booking.route}
-Date: {booking.date}
+Phone: {booking.phone_number}
 
-I am sending my payment proof.
+Route: {booking.bus.departure} → {booking.bus.destination}
+Date: {booking.bus.departure_date}
+Time: {booking.bus.departure_time}
+
+Passengers: {booking.passengers}
+
+Please find my payment proof attached.
 """
 
-    encoded_message = urllib.parse.quote(message)
+    import urllib.parse
+    encoded_message = urllib.parse.quote(message.strip())
 
     return f"https://wa.me/{phone}?text={encoded_message}"

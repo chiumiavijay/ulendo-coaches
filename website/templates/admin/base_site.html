@@ -438,31 +438,46 @@ body.login {
     color: #ffffff !important;
 }
 
-/* 2. Fix Search Input and Button Text */
+/* 1. Fix the double plus sign (Keep your current CSS) */
+.addlink::before,
+.object-tools a.addlink::before {
+    content: "+" !important;
+    margin-right: 8px !important;
+    font-weight: bold;
+    color: #ffffff !important;
+}
+
+/* 2. Fix Search Layout (Use Flexbox to align) */
+/* Replace '.search-container' with your actual container ID or class */
+#changelist-search, 
+.search-container {
+    display: flex;
+    flex-direction: row; /* Keeps them in a line */
+    gap: 8px;            /* Adds space between them */
+    align-items: center;
+    width: 100%;
+}
+
 #searchbar {
+    flex: 1; /* Makes the input expand to fill available space */
     color: #0a2540 !important; 
     border: 1px solid #0a2540 !important;
     background: #ffffff !important;
     padding: 6px !important;
-    text-transform: none !important; /* Keep input text normal */
+    text-transform: none !important;
 }
 
-/* Target the Search Button specifically */
+/* Target the Search Button */
 input[type="submit"][value="Search"], 
 .search-form input[type="submit"] {
+    flex-shrink: 0; /* Prevents the button from being squashed */
     background-color: #0a2540 !important;
     color: #ffffff !important;
-    text-transform: capitalize !important; /* Force capitalize */
+    text-transform: capitalize !important;
     border: none !important;
     padding: 6px 12px !important;
     cursor: pointer;
 }
-
-
-
-
-
-
 
 
 

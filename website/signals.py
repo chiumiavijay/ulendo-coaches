@@ -11,22 +11,7 @@ from .pdf_utils import generate_ticket_pdf
 
 
 
-# website/signals.py
 
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
-def create_admin_user():
-    if not User.objects.filter(username="Vijay66").exists():
-        User.objects.create_superuser(
-            username="Vijay66",
-            email="admin@ulendo.com",
-            password="tryness6677"
-        )
-
-# This runs automatically when signals.py is imported
-create_admin_user()
 
 
 @receiver(post_save, sender=Booking)

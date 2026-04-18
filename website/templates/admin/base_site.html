@@ -434,17 +434,28 @@ body.login {
 
 {% block usertools %}
 <div id="user-tools">
-    <span class="text-white">Hi, <strong>{{ user.username }}</strong></span>
-    <div class="flex space-x-2 mt-1">
-        <a href="{% url 'home' %}" class="px-2 py-1 text-white text-xs" style="background: none; border-radius:4px;">View Site</a>
-        <form action="{% url 'admin:logout' %}" method="post" class="inline">
+    
+    <span class="user-greeting">
+        Hi, <strong>{{ user.username }}</strong>
+    </span>
+
+    <div class="user-actions">
+
+        <a href="{% url 'home' %}" class="user-link">
+            View Site
+        </a>
+
+        <form action="{% url 'admin:logout' %}" method="post">
             {% csrf_token %}
-            <button type="submit" class="px-2 py-1 text-white text-xs font-bold" style="background: none; border-radius:4px;">Log Out</button>
+            <button type="submit" class="user-logout">
+                Log Out
+            </button>
         </form>
+
     </div>
+
 </div>
 {% endblock %}
-
 {% block footer %}
 <div class="text-center py-6 text-sm text-gray-900">
     &copy; 2026 <strong>Ulendo Coaches & Logistic Services</strong>.

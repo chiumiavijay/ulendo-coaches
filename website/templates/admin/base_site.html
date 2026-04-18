@@ -408,20 +408,9 @@ body.login {
 
 
 
-/* 1. Ensure text is White on Dark/Navy backgrounds */
-.breadcrumbs,
-.breadcrumbs a,
-.module h2,
-.module caption,
-.results thead th,
-.results thead th a,
-.filter h2 {
-    color: #ffffff !important;
-}
-
-/* 2. Style the 'Add Bus' button to deep navy */
-.addlink,
-.button.addlink,
+/* 1. Fix 'Add' Button: Proper alignment, capitalize (not uppercase), and icon spacing */
+.addlink, 
+.button.addlink, 
 .object-tools a.addlink {
     background-color: #0a2540 !important;
     color: #ffffff !important;
@@ -429,16 +418,45 @@ body.login {
     padding: 8px 16px !important;
     border-radius: 5px !important;
     text-decoration: none !important;
+    
+    /* Layout */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Text control: Capitalize, not all-caps */
+    text-transform: capitalize !important; 
+    font-weight: bold;
 }
 
-/* Hover effect for the button */
-.addlink:hover,
-.button.addlink:hover,
-.object-tools a.addlink:hover {
-    background-color: #1a3a5a !important;
+/* Fix the icon position: Move the plus sign before the text */
+.addlink::before,
+.object-tools a.addlink::before {
+    content: "+" !important;
+    margin-right: 8px !important;
+    font-weight: bold;
     color: #ffffff !important;
 }
 
+/* 2. Fix Search Input and Button Text */
+#searchbar {
+    color: #0a2540 !important; 
+    border: 1px solid #0a2540 !important;
+    background: #ffffff !important;
+    padding: 6px !important;
+    text-transform: none !important; /* Keep input text normal */
+}
+
+/* Target the Search Button specifically */
+input[type="submit"][value="Search"], 
+.search-form input[type="submit"] {
+    background-color: #0a2540 !important;
+    color: #ffffff !important;
+    text-transform: capitalize !important; /* Force capitalize */
+    border: none !important;
+    padding: 6px 12px !important;
+    cursor: pointer;
+}
 
 
 

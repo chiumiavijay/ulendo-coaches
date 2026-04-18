@@ -183,7 +183,7 @@ input[type="email"], select, textarea, .vTextField {
     color: #666 !important;
 }
 /* ================================
-   ULENDO CLEAN LOGIN UI
+   ULENDO FINAL COMPACT LOGIN UI
 ================================= */
 
 /* 1. BACKGROUND */
@@ -197,7 +197,7 @@ body.login {
     font-family: Arial, sans-serif;
 }
 
-/* 2. REMOVE DJANGO HEADER + CLUTTER */
+/* 2. REMOVE DJANGO CLUTTER */
 .login #header,
 .login #user-tools,
 .login .breadcrumbs,
@@ -206,88 +206,90 @@ body.login {
     display: none !important;
 }
 
-/* 3. LOGIN CARD */
+/* 3. LOGIN CARD (WIDER + SHORTER) */
 .login #container {
-    width: 390px !important;
+    width: 400px !important;              /* longer inputs */
+    max-height: 390px;                   /* reduce full height */
+    height: auto !important;
 
     background: rgba(255, 255, 255, 0.28) !important;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(16px);
 
-    border-radius: 22px !important;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25) !important;
-
+    border-radius: 18px !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2) !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
 
     overflow: hidden;
     margin: auto !important;
 }
 
-/* 4. CUSTOM TITLE ONLY (NO HEADER BAR) */
+/* 4. TITLE */
 .login #container::before {
     content: "Ulendo Admin Login";
     display: block;
 
     background: none;
-    color: white;
+    color: #0a2540; /* deep navy */
 
     text-align: center;
-    padding: 15px;
+    padding: 10px;
 
-    font-size: 1.2rem;
-    font-weight: bold;
-    letter-spacing: 0.5px;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
-/* 5. FORM AREA */
+/* 5. REMOVE HEIGHT STRETCH */
+.login #content {
+    height: auto !important;
+}
+
+/* 6. FORM AREA (TIGHT) */
 .login #content-main {
-    padding: 18px 22px !important;
+    padding: 12px 16px !important;
 }
 
-/* 6. LABELS */
+/* 7. LABELS */
 .login label {
-    display: block;
-    margin-bottom: 6px;
-
+    margin-bottom: 3px;
     color: #0a2540 !important;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
-/* 7. INPUT FIELDS (WIDER + PLACEHOLDERS SUPPORT) */
+/* 8. INPUTS (LONG + SLIM) */
 .login input[type="text"],
 .login input[type="password"] {
     width: 100% !important;
-    padding: 14px !important;   /* slightly bigger */
-    font-size: 14px;
+    padding: 10px 12px !important;
 
-    border-radius: 12px !important;
+    border-radius: 10px !important;
     border: none !important;
 
-    background: rgba(255, 255, 255, 0.75) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
     color: #0a2540;
+
+    font-size: 13px;
 
     outline: none;
     box-sizing: border-box;
 
-    transition: 0.3s ease;
+    transition: 0.25s ease;
 }
 
-/* focus effect */
+/* focus */
 .login input:focus {
     background: #ffffff !important;
-    box-shadow: 0 0 0 2px rgba(10, 37, 64, 0.25);
+    box-shadow: 0 0 0 2px rgba(10, 37, 64, 0.2);
 }
 
-/* 8. FORM ROW SPACING */
+/* 9. FORM ROW (VERY TIGHT) */
 .login .form-row {
     margin-bottom: 6px !important;
 }
 
-/* 9. BUTTON */
+/* 10. BUTTON */
 .login .submit-row {
-    padding: 8px 0 18px 0 !important;
-    text-align: center;
+    padding: 5px 0 10px 0 !important;
 }
 
 .login .submit-row input {
@@ -296,37 +298,32 @@ body.login {
     background: linear-gradient(135deg, #0a2540, #123a63) !important;
     color: white !important;
 
-    padding: 13px !important;
-    border: none !important;
+    padding: 10px !important;
+    border-radius: 25px !important;
 
-    border-radius: 30px !important;
-
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: bold;
 
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.3s ease;
 }
 
 .login .submit-row input:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(10, 37, 64, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(10, 37, 64, 0.35);
 }
 
-/* 10. ERROR MESSAGE */
+/* 11. ERROR */
 .login .errornote {
-    background: rgba(255, 0, 0, 0.08);
-    color: #c62828;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    font-size: 0.85rem;
+    margin-bottom: 8px;
+    padding: 6px;
+    font-size: 0.75rem;
 }
 
-/* 11. MOBILE */
+/* 12. MOBILE */
 @media (max-width: 420px) {
     .login #container {
-        width: 92% !important;
+        width: 95% !important;
     }
 }
 

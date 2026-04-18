@@ -27,25 +27,29 @@ body {
     padding: 20px !important;
 }
 
-/* 2. HEADER (CLEAN NAVY) */
+/* ================================
+   NAVBAR (BLACK ONLY)
+================================= */
+
 #header {
-    background: #0a2540 !important;
+    background: #000000 !important;   /* PURE BLACK */
     padding: 10px 0;
 }
 
+/* keep text readable */
 #header * {
     color: #ffffff !important;
     text-transform: capitalize !important;
 }
 
-/* REMOVE RED + RANDOM COLORS */
+/* remove hover weird colors */
 #user-tools a,
 #user-tools a:visited {
     color: #ffffff !important;
 }
 
 #user-tools a:hover {
-    color: #cfd8dc !important;
+    color: #cfcfcf !important;
 }
 
 /* 3. SIDEBAR (STUCK LEFT) */
@@ -344,9 +348,7 @@ body.login {
     <button type="button" onclick="toggleSidebar(event)" class="lg:hidden text-white text-3xl pr-2 focus:outline-none" style="background:none; border:none; cursor:pointer;">
         ☰
     </button>
-    <img src="{% static 'images/logo.png' %}" class="h-10 w-auto" alt="Logo">
-    <h1 class="text-md font-bold text-white">
-        <a href="{% url 'admin:index' %}" style="color: white; text-decoration: none;">Ulendo Coaches</a>
+        <a href="{% url 'admin:index' %}" style="color: white; text-decoration: none;">Ulendo Coaches- Administration</a>
     </h1>
 </div>
 {% endblock %}

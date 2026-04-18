@@ -2,6 +2,15 @@ from pathlib import Path
 import os
 import dj_database_url
 
+
+
+
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL')
+    )
+}
 # -------------------
 # BASE DIR
 # -------------------
@@ -13,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this')
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '.onrender.com',

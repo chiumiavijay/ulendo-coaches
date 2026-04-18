@@ -3,59 +3,63 @@
 
 {% block content %}
 
-    <div class="bg-white/30 backdrop-blur-xl border border-white/40 rounded-xl shadow-xl p-6">
+<div class="p-6 bg-sky-100 min-h-screen">
 
-        <h2 class="text-xl font-bold text-[#0b1f3a] mb-4">
-            Recent Activity
-        </h2>
+    <div class="flex justify-center">
+        <div class="bg-white/30 backdrop-blur-xl border border-white/40 rounded-xl shadow-xl p-6 w-full max-w-3xl">
 
-        {% get_admin_log 30 as admin_log for_user user %}
+            <h2 class="text-xl font-bold text-[#0b1f3a] mb-4">
+                Recent Activity
+            </h2>
 
-        {% if admin_log %}
+            {% get_admin_log 30 as admin_log for_user user %}
 
-            <ul class="space-y-2">
+            {% if admin_log %}
 
-                {% for entry in admin_log %}
+                <ul class="space-y-2">
 
-                    <li class="flex justify-between items-center border-b py-2 text-sm">
+                    {% for entry in admin_log %}
 
-                        <div>
+                        <li class="flex justify-between items-center border-b border-white/30 py-2 text-sm">
 
-                            {% if entry.is_addition %}
-                                <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">Added</span>
+                            <div>
 
-                            {% elif entry.is_change %}
-                                <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">Updated</span>
+                                {% if entry.is_addition %}
+                                    <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">Added</span>
 
-                            {% elif entry.is_deletion %}
-                                <span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Deleted</span>
+                                {% elif entry.is_change %}
+                                    <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">Updated</span>
 
-                            {% else %}
-                                <span class="bg-gray-500 text-white px-2 py-1 rounded text-xs">Action</span>
-                            {% endif %}
+                                {% elif entry.is_deletion %}
+                                    <span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Deleted</span>
 
-                            <span class="ml-2 text-gray-800">
-                                {{ entry.content_type.name }} ({{ entry.object_repr }})
-                            </span>
+                                {% else %}
+                                    <span class="bg-gray-500 text-white px-2 py-1 rounded text-xs">Action</span>
+                                {% endif %}
 
-                        </div>
+                                <span class="ml-2 text-gray-800">
+                                    {{ entry.content_type.name }} ({{ entry.object_repr }})
+                                </span>
 
-                        <div class="text-gray-500 text-xs">
-                            {{ entry.user }}
-                        </div>
+                            </div>
 
-                    </li>
+                            <div class="text-gray-500 text-xs">
+                                {{ entry.user }}
+                            </div>
 
-                {% endfor %}
+                        </li>
 
-            </ul>
+                    {% endfor %}
 
-        {% else %}
+                </ul>
 
-            <p class="text-gray-600">No recent activity.</p>
+            {% else %}
 
-        {% endif %}
+                <p class="text-gray-600">No recent activity.</p>
 
+            {% endif %}
+
+        </div>
     </div>
 
 </div>

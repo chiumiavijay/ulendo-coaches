@@ -3,45 +3,48 @@
 
 {% block content %}
 
-<div class="dashboard-container">
+<div class="p-6 bg-[#0b1f3a] min-h-screen">
 
-    <div class="activity-card">
+    <div class="bg-white rounded-xl shadow-xl p-6">
 
-        <h2>Recent Activity</h2>
+        <h2 class="text-xl font-bold text-[#0b1f3a] mb-4">
+            Recent Activity
+        </h2>
 
         {% get_admin_log 30 as admin_log for_user user %}
 
         {% if admin_log %}
 
-            <ul class="activity-list">
+            <ul class="space-y-2">
 
                 {% for entry in admin_log %}
 
-                    <li>
+                    <li class="flex justify-between items-center border-b py-2 text-sm">
 
-                        {% if entry.is_addition %}
+                        <div>
 
-                            <span class="badge green">✔ Added</span>
-                            {{ entry.content_type.name }} ({{ entry.object_repr }})
+                            {% if entry.is_addition %}
+                                <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">Added</span>
 
-                        {% elif entry.is_change %}
+                            {% elif entry.is_change %}
+                                <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">Updated</span>
 
-                            <span class="badge blue">✏ Updated</span>
-                            {{ entry.content_type.name }} ({{ entry.object_repr }})
+                            {% elif entry.is_deletion %}
+                                <span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Deleted</span>
 
-                        {% elif entry.is_deletion %}
+                            {% else %}
+                                <span class="bg-gray-500 text-white px-2 py-1 rounded text-xs">Action</span>
+                            {% endif %}
 
-                            <span class="badge red">❌ Deleted</span>
-                            {{ entry.content_type.name }} ({{ entry.object_repr }})
+                            <span class="ml-2 text-gray-800">
+                                {{ entry.content_type.name }} ({{ entry.object_repr }})
+                            </span>
 
-                        {% else %}
+                        </div>
 
-                            <span class="badge gray">🔹 Action</span>
-                            {{ entry.object_repr }}
-
-                        {% endif %}
-
-                        <span class="user">— {{ entry.user }}</span>
+                        <div class="text-gray-500 text-xs">
+                            {{ entry.user }}
+                        </div>
 
                     </li>
 
@@ -50,7 +53,9 @@
             </ul>
 
         {% else %}
-            <p>No recent activity.</p>
+
+            <p class="text-gray-600">No recent activity.</p>
+
         {% endif %}
 
     </div>

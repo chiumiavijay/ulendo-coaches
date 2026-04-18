@@ -3,26 +3,58 @@
 
 {% block content %}
 
-{{ block.super }}
+<div class="dashboard-container">
 
-<div style="margin-top:20px;">
-    <h2>Recent Actions</h2>
+    <div class="activity-card">
 
-    {% get_admin_log 10 as admin_log for_user user %}
+        <h2>Recent Activity</h2>
 
-    {% if admin_log %}
-        <ul>
-            {% for entry in admin_log %}
-                <li>
-                    {{ entry.action_time }} - 
-                    {{ entry.user }} - 
-                    {{ entry.object_repr }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No recent actions found.</p>
-    {% endif %}
+        {% get_admin_log 30 as admin_log for_user user %}
+
+        {% if admin_log %}
+
+            <ul class="activity-list">
+
+                {% for entry in admin_log %}
+
+                    <li>
+
+                        {% if entry.is_addition %}
+
+                            <span class="badge green">✔ Added</span>
+                            {{ entry.content_type.name }} ({{ entry.object_repr }})
+
+                        {% elif entry.is_change %}
+
+                            <span class="badge blue">✏ Updated</span>
+                            {{ entry.content_type.name }} ({{ entry.object_repr }})
+
+                        {% elif entry.is_deletion %}
+
+                            <span class="badge red">❌ Deleted</span>
+                            {{ entry.content_type.name }} ({{ entry.object_repr }})
+
+                        {% else %}
+
+                            <span class="badge gray">🔹 Action</span>
+                            {{ entry.object_repr }}
+
+                        {% endif %}
+
+                        <span class="user">— {{ entry.user }}</span>
+
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+            <p>No recent activity.</p>
+        {% endif %}
+
+    </div>
+
 </div>
 
 {% endblock %}

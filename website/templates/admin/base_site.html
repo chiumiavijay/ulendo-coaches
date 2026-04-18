@@ -328,6 +328,71 @@ body.login {
     }
 }
 
+
+/* ================================
+   USER TOOLS CLEAN HEADER STYLE
+================================= */
+
+#user-tools {
+    display: flex !important;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    color: white !important;
+    font-size: 13px;
+}
+
+/* greeting */
+.user-greeting {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* container for buttons */
+.user-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* buttons (View Site + Logout) */
+.user-link,
+.user-logout {
+    background: transparent !important;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #ffffff !important;
+
+    padding: 5px 10px;
+    font-size: 12px;
+
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+/* hover */
+.user-link:hover,
+.user-logout:hover {
+    background: rgba(255,255,255,0.15) !important;
+}
+
+/* logout button reset */
+.user-logout {
+    font-family: inherit;
+}
+
+
+
+
+
+
+
+
+
+
+
 </style>
 {% endblock %}
 

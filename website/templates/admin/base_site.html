@@ -11,176 +11,158 @@
 <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-    /* --- 1. Global Layout & Background --- */
-    body { 
-        background: #81C2E2 !important; 
-        margin: 0;
-        padding: 0;
-    }
+/* ================================
+   ULENDO ADMIN CLEAN UI
+================================= */
 
-    #content { 
-        background: transparent !important; 
-        padding: 20px !important;
-    }
-
-    /* --- 2. Black Header Styling --- */
-    #header {
-        background: #000000 !important;
-        padding: 10px 0;
-        z-index: 1100;
-    }
-
-    #header * { 
-        color: #ffffff !important; 
-        text-transform: capitalize !important; 
-    }
-
-    /* --- 3. White Cards & Black Card Headers --- */
-    .module {
-        background: #0a2540 !important;
-        border-radius: 15px !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-        border: none !important;
-        margin-bottom: 25px !important;
-        overflow: hidden;
-    }
-
-    /* Updated internal headers to Black */
-    .module caption, .module h2, thead th, .module h3 {
-        background: #0a2540 !important; 
-        color: #ffffff !important;
-        text-transform: capitalize !important; 
-        padding: 12px !important;
-        border: none !important;
-    }
-
-    /* Ensure table links inside black headers are white */
-    thead th a { color: #ffffff !important; }
-
-    /* --- 4. Sidebar & Toggle Fixes --- */
-    #nav-sidebar {
-        background: #ffffff !important;
-        transition: transform 0.3s ease-in-out !important;
-    }
-
-    #nav-sidebar .section h2 {
-        background: #0a2540 !important; /* Sidebar headers also black */
-        color: white !important;
-        text-transform: capitalize !important;
-    }
-
-    @media (max-width: 1024px) {
-        #nav-sidebar {
-            position: fixed !important;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 280px;
-            z-index: 1200 !important;
-            transform: translateX(-100%);
-            display: block !important;
-            visibility: visible !important;
-        }
-
-        #nav-sidebar.open { transform: translateX(0) !important; }
-
-        #sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1150;
-        }
-
-        #sidebar-overlay.active { display: block; }
-    }
-
-    /* Desktop Side-by-Side */
-    @media (min-width: 1025px) {
-        #content-main { float: left; width: 68% !important; }
-        #content-related { 
-            float: right; 
-            width: 28% !important; 
-            background: #ffffff !important; 
-            border-radius: 15px !important; 
-            padding: 20px !important; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-        }
-        #content::after { content: ""; display: table; clear: both; }
-    }
-
-    /* --- 5. Buttons --- */
-    input[type="submit"], .button, .default {
-        background: #0a2540 !important;
-        border: none !important;
-        border-radius: 6px !important;
-        text-transform: capitalize !important;
-    }
-
-
-/* --- Fix for Small Cards and Cramped Inputs --- */
-
-/* Force the white container to be full width on mobile */
-#content-main, .module, .aligned {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
+/* 1. GLOBAL BACKGROUND */
+body {
+    background: #81C2E2 !important;
+    margin: 0;
+    padding: 0;
 }
 
-/* Make labels stack ABOVE inputs so they have more room */
-.aligned label {
-    display: block !important;
-    float: none !important;
-    width: 100% !important;
-    padding: 5px 0 !important;
-    text-align: left !important;
+#content {
+    background: transparent !important;
+    padding: 20px !important;
 }
 
-/* Force inputs, selects, and textareas to be full width */
-input[type="text"], input[type="password"], input[type="number"], 
-input[type="email"], select, textarea, .vTextField {
-    width: 80% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-    padding: 2px !important;
-    height: auto !important;
+/* 2. HEADER (CLEAN NAVY) */
+#header {
+    background: #0a2540 !important;
+    padding: 10px 0;
 }
 
-/* Fix the spacing for Date/Time widgets */
-.form-row {
-    padding: 15px !important;
+#header * {
+    color: #ffffff !important;
+    text-transform: capitalize !important;
+}
+
+/* REMOVE RED + RANDOM COLORS */
+#user-tools a,
+#user-tools a:visited {
+    color: #ffffff !important;
+}
+
+#user-tools a:hover {
+    color: #cfd8dc !important;
+}
+
+/* 3. SIDEBAR (STUCK LEFT) */
+#nav-sidebar {
+    background: #ffffff !important;
+    position: fixed !important;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 260px;
+    z-index: 1000;
+}
+
+/* sidebar headers */
+#nav-sidebar .section h2 {
+    background: #0a2540 !important;
+    color: #ffffff !important;
+}
+
+/* remove content shift issues */
+#content, #content-main {
+    margin-left: 260px !important;
+}
+
+/* toggle fix */
+.nav-sidebar-toggler {
+    position: fixed !important;
+    left: 0;
+    top: 10px;
+    z-index: 1100;
+}
+
+/* 4. CARDS (WHITE CLEAN) */
+.module {
+    background: #ffffff !important;   /* FIXED: now white */
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    border: none !important;
+    margin-bottom: 20px !important;
     overflow: hidden;
 }
 
-.datetimeshortcuts {
-    display: block;
-    margin-top: 8px;
+/* CARD HEADERS */
+.module h2,
+.module caption,
+thead th {
+    background: transparent !important;
+    color: #0a2540 !important;
+    font-weight: 700;
+    padding: 12px !important;
+    border-bottom: 1px solid #eee;
 }
 
+/* links */
+a {
+    color: #0a2540 !important;
+}
 
+/* 5. BUTTONS */
+input[type="submit"],
+.button,
+.default {
+    background: #0a2540 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    border: none !important;
+}
 
-/* Reduce vertical space between input rows */
+input[type="submit"]:hover,
+.button:hover {
+    background: #123a63 !important;
+}
+
+/* 6. FORM IMPROVEMENTS */
+
+/* full width layout */
+#content-main, .module, .aligned {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* labels above inputs */
+.aligned label {
+    display: block !important;
+    width: 100% !important;
+    padding: 4px 0 !important;
+}
+
+/* inputs */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+    width: 100% !important;
+    padding: 10px !important;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* spacing */
 .aligned .form-row {
-    padding: 8px 15px !important; /* Reduced from 15px/20px to 8px */
+    padding: 10px 15px !important;
     border-bottom: 1px solid #f0f0f0 !important;
 }
 
-/* Remove extra margin from headers inside the cards */
-.module h2, .module caption {
-    margin-bottom: 0 !important;
-}
-
-/* Tighten the space between label and input */
-.aligned label {
-    padding-bottom: 2px !important;
-    margin-bottom: 0 !important;
-}
-
-/* Shrink the help text (Note: You are 2 hours ahead...) */
+/* help text */
 .help, .help-inline {
     margin-top: 2px !important;
-    font-size: 10px !important;
+    font-size: 11px !important;
     color: #666 !important;
+}
+
+/* 7. REMOVE UNUSED UI */
+#footer {
+    display: none !important;
 }
 /* ================================
    ULENDO FINAL COMPACT LOGIN UI

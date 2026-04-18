@@ -3,6 +3,11 @@ import os
 import dj_database_url
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+
+
 
 
 
@@ -11,10 +16,6 @@ DATABASES = {
         default=os.getenv('DATABASE_URL')
     )
 }
-# -------------------
-# BASE DIR
-# -------------------
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # -------------------
@@ -93,16 +94,6 @@ TEMPLATES = [
 # WSGI
 # -------------------
 WSGI_APPLICATION = 'ulendo.wsgi.application'
-
-
-# -------------------
-# DATABASE (Render-ready)
-# -------------------
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3'
-    )
-}
 
 
 # -------------------

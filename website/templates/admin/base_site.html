@@ -260,13 +260,17 @@ body.login {
 }
 
 
+/* 10. BUTTON - STAYS AT BOTTOM */
+.login form {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
 
-    
-    
-
-/* 10. BUTTON */
 .login .submit-row {
-    padding: 5px 0 10px 0 !important;
+    margin-top: auto !important;   /* pushes button to bottom */
+    padding: 12px 0 12px 0 !important;
+    text-align: center !important;
 }
 
 .login .submit-row input {
@@ -277,19 +281,25 @@ body.login {
 
     padding: 8px !important;
     border-radius: 25px !important;
+    border: none !important;
 
     font-size: 0.9rem;
     font-weight: bold;
 
     cursor: pointer;
     transition: 0.3s ease;
-    text-aling: center
+    text-align: center !important;   /* fixed typo */
 }
 
 .login .submit-row input:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(10, 37, 64, 0.35);
 }
+
+
+
+    
+
 
 /* 11. ERROR */
 .login .errornote {

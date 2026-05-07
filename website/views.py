@@ -16,6 +16,33 @@ from website.notifications.utils import send_notifications
 from django.contrib.admin.views.decorators import staff_member_required
 
 
+
+
+
+
+
+
+
+
+
+import africastalking
+
+# initialize once
+africastalking.initialize(
+    os.getenv("AT_USERNAME"),
+    os.getenv("AT_API_KEY")
+)
+
+sms = africastalking.SMS
+
+
+def send_admin_sms(message):
+    try:
+        sms.send(message, ["+265999885586"])  # replace with admin number
+    except Exception as e:
+        print("SMS error:", e)
+
+
 @staff_member_required
 def admin_dashboard(request):
     total_bookings = Booking.objects.count()

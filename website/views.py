@@ -194,32 +194,32 @@ return render(request, 'booking.html', {
             })
 
         # ================= PARCEL =================
-        elif service_type == 'parcel':
+elif service_type == 'parcel':
 
-            sender_name = request.POST.get('sender_name')
-            receiver_name = request.POST.get('receiver_name')
-            pickup_location = request.POST.get('pickup_location')
-            destination = request.POST.get('destination')
-            description = request.POST.get('description')
-            email = request.POST.get('email')
-            phone = request.POST.get('phone')
+    sender_name = request.POST.get('sender_name')
+    receiver_name = request.POST.get('receiver_name')
+    pickup_location = request.POST.get('pickup_location')
+    destination = request.POST.get('destination')
+    description = request.POST.get('description')
+    email = request.POST.get('email')
+    phone = request.POST.get('phone')
 
-            tracking_number = get_random_string(10).upper()
+    tracking_number = get_random_string(10).upper()
 
-            Parcel.objects.create(
-                sender_name=sender_name,
-                receiver_name=receiver_name,
-                pickup_location=pickup_location,
-                destination=destination,
-                description=description,
-                email=email,
-                phone=phone,
-                tracking_number=tracking_number
-            )
+    Parcel.objects.create(
+        sender_name=sender_name,
+        receiver_name=receiver_name,
+        pickup_location=pickup_location,
+        destination=destination,
+        description=description,
+        email=email,
+        phone=phone,
+        tracking_number=tracking_number
+    )
 
-            send_mail(
-                subject='Ulendo Coaches - Parcel Booked',
-                message=f"""
+    send_mail(
+        subject='Ulendo Coaches - Parcel Booked',
+        message=f"""
 Hello {sender_name},
 
 Your parcel has been booked successfully.
@@ -229,23 +229,29 @@ Your parcel has been booked successfully.
 ➡️ To: {destination}
 
 Thank you.
-                """,
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[email],
-                fail_silently=False,
-            )
+        """,
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[email],
+        fail_silently=False,
+    )
 
-            return redirect('parcel_success', tracking_number=tracking_number)
+    # (Optional but recommended) Admin SMS notification
+    message = f"""
+NEW PARCEL BOOKING
 
-        else:
-            messages.error(request, "Please select a service type.")
+Sender: {sender_name}
+Receiver: {receiver_name}
+From: {pickup_location}
+To: {destination}
+Tracking: {tracking_number}
+"""
 
-    return render(request, 'booking.html', {
-        'form': form,
-        'bus': bus,
-        'available_seats': available_seats
-    })
-            
+    send_admin_sms(message)
+
+    return redirect('parcel_success', tracking_number=tracking_number)
+
+else:
+    messages.error(request, "Please select a service type.")       
 
 # -------------------
 

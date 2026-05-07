@@ -369,17 +369,14 @@ Date: {parcel.created_at}
     return response
 
 
-
-
 from django.http import HttpResponse
+import os
 
 def test_sms(request):
-    message = """
-ULENDO TEST SMS
+    message = "ULENDO TEST SMS - SMS system working ✔"
 
-If you receive this, SMS system is working ✔
-"""
+    recipients = [os.getenv("ADMIN_PHONE")]  # OR put your number directly
 
-    send_admin_sms(message)
+    send_sms(message, recipients)
 
     return HttpResponse("SMS triggered. Check your phone.")

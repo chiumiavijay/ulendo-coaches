@@ -150,31 +150,29 @@ def booking(request, bus_id):
 
             form = BookingForm(request.POST)
 
-            if form.is_valid():
-                booking = form.save(commit=False)
-                booking.bus = bus
 
-                booking.email = request.POST.get('email')
+if form.is_valid():
+    booking = form.save(commit=False)
+    booking.bus = bus
+    booking.email = request.POST.get('email')
 
-                if booking.passengers > available_seats:
-                    messages.error(
-                        request,
-                        f"Only {available_seats} seats available."
-                    )
-                    return render(request, 'booking.html', {
-                        'form': form,
-                        'bus': bus,
-                        'available_seats': available_seats
-                    })
+    if booking.passengers > available_seats:
+        messages.error(request, f"Only {available_seats} seats available.")
+        return render(request, 'booking.html', {
+            'form': form,
+            'bus': bus,
+            'available_seats': available_seats
+        })
 
-                booking.save()
+    booking.save()
 
-                total_price = booking.passengers * bus.price_per_seat
+    total_price = booking.passengers * bus.price_per_seat
 
-                # ✅ Notification engine
-                result = send_notifications(booking)
-# 📲 ADMIN SMS NOTIFICATION (ADD THIS)
-message = f"""
+    # ✅ Notification engine
+    result = send_notifications(booking)
+
+    # 📲 ADMIN SMS NOTIFICATION
+    message = f"""
 NEW PASSENGER BOOKING
 
 Name: {booking.name}
@@ -184,13 +182,12 @@ Passengers: {booking.passengers}
 Amount: {total_price}
 """
 
-send_admin_sms(message)
+    send_admin_sms(message)
+
+    return redirect('success', booking_id=booking.id)
 
 
-
-return redirect('success', booking_id=booking.id)
-
-            return render(request, 'booking.html', {
+return render(request, 'booking.html', {
                 'form': form,
                 'bus': bus,
                 'available_seats': available_seats

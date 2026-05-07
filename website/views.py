@@ -375,7 +375,7 @@ import os
 def test_sms(request):
     message = "ULENDO TEST SMS - SMS system working ✔"
 
-    recipients = [os.getenv("ADMIN_PHONE")]  # OR put your number directly
+    recipients = ["+265999885586"]
 
     send_sms(message, recipients)
 

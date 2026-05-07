@@ -139,6 +139,18 @@ def available_buses(request):
     return render(request, 'buses.html', {'buses': buses})
 
 
+import os
+
+print("===== EMAIL DEBUG =====")
+print("settings.EMAIL_HOST:", settings.EMAIL_HOST)
+print("settings.EMAIL_PORT:", settings.EMAIL_PORT)
+print("settings.EMAIL_HOST_USER:", settings.EMAIL_HOST_USER)
+
+print("ENV EMAIL_HOST:", os.environ.get("EMAIL_HOST"))
+print("ENV EMAIL_USER:", os.environ.get("EMAIL_HOST_USER"))
+print("=======================")
+
+
 
 def booking(request, bus_id):
     bus = get_object_or_404(Bus, id=bus_id)

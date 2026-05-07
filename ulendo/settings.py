@@ -149,3 +149,10 @@ EMAIL_HOST_USER = 'chiumiavijay75@gmail.com'
 EMAIL_HOST_PASSWORD = 'fyxuwqugjngnwsib'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+# ========================
+# CUSTOM PROJECT SETTINGS
+# ========================
+
+ADMIN_PHONE = "+265999885586"

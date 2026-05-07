@@ -11,6 +11,9 @@ def redirect_to_dashboard(request):
 urlpatterns = [
 
 
+path('test-sms/', views.test_sms, name='test_sms'),
+
+
 
 
 path('logout/', LogoutView.as_view(next_page='login'), name='logout'),

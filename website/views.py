@@ -187,7 +187,8 @@ Amount: {total_price}
 send_admin_sms(message)
 
 
-                return redirect('success', booking_id=booking.id)
+
+return redirect('success', booking_id=booking.id)
 
             return render(request, 'booking.html', {
                 'form': form,

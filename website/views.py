@@ -24,23 +24,23 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 
 
-
+import os
 import africastalking
 
-# initialize once
-africastalking.initialize(
-    os.getenv("AT_USERNAME"),
-    os.getenv("AT_API_KEY")
-)
+sms = None
 
-sms = africastalking.SMS
+def init_africas_talking():
+    global sms
 
+    username = os.getenv("AT_USERNAME")
+    api_key = os.getenv("AT_API_KEY")
 
-def send_admin_sms(message):
-    try:
-        sms.send(message, ["+265999885586"])  # replace with admin number
-    except Exception as e:
-        print("SMS error:", e)
+    if username and api_key:
+        africastalking.initialize(username, api_key)
+        sms = africastalking.SMS
+        print("AfricasTalking initialized successfully")
+    else:
+        print("AfricasTalking NOT initialized - missing env vars")
 
 
 @staff_member_required

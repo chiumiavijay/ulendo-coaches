@@ -23,7 +23,7 @@ DATABASES = {
 # -------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '.onrender.com',

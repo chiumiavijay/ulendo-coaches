@@ -381,9 +381,11 @@ from django.http import HttpResponse
 import os
 
 def test_sms(request):
-    message = "ULENDO TEST SMS - SMS system working ✔"
+    init_africas_talking()
 
-    recipients = ["+265999885586"]
+    message = "ULENDO TEST SMS - SMS working ✔"
+
+    recipients = ["+265999885586"]  # ✅ correct format
 
     send_sms(message, recipients)
 

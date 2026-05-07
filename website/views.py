@@ -173,6 +173,19 @@ def booking(request, bus_id):
 
                 # ✅ Notification engine
                 result = send_notifications(booking)
+# 📲 ADMIN SMS NOTIFICATION (ADD THIS)
+message = f"""
+NEW PASSENGER BOOKING
+
+Name: {booking.name}
+Phone: {booking.phone}
+Bus: {bus.departure} → {bus.destination}
+Passengers: {booking.passengers}
+Amount: {total_price}
+"""
+
+send_admin_sms(message)
+
 
                 return redirect('success', booking_id=booking.id)
 

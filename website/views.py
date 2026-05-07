@@ -42,6 +42,16 @@ def init_africas_talking():
     else:
         print("AfricasTalking NOT initialized - missing env vars")
 
+def send_sms(message, recipients):
+    if sms is None:
+        print("SMS not initialized")
+        return
+
+    try:
+        sms.send(message, recipients)
+    except Exception as e:
+        print("SMS error:", e)
+
 
 @staff_member_required
 def admin_dashboard(request):

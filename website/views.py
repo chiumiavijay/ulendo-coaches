@@ -150,29 +150,26 @@ def booking(request, bus_id):
 
             form = BookingForm(request.POST)
 
+            if form.is_valid():
+                booking = form.save(commit=False)
+                booking.bus = bus
+                booking.email = request.POST.get('email')
 
-if form.is_valid():
-    booking = form.save(commit=False)
-    booking.bus = bus
-    booking.email = request.POST.get('email')
+                if booking.passengers > available_seats:
+                    messages.error(request, f"Only {available_seats} seats available.")
+                    return render(request, 'booking.html', {
+                        'form': form,
+                        'bus': bus,
+                        'available_seats': available_seats
+                    })
 
-    if booking.passengers > available_seats:
-        messages.error(request, f"Only {available_seats} seats available.")
-        return render(request, 'booking.html', {
-            'form': form,
-            'bus': bus,
-            'available_seats': available_seats
-        })
+                booking.save()
 
-    booking.save()
+                total_price = booking.passengers * bus.price_per_seat
 
-    total_price = booking.passengers * bus.price_per_seat
+                send_notifications(booking)
 
-    # ✅ Notification engine
-    result = send_notifications(booking)
-
-    # 📲 ADMIN SMS NOTIFICATION
-    message = f"""
+                send_admin_sms(f"""
 NEW PASSENGER BOOKING
 
 Name: {booking.name}
@@ -180,63 +177,51 @@ Phone: {booking.phone}
 Bus: {bus.departure} → {bus.destination}
 Passengers: {booking.passengers}
 Amount: {total_price}
-"""
+""")
 
-    send_admin_sms(message)
-
-    return redirect('success', booking_id=booking.id)
-
-
-return render(request, 'booking.html', {
-                'form': form,
-                'bus': bus,
-                'available_seats': available_seats
-            })
+                return redirect('success', booking_id=booking.id)
 
         # ================= PARCEL =================
-elif service_type == 'parcel':
+        elif service_type == 'parcel':
 
-    sender_name = request.POST.get('sender_name')
-    receiver_name = request.POST.get('receiver_name')
-    pickup_location = request.POST.get('pickup_location')
-    destination = request.POST.get('destination')
-    description = request.POST.get('description')
-    email = request.POST.get('email')
-    phone = request.POST.get('phone')
+            sender_name = request.POST.get('sender_name')
+            receiver_name = request.POST.get('receiver_name')
+            pickup_location = request.POST.get('pickup_location')
+            destination = request.POST.get('destination')
+            description = request.POST.get('description')
+            email = request.POST.get('email')
+            phone = request.POST.get('phone')
 
-    tracking_number = get_random_string(10).upper()
+            tracking_number = get_random_string(10).upper()
 
-    Parcel.objects.create(
-        sender_name=sender_name,
-        receiver_name=receiver_name,
-        pickup_location=pickup_location,
-        destination=destination,
-        description=description,
-        email=email,
-        phone=phone,
-        tracking_number=tracking_number
-    )
+            Parcel.objects.create(
+                sender_name=sender_name,
+                receiver_name=receiver_name,
+                pickup_location=pickup_location,
+                destination=destination,
+                description=description,
+                email=email,
+                phone=phone,
+                tracking_number=tracking_number
+            )
 
-    send_mail(
-        subject='Ulendo Coaches - Parcel Booked',
-        message=f"""
+            send_mail(
+                subject='Ulendo Coaches - Parcel Booked',
+                message=f"""
 Hello {sender_name},
 
 Your parcel has been booked successfully.
 
-📦 Tracking Number: {tracking_number}
-📍 From: {pickup_location}
-➡️ To: {destination}
+Tracking Number: {tracking_number}
+From: {pickup_location}
+To: {destination}
+""",
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[email],
+                fail_silently=False,
+            )
 
-Thank you.
-        """,
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[email],
-        fail_silently=False,
-    )
-
-    # (Optional but recommended) Admin SMS notification
-    message = f"""
+            send_admin_sms(f"""
 NEW PARCEL BOOKING
 
 Sender: {sender_name}
@@ -244,14 +229,18 @@ Receiver: {receiver_name}
 From: {pickup_location}
 To: {destination}
 Tracking: {tracking_number}
-"""
+""")
 
-    send_admin_sms(message)
+            return redirect('parcel_success', tracking_number=tracking_number)
 
-    return redirect('parcel_success', tracking_number=tracking_number)
+        else:
+            messages.error(request, "Please select a service type.")
 
-else:
-    messages.error(request, "Please select a service type.")       
+    return render(request, 'booking.html', {
+        'form': form,
+        'bus': bus,
+        'available_seats': available_seats
+    })       
 
 # -------------------
 

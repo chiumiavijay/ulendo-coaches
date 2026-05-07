@@ -27,13 +27,14 @@ from django.contrib.admin.views.decorators import staff_member_required
 import os
 import africastalking
 
-sms = None
-
 def init_africas_talking():
     global sms
 
     username = os.getenv("AT_USERNAME")
     api_key = os.getenv("AT_API_KEY")
+
+    print("AT_USERNAME:", username)
+    print("AT_API_KEY exists:", bool(api_key))
 
     if username and api_key:
         africastalking.initialize(username, api_key)
@@ -42,15 +43,22 @@ def init_africas_talking():
     else:
         print("AfricasTalking NOT initialized - missing env vars")
 
+
 def send_sms(message, recipients):
+    print("SMS FUNCTION CALLED")
+    print("Recipients:", recipients)
+
     if sms is None:
-        print("SMS not initialized")
+        print("SMS NOT INITIALIZED - STOPPED")
         return
 
     try:
-        sms.send(message, recipients)
+        response = sms.send(message, recipients)
+        print("SMS RESPONSE:", response)
     except Exception as e:
-        print("SMS error:", e)
+        print("SMS ERROR:", e)
+       
+        
 
 
 @staff_member_required

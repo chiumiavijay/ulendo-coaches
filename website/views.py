@@ -173,18 +173,19 @@ print("=======================")
 
 
 
-# -------------------
-# NOTIFICATION HELPER
-# -------------------
-def send_booking_notifications(service_type, booking=None, parcel=None, extra=None):
+def send_booking_notifications(service_type, booking=None, parcel=None):
 
-    # ========== PASSENGER BOOKING ==========
-    if service_type == "passenger" and booking:
+    try:
 
-        # SMS TO ADMIN
-        send_sms(
-            settings.ADMIN_PHONE,
-            f"""
+        # ================= PASSENGER =================
+        if service_type == "passenger" and booking:
+
+            # SMS TO ADMIN (SAFE)
+            if send_sms:
+                try:
+                    send_sms(
+                        settings.ADMIN_PHONE,
+                        f"""
 NEW PASSENGER BOOKING
 
 Name: {booking.name}
@@ -192,12 +193,15 @@ Phone: {booking.phone}
 Bus: {booking.bus.departure} → {booking.bus.destination}
 Passengers: {booking.passengers}
 """
-        )
+                    )
+                except Exception as e:
+                    print("SMS error:", e)
 
-        # EMAIL TO CUSTOMER
-        send_mail(
-            subject="Booking Confirmed - Ulendo Coaches",
-            message=f"""
+            # EMAIL TO CUSTOMER
+            try:
+                send_mail(
+                    subject="Booking Confirmed - Ulendo Coaches",
+                    message=f"""
 Hello {booking.name},
 
 Your booking has been received successfully.
@@ -207,18 +211,23 @@ Passengers: {booking.passengers}
 
 Thank you for choosing Ulendo Coaches.
 """,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[booking.email],
-            fail_silently=False,
-        )
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[booking.email],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                print("Email error:", e)
 
-    # ========== PARCEL BOOKING ==========
-    elif service_type == "parcel" and parcel:
 
-        # SMS TO ADMIN
-        send_sms(
-            settings.ADMIN_PHONE,
-            f"""
+        # ================= PARCEL =================
+        elif service_type == "parcel" and parcel:
+
+            # SMS TO ADMIN
+            if send_sms:
+                try:
+                    send_sms(
+                        settings.ADMIN_PHONE,
+                        f"""
 NEW PARCEL BOOKING
 
 Sender: {parcel.sender_name}
@@ -227,12 +236,15 @@ From: {parcel.pickup_location}
 To: {parcel.destination}
 Tracking: {parcel.tracking_number}
 """
-        )
+                    )
+                except Exception as e:
+                    print("SMS error:", e)
 
-        # EMAIL TO CUSTOMER
-        send_mail(
-            subject="Parcel Booked - Ulendo Coaches",
-            message=f"""
+            # EMAIL TO CUSTOMER
+            try:
+                send_mail(
+                    subject="Parcel Booked - Ulendo Coaches",
+                    message=f"""
 Hello {parcel.sender_name},
 
 Your parcel has been booked successfully.
@@ -243,99 +255,15 @@ To: {parcel.destination}
 
 We will notify you on progress.
 """,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[parcel.email],
-            fail_silently=False,
-        )
-
-
-# -------------------
-# BOOKING VIEW
-# -------------------
-def booking(request, bus_id):
-    bus = get_object_or_404(Bus, id=bus_id)
-
-    total_booked = Booking.objects.filter(bus=bus).aggregate(
-        total=Sum('passengers')
-    )['total'] or 0
-
-    available_seats = bus.capacity - total_booked
-
-    form = BookingForm()
-
-    if request.method == 'POST':
-
-        service_type = request.POST.get('service_type')
-
-        # ================= PASSENGER =================
-        if service_type == 'passenger':
-
-            form = BookingForm(request.POST)
-
-            if form.is_valid():
-                booking_obj = form.save(commit=False)
-                booking_obj.bus = bus
-                booking_obj.email = request.POST.get('email')
-
-                if booking_obj.passengers > available_seats:
-                    messages.error(request, f"Only {available_seats} seats available.")
-                    return render(request, 'booking.html', {
-                        'form': form,
-                        'bus': bus,
-                        'available_seats': available_seats
-                    })
-
-                booking_obj.save()
-
-                # NOTIFICATIONS
-                send_booking_notifications(
-                    service_type="passenger",
-                    booking=booking_obj
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[parcel.email],
+                    fail_silently=False,
                 )
+            except Exception as e:
+                print("Email error:", e)
 
-                return redirect('success', booking_id=booking_obj.id)
-
-        # ================= PARCEL =================
-        elif service_type == 'parcel':
-
-            sender_name = request.POST.get('sender_name')
-            receiver_name = request.POST.get('receiver_name')
-            pickup_location = request.POST.get('pickup_location')
-            destination = request.POST.get('destination')
-            description = request.POST.get('description')
-            email = request.POST.get('email')
-            phone = request.POST.get('phone')
-
-            tracking_number = get_random_string(10).upper()
-
-            parcel_obj = Parcel.objects.create(
-                sender_name=sender_name,
-                receiver_name=receiver_name,
-                pickup_location=pickup_location,
-                destination=destination,
-                description=description,
-                email=email,
-                phone=phone,
-                tracking_number=tracking_number
-            )
-
-            # NOTIFICATIONS
-            send_booking_notifications(
-                service_type="parcel",
-                parcel=parcel_obj
-            )
-
-            return redirect('parcel_success', tracking_number=tracking_number)
-
-        else:
-            messages.error(request, "Please select a service type.")
-
-    return render(request, 'booking.html', {
-        'form': form,
-        'bus': bus,
-        'available_seats': available_seats
-    })
-
+    except Exception as e:
+        print("Notification system error:", e)
 
 
 

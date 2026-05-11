@@ -18,6 +18,8 @@ path('test-sms/', views.test_sms, name='test_sms'),
 
 path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
 
+path("check-keys/", views.check_keys),
+
 
 
 

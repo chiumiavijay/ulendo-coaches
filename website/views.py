@@ -172,15 +172,27 @@ from django.utils.crypto import get_random_string
 from django.db.models import Sum
 from django.contrib import messages
 
-# -------------------
-# NOTIFICATIONS
-# -------------------
+
+
+
+
+
+
+
+
+
+
+
+from django.conf import settings
+from django.core.mail import get_connection, EmailMessage
+
 def send_booking_notifications(service_type, booking=None, parcel=None):
 
     try:
         # ================= PASSENGER =================
         if service_type == "passenger" and booking:
 
+            # ---------------- SMS TO ADMIN ----------------
             send_sms(
                 settings.ADMIN_PHONE,
                 f"""
@@ -193,9 +205,12 @@ Passengers: {booking.passengers}
 """
             )
 
-            send_mail(
+            # ---------------- EMAIL TO CUSTOMER (FIXED) ----------------
+            connection = get_connection(timeout=10)  # 🔥 prevents freezing
+
+            email = EmailMessage(
                 subject="Booking Confirmed - Ulendo Coaches",
-                message=f"""
+                body=f"""
 Hello {booking.name},
 
 Your booking has been successfully received.
@@ -206,9 +221,11 @@ Passengers: {booking.passengers}
 Thank you for choosing Ulendo Coaches.
 """,
                 from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[booking.email],
-                fail_silently=False,
+                to=[booking.email],
+                connection=connection
             )
+
+            email.send(fail_silently=False)
 
         # ================= PARCEL =================
         elif service_type == "parcel" and parcel:
@@ -226,9 +243,11 @@ Tracking: {parcel.tracking_number}
 """
             )
 
-            send_mail(
+            connection = get_connection(timeout=10)
+
+            email = EmailMessage(
                 subject="Parcel Booked - Ulendo Coaches",
-                message=f"""
+                body=f"""
 Hello {parcel.sender_name},
 
 Your parcel has been booked successfully.
@@ -238,9 +257,11 @@ From: {parcel.pickup_location}
 To: {parcel.destination}
 """,
                 from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[parcel.email],
-                fail_silently=False,
+                to=[parcel.email],
+                connection=connection
             )
+
+            email.send(fail_silently=False)
 
     except Exception as e:
         print("Notification error:", e)

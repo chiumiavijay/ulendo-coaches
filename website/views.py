@@ -29,10 +29,7 @@ from django.http import HttpResponse
 
 
 
-def check_keys(request):
-    return HttpResponse(
-        f"USERNAME: {settings.AFRICASTALKING_USERNAME} | API KEY: {settings.AFRICASTALKING_API_KEY}"
-    )
+
 
 
 sms = None
@@ -60,14 +57,6 @@ def send_sms(phone, message):
     except Exception as e:
         return str(e)
 
-
-def test_sms(request):
-    response = send_sms(
-        "+265999885586",
-        "Ulendo Coaches SMS test successful"
-    )
-
-    return HttpResponse(response)
        
         
 

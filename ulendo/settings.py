@@ -156,6 +156,8 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+ADMIN_PHONE = "265999885586"
+
 # ========================
 # CUSTOM PROJECT SETTINGS
 # ========================

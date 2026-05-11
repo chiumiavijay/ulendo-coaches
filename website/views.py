@@ -27,7 +27,14 @@ import africastalking
 from django.conf import settings
 from django.http import HttpResponse
 
-# Put this here
+
+
+def check_keys(request):
+    return HttpResponse(
+        f"USERNAME: {settings.AFRICASTALKING_USERNAME} | API KEY: {settings.AFRICASTALKING_API_KEY}"
+    )
+
+
 sms = None
 
 

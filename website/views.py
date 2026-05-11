@@ -23,40 +23,44 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 
 
-
-import os
 import africastalking
+from django.conf import settings
+from django.http import HttpResponse
+
+# Put this here
+sms = None
+
 
 def init_africas_talking():
     global sms
 
-    username = os.getenv("AT_USERNAME")
-    api_key = os.getenv("AT_API_KEY")
-
-    print("AT_USERNAME:", username)
-    print("AT_API_KEY exists:", bool(api_key))
-
-    if username and api_key:
-        africastalking.initialize(username, api_key)
-        sms = africastalking.SMS
-        print("AfricasTalking initialized successfully")
-    else:
-        print("AfricasTalking NOT initialized - missing env vars")
-
-
-def send_sms(message, recipients):
-    print("SMS FUNCTION CALLED")
-    print("Recipients:", recipients)
-
     if sms is None:
-        print("SMS NOT INITIALIZED - STOPPED")
-        return
+        africastalking.initialize(
+            settings.AFRICASTALKING_USERNAME,
+            settings.AFRICASTALKING_API_KEY
+        )
 
+        sms = africastalking.SMS
+
+
+def send_sms(phone, message):
     try:
-        response = sms.send(message, recipients)
-        print("SMS RESPONSE:", response)
+        init_africas_talking()
+
+        response = sms.send(message, [phone])
+        return response
+
     except Exception as e:
-        print("SMS ERROR:", e)
+        return str(e)
+
+
+def test_sms(request):
+    response = send_sms(
+        "+265999885586",
+        "Ulendo Coaches SMS test successful"
+    )
+
+    return HttpResponse(response)
        
         
 
@@ -377,16 +381,3 @@ Date: {parcel.created_at}
     return response
 
 
-from django.http import HttpResponse
-import os
-
-def test_sms(request):
-    init_africas_talking()
-
-    message = "ULENDO TEST SMS - SMS working ✔"
-
-    recipients = ["+265999885586"]  # ✅ correct format
-
-    send_sms(message, recipients)
-
-    return HttpResponse("SMS triggered. Check your phone.")

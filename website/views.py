@@ -175,17 +175,15 @@ print("=======================")
 
 def send_booking_notifications(service_type, booking=None, parcel=None):
 
-    try:
+    # ================= PASSENGER =================
+    if service_type == "passenger" and booking:
 
-        # ================= PASSENGER =================
-        if service_type == "passenger" and booking:
-
-            # SMS TO ADMIN (SAFE)
+        # SMS TO ADMIN (SAFE)
+        try:
             if send_sms:
-                try:
-                    send_sms(
-                        settings.ADMIN_PHONE,
-                        f"""
+                send_sms(
+                    settings.ADMIN_PHONE,
+                    f"""
 NEW PASSENGER BOOKING
 
 Name: {booking.name}
@@ -193,15 +191,15 @@ Phone: {booking.phone}
 Bus: {booking.bus.departure} → {booking.bus.destination}
 Passengers: {booking.passengers}
 """
-                    )
-                except Exception as e:
-                    print("SMS error:", e)
+                )
+        except:
+            pass  # never break booking
 
-            # EMAIL TO CUSTOMER
-            try:
-                send_mail(
-                    subject="Booking Confirmed - Ulendo Coaches",
-                    message=f"""
+        # EMAIL TO CUSTOMER
+        try:
+            send_mail(
+                subject="Booking Confirmed - Ulendo Coaches",
+                message=f"""
 Hello {booking.name},
 
 Your booking has been received successfully.
@@ -209,25 +207,24 @@ Your booking has been received successfully.
 Route: {booking.bus.departure} → {booking.bus.destination}
 Passengers: {booking.passengers}
 
-Thank you for choosing Ulendo Coaches.
+Thank you.
 """,
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[booking.email],
-                    fail_silently=False,
-                )
-            except Exception as e:
-                print("Email error:", e)
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[booking.email],
+                fail_silently=True,
+            )
+        except:
+            pass
 
 
-        # ================= PARCEL =================
-        elif service_type == "parcel" and parcel:
+    # ================= PARCEL =================
+    elif service_type == "parcel" and parcel:
 
-            # SMS TO ADMIN
+        try:
             if send_sms:
-                try:
-                    send_sms(
-                        settings.ADMIN_PHONE,
-                        f"""
+                send_sms(
+                    settings.ADMIN_PHONE,
+                    f"""
 NEW PARCEL BOOKING
 
 Sender: {parcel.sender_name}
@@ -236,35 +233,26 @@ From: {parcel.pickup_location}
 To: {parcel.destination}
 Tracking: {parcel.tracking_number}
 """
-                    )
-                except Exception as e:
-                    print("SMS error:", e)
+                )
+        except:
+            pass
 
-            # EMAIL TO CUSTOMER
-            try:
-                send_mail(
-                    subject="Parcel Booked - Ulendo Coaches",
-                    message=f"""
+        try:
+            send_mail(
+                subject="Parcel Booked - Ulendo Coaches",
+                message=f"""
 Hello {parcel.sender_name},
 
-Your parcel has been booked successfully.
-
-Tracking Number: {parcel.tracking_number}
+Tracking: {parcel.tracking_number}
 From: {parcel.pickup_location}
 To: {parcel.destination}
-
-We will notify you on progress.
 """,
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[parcel.email],
-                    fail_silently=False,
-                )
-            except Exception as e:
-                print("Email error:", e)
-
-    except Exception as e:
-        print("Notification system error:", e)
-
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[parcel.email],
+                fail_silently=True,
+            )
+        except:
+            pass
 
 
 

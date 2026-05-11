@@ -273,34 +273,40 @@ def booking(request, bus_id):
         service_type = request.POST.get('service_type')
 
         # ================= PASSENGER BOOKING =================
+
         if service_type == 'passenger':
 
-            form = BookingForm(request.POST)
+    form = BookingForm(request.POST)
 
-            if form.is_valid():
+    if not form.is_valid():
+        print(form.errors)  # IMPORTANT for debugging
+        messages.error(request, "Please correct the form errors.")
+        return render(request, 'booking.html', {
+            'form': form,
+            'bus': bus,
+            'available_seats': available_seats
+        })
 
-                booking_obj = form.save(commit=False)
-                booking_obj.bus = bus
-                booking_obj.email = request.POST.get('email')
+    booking_obj = form.save(commit=False)
+    booking_obj.bus = bus
+    booking_obj.email = request.POST.get('email')
 
-                if booking_obj.passengers > available_seats:
-                    messages.error(request, f"Only {available_seats} seats available.")
-                    return render(request, 'booking.html', {
-                        'form': form,
-                        'bus': bus,
-                        'available_seats': available_seats
-                    })
+    if booking_obj.passengers > available_seats:
+        messages.error(request, f"Only {available_seats} seats available.")
+        return render(request, 'booking.html', {
+            'form': form,
+            'bus': bus,
+            'available_seats': available_seats
+        })
 
-                booking_obj.save()
+    booking_obj.save()
 
-                # notifications (safe)
-                send_booking_notifications(
-                    service_type="passenger",
-                    booking=booking_obj
-                )
+    send_booking_notifications(
+        service_type="passenger",
+        booking=booking_obj
+    )
 
-                # IMPORTANT: redirect fixed
-                return redirect('success', booking_id=booking_obj.id)
+    return redirect('success', booking_id=booking_obj.id)
 
         # ================= PARCEL BOOKING =================
         elif service_type == 'parcel':

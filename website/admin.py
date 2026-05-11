@@ -1,6 +1,7 @@
 import os
 import uuid
 import threading
+import socket
 
 from django.contrib import admin
 from django.utils.html import format_html
@@ -26,6 +27,7 @@ class LocationAdmin(admin.ModelAdmin):
 # -------------------
 @admin.register(Bus)
 class BusAdmin(admin.ModelAdmin):
+
     list_display = (
         'departure',
         'destination',
@@ -36,7 +38,11 @@ class BusAdmin(admin.ModelAdmin):
     )
 
     list_filter = ('departure', 'destination')
-    search_fields = ('departure__name', 'destination__name')
+
+    search_fields = (
+        'departure__name',
+        'destination__name'
+    )
 
     def display_price(self, obj):
         symbol = "MK" if obj.currency == "MWK" else "R"
@@ -61,7 +67,10 @@ class BookingAdmin(admin.ModelAdmin):
         'download_ticket',
     )
 
-    list_filter = ('status', 'bus')
+    list_filter = (
+        'status',
+        'bus'
+    )
 
     search_fields = (
         'name',
@@ -78,41 +87,71 @@ class BookingAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ("Customer Info", {
-            'fields': ('name', 'email', 'phone_number')
+            'fields': (
+                'name',
+                'email',
+                'phone_number'
+            )
         }),
+
         ("Trip Info", {
-            'fields': ('bus', 'passengers', 'seat_number')
+            'fields': (
+                'bus',
+                'passengers',
+                'seat_number'
+            )
         }),
+
         ("Booking Status", {
-            'fields': ('status', 'ticket_number')
+            'fields': (
+                'status',
+                'ticket_number'
+            )
         }),
     )
 
-    actions = ['mark_as_verified', 'mark_as_cancelled']
+    actions = [
+        'mark_as_verified',
+        'mark_as_cancelled'
+    ]
 
     # -------------------
-    # DOWNLOAD TICKET
+    # DOWNLOAD PDF
     # -------------------
     def download_ticket(self, obj):
-        url = reverse('download_ticket', args=[obj.id])
-        return format_html('<a class="button" href="{}">Download PDF</a>', url)
+
+        url = reverse(
+            'download_ticket',
+            args=[obj.id]
+        )
+
+        return format_html(
+            '<a class="button" href="{}">Download PDF</a>',
+            url
+        )
 
     download_ticket.short_description = "Ticket PDF"
 
     # -------------------
-    # MAIN FIX: VERIFY BOOKING
+    # VERIFY BOOKINGS
     # -------------------
     def mark_as_verified(self, request, queryset):
 
         for booking in queryset:
 
+            # generate ticket number
             if not booking.ticket_number:
-                booking.ticket_number = str(uuid.uuid4()).replace('-', '').upper()[:10]
+                booking.ticket_number = (
+                    str(uuid.uuid4())
+                    .replace('-', '')
+                    .upper()[:10]
+                )
 
+            # confirm booking
             booking.status = 'confirmed'
             booking.save()
 
-            # 🔥 NON-BLOCKING EMAIL (IMPORTANT FIX)
+            # send email in background
             threading.Thread(
                 target=self._send_ticket_email,
                 args=(booking.id,)
@@ -120,13 +159,13 @@ class BookingAdmin(admin.ModelAdmin):
 
         self.message_user(
             request,
-            " Bookings verified. Emails are being sent in background."
+            "✅ Bookings verified. Emails sending in background."
         )
 
     mark_as_verified.short_description = "✅ Mark as Verified"
 
     # -------------------
-    # BACKGROUND EMAIL WORKER
+    # EMAIL WORKER
     # -------------------
     def _send_ticket_email(self, booking_id):
 
@@ -135,55 +174,114 @@ class BookingAdmin(admin.ModelAdmin):
 
             booking = Booking.objects.get(id=booking_id)
 
+            # -------------------
+            # SAFETY CHECK
+            # -------------------
+            if booking.status != "confirmed":
+                print("Booking not confirmed.")
+                return
+
+            # -------------------
+            # GENERATE PDF
+            # -------------------
             file_path = os.path.join(
                 settings.BASE_DIR,
                 f"ticket_{booking.id}.pdf"
             )
 
-            generate_ticket_pdf(booking, file_path)
+            generate_ticket_pdf(
+                booking,
+                file_path
+            )
 
+            # -------------------
+            # CHECK PDF EXISTS
+            # -------------------
+            if not os.path.exists(file_path):
+                print("PDF generation failed.")
+                return
+
+            # -------------------
+            # CREATE EMAIL
+            # -------------------
             email = EmailMessage(
-                subject='🎟️ Ulendo Coaches - Ticket Confirmed',
+                subject='🎟️ Ulendo Coaches Ticket Confirmation',
+
                 body=f"""
 Hello {booking.name},
 
 Your booking has been CONFIRMED ✅
 
 🎫 Ticket Number: {booking.ticket_number}
-🚌 Bus: {booking.bus}
-📍 Route: {booking.bus.departure} → {booking.bus.destination}
+
+🚌 Route:
+{booking.bus.departure} → {booking.bus.destination}
+
 📅 Date: {booking.bus.departure_date}
+
 ⏰ Time: {booking.bus.departure_time}
 
 Please find your ticket attached.
 
 Thank you for choosing Ulendo Coaches.
 """,
+
                 from_email=settings.EMAIL_HOST_USER,
+
                 to=[booking.email]
             )
 
+            # -------------------
+            # ATTACH PDF
+            # -------------------
             email.attach_file(file_path)
 
-            # 🔥 IMPORTANT: prevent SMTP freeze
-            connection = get_connection(timeout=10)
+            # -------------------
+            # SMTP CONNECTION
+            # -------------------
+            connection = get_connection(
+                host=settings.EMAIL_HOST,
+                port=settings.EMAIL_PORT,
+                username=settings.EMAIL_HOST_USER,
+                password=settings.EMAIL_HOST_PASSWORD,
+                use_tls=True,
+                timeout=20
+            )
+
             email.connection = connection
 
+            # -------------------
+            # SEND EMAIL
+            # -------------------
             email.send(fail_silently=False)
 
-            # cleanup
+            print("EMAIL SENT SUCCESSFULLY")
+
+            # -------------------
+            # DELETE TEMP PDF
+            # -------------------
             if os.path.exists(file_path):
                 os.remove(file_path)
 
+        except socket.timeout:
+            print("SMTP TIMEOUT ERROR")
+
         except Exception as e:
-            print("EMAIL ERROR:", e)
+            print("EMAIL ERROR:", str(e))
 
     # -------------------
-    # CANCEL BOOKING
+    # CANCEL BOOKINGS
     # -------------------
     def mark_as_cancelled(self, request, queryset):
-        queryset.update(status='cancelled')
-        self.message_user(request, "❌ Selected bookings cancelled.")
+
+        queryset.update(
+            status='cancelled'
+        )
+
+        self.message_user(
+            request,
+            "❌ Selected bookings cancelled."
+        )
 
     mark_as_cancelled.short_description = "❌ Cancel Booking"
 
@@ -205,7 +303,10 @@ class ParcelAdmin(admin.ModelAdmin):
         'download_parcel_pdf',
     )
 
-    list_filter = ('status', 'created_at')
+    list_filter = (
+        'status',
+        'created_at'
+    )
 
     search_fields = (
         'tracking_number',
@@ -215,30 +316,69 @@ class ParcelAdmin(admin.ModelAdmin):
         'phone',
     )
 
-    readonly_fields = ('tracking_number', 'created_at')
+    readonly_fields = (
+        'tracking_number',
+        'created_at'
+    )
 
     fieldsets = (
         ("Sender & Receiver", {
-            'fields': ('sender_name', 'receiver_name', 'email', 'phone')
+            'fields': (
+                'sender_name',
+                'receiver_name',
+                'email',
+                'phone',
+            )
         }),
+
         ("Trip Details", {
-            'fields': ('pickup_location', 'destination', 'description')
+            'fields': (
+                'pickup_location',
+                'destination',
+                'description',
+            )
         }),
+
         ("System Info", {
-            'fields': ('tracking_number', 'status', 'created_at')
+            'fields': (
+                'tracking_number',
+                'status',
+                'created_at',
+            )
         }),
     )
 
     actions = ['mark_as_received']
 
+    # -------------------
+    # DOWNLOAD PDF
+    # -------------------
     def download_parcel_pdf(self, obj):
-        url = reverse('download_parcel', args=[obj.id])
-        return format_html('<a class="button" href="{}">Download PDF</a>', url)
+
+        url = reverse(
+            'download_parcel',
+            args=[obj.id]
+        )
+
+        return format_html(
+            '<a class="button" href="{}">Download PDF</a>',
+            url
+        )
 
     download_parcel_pdf.short_description = "PDF"
 
+    # -------------------
+    # MARK RECEIVED
+    # -------------------
     def mark_as_received(self, request, queryset):
-        queryset.update(status='received')
-        self.message_user(request, "📦 Parcels marked as received.")
+
+        queryset.update(
+            status='received'
+        )
+
+        self.message_user(
+            request,
+            "📦 Parcels marked as received."
+        )
 
     mark_as_received.short_description = "📦 Mark as Received"

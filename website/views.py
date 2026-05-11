@@ -6,6 +6,13 @@ from django.contrib import messages
 from django.db.models import Sum
 from django.utils.crypto import get_random_string
 from website.notifications.whatsapp import generate_whatsapp_link
+from django.conf import settings
+from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.crypto import get_random_string
+from django.db.models import Sum
+from django.contrib import messages
+
 
 import os
 
@@ -160,6 +167,91 @@ print("=======================")
 
 
 
+
+
+
+
+
+
+# -------------------
+# NOTIFICATION HELPER
+# -------------------
+def send_booking_notifications(service_type, booking=None, parcel=None, extra=None):
+
+    # ========== PASSENGER BOOKING ==========
+    if service_type == "passenger" and booking:
+
+        # SMS TO ADMIN
+        send_sms(
+            settings.ADMIN_PHONE,
+            f"""
+NEW PASSENGER BOOKING
+
+Name: {booking.name}
+Phone: {booking.phone}
+Bus: {booking.bus.departure} → {booking.bus.destination}
+Passengers: {booking.passengers}
+"""
+        )
+
+        # EMAIL TO CUSTOMER
+        send_mail(
+            subject="Booking Confirmed - Ulendo Coaches",
+            message=f"""
+Hello {booking.name},
+
+Your booking has been received successfully.
+
+Route: {booking.bus.departure} → {booking.bus.destination}
+Passengers: {booking.passengers}
+
+Thank you for choosing Ulendo Coaches.
+""",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[booking.email],
+            fail_silently=False,
+        )
+
+    # ========== PARCEL BOOKING ==========
+    elif service_type == "parcel" and parcel:
+
+        # SMS TO ADMIN
+        send_sms(
+            settings.ADMIN_PHONE,
+            f"""
+NEW PARCEL BOOKING
+
+Sender: {parcel.sender_name}
+Receiver: {parcel.receiver_name}
+From: {parcel.pickup_location}
+To: {parcel.destination}
+Tracking: {parcel.tracking_number}
+"""
+        )
+
+        # EMAIL TO CUSTOMER
+        send_mail(
+            subject="Parcel Booked - Ulendo Coaches",
+            message=f"""
+Hello {parcel.sender_name},
+
+Your parcel has been booked successfully.
+
+Tracking Number: {parcel.tracking_number}
+From: {parcel.pickup_location}
+To: {parcel.destination}
+
+We will notify you on progress.
+""",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[parcel.email],
+            fail_silently=False,
+        )
+
+
+# -------------------
+# BOOKING VIEW
+# -------------------
 def booking(request, bus_id):
     bus = get_object_or_404(Bus, id=bus_id)
 
@@ -181,11 +273,11 @@ def booking(request, bus_id):
             form = BookingForm(request.POST)
 
             if form.is_valid():
-                booking = form.save(commit=False)
-                booking.bus = bus
-                booking.email = request.POST.get('email')
+                booking_obj = form.save(commit=False)
+                booking_obj.bus = bus
+                booking_obj.email = request.POST.get('email')
 
-                if booking.passengers > available_seats:
+                if booking_obj.passengers > available_seats:
                     messages.error(request, f"Only {available_seats} seats available.")
                     return render(request, 'booking.html', {
                         'form': form,
@@ -193,23 +285,15 @@ def booking(request, bus_id):
                         'available_seats': available_seats
                     })
 
-                booking.save()
+                booking_obj.save()
 
-                total_price = booking.passengers * bus.price_per_seat
+                # NOTIFICATIONS
+                send_booking_notifications(
+                    service_type="passenger",
+                    booking=booking_obj
+                )
 
-                send_notifications(booking)
-
-                send_admin_sms(f"""
-NEW PASSENGER BOOKING
-
-Name: {booking.name}
-Phone: {booking.phone}
-Bus: {bus.departure} → {bus.destination}
-Passengers: {booking.passengers}
-Amount: {total_price}
-""")
-
-                return redirect('success', booking_id=booking.id)
+                return redirect('success', booking_id=booking_obj.id)
 
         # ================= PARCEL =================
         elif service_type == 'parcel':
@@ -224,7 +308,7 @@ Amount: {total_price}
 
             tracking_number = get_random_string(10).upper()
 
-            Parcel.objects.create(
+            parcel_obj = Parcel.objects.create(
                 sender_name=sender_name,
                 receiver_name=receiver_name,
                 pickup_location=pickup_location,
@@ -235,31 +319,11 @@ Amount: {total_price}
                 tracking_number=tracking_number
             )
 
-            send_mail(
-                subject='Ulendo Coaches - Parcel Booked',
-                message=f"""
-Hello {sender_name},
-
-Your parcel has been booked successfully.
-
-Tracking Number: {tracking_number}
-From: {pickup_location}
-To: {destination}
-""",
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[email],
-                fail_silently=False,
+            # NOTIFICATIONS
+            send_booking_notifications(
+                service_type="parcel",
+                parcel=parcel_obj
             )
-
-            send_admin_sms(f"""
-NEW PARCEL BOOKING
-
-Sender: {sender_name}
-Receiver: {receiver_name}
-From: {pickup_location}
-To: {destination}
-Tracking: {tracking_number}
-""")
 
             return redirect('parcel_success', tracking_number=tracking_number)
 
@@ -270,7 +334,11 @@ Tracking: {tracking_number}
         'form': form,
         'bus': bus,
         'available_seats': available_seats
-    })       
+    })
+
+
+
+
 
 # -------------------
 

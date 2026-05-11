@@ -1,5 +1,8 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+import qrcode
+from io import BytesIO
+from reportlab.lib.utils import ImageReader
 
 
 def generate_ticket_pdf(booking, file_path):
@@ -30,23 +33,38 @@ def generate_ticket_pdf(booking, file_path):
     c.drawString(100, 540, f"Status: {booking.status}")
 
     # -------------------
-    # QR CODE (NEW PART)
+    # QR CODE (FIXED - ALWAYS GENERATED)
     # -------------------
-    if booking.qr_code:
-        try:
-            c.drawImage(
-                booking.qr_code.path,
-                400,   # X position (right side)
-                600,   # Y position
-                width=120,
-                height=120
-            )
-        except Exception:
-            pass  # prevents crash if file is missing
+    qr_data = f"""
+Ticket: {booking.ticket_number}
+Name: {booking.name}
+Route: {booking.bus.departure} -> {booking.bus.destination}
+Seat: {booking.seat_number}
+"""
+
+    qr_img = qrcode.make(qr_data)
+
+    buffer = BytesIO()
+    qr_img.save(buffer, format="PNG")
+    buffer.seek(0)
+
+    qr_image = ImageReader(buffer)
+
+    c.drawImage(
+        qr_image,
+        400,   # X position
+        600,   # Y position
+        width=120,
+        height=120
+    )
+
+    c.setFont("Helvetica", 10)
+    c.drawString(400, 580, "Scan for verification")
 
     # -------------------
     # FOOTER
     # -------------------
+    c.setFont("Helvetica", 12)
     c.drawString(100, 500, "Ulendo Coaches & Logistic Services. 🚍")
     c.drawString(100, 480, "Safe travels!")
 

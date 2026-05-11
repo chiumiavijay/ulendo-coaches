@@ -120,7 +120,7 @@ class BookingAdmin(admin.ModelAdmin):
 
         self.message_user(
             request,
-            "✅ Bookings verified. Emails are being sent in background."
+            " Bookings verified. Emails are being sent in background."
         )
 
     mark_as_verified.short_description = "✅ Mark as Verified"
